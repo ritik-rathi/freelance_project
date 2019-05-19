@@ -2,33 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:freelance/screens/new_visitor.dart';
 
 class MainScreen extends StatelessWidget {
-  String user;
+  final String user;
 
   MainScreen({this.user});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Guard portal'),
+        backgroundColor: Colors.white,
+      ),
       backgroundColor: Colors.transparent,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NewVisitorPage()));
-                },
-                child: _optionCard('New Visitor')),
-            _optionCard('Regular'),
-            _optionCard('Delivery')
-          ],
-        ),
+        child: GridView.count(
+            // crossAxisSpacing: 5,
+            // mainAxisSpacing: 5,
+            childAspectRatio: 0.53,
+            crossAxisCount: 2,
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/newvisitor');
+                  },
+                  child: _optionCard('New Visitor', Color(0xFF50CDFF), Icon(Icons.supervisor_account, size: 50,))),
+              _optionCard('Frequent visitor', Color(0xffd8fbff), Icon(Icons.card_membership, size: 50,)),
+              _optionCard('Delivery boy', Color(0xffd8fbff), Icon(Icons.shopping_cart, size: 50,)),
+              _optionCard('Add resident', Color(0xFF50CDFF), Icon(Icons.home, size: 50,))
+            ]),
+        // Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   crossAxisAlignment: CrossAxisAlignment.center,
+        //   children: <Widget>[
+        //     GestureDetector(
+        //         onTap: () {
+        //           Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                   builder: (context) => NewVisitorPage()));
+        //         },
+        //         child: _optionCard('New Visitor')),
+        //     _optionCard('Regular'),
+        //     _optionCard('Delivery')
+        //   ],
+        // ),
         decoration: BoxDecoration(
             gradient: RadialGradient(
                 center: Alignment.topLeft,
@@ -39,21 +58,21 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Widget _optionCard(String page) {
-    return Card(
-      elevation: 5.0,
-      child: Container(
-        height: 100.0,
-        width: 200.0,
-        child: Center(
-          child: Text(
+  Widget _optionCard(String page, Color color, Icon icon) {
+    return Container(
+      height: 1000,
+      color: color,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          icon,
+          Text(
             page,
             style: new TextStyle(
-                color: Colors.black,
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold),
+                color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
-        ),
+        ],
       ),
     );
   }

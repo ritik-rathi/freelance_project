@@ -14,7 +14,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
   File _image;
 
   Future getImage() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
       _image = tempImage;
@@ -48,7 +48,10 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                               fontSize: 20.0,
                               fontWeight: FontWeight.w500),
                         ))
-                      : FileImage(_image)),
+                      : Image.file(
+                          _image,
+                          fit: BoxFit.contain,
+                        )),
             ),
             _buildAddCard()
           ],

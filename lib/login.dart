@@ -35,8 +35,8 @@ class _LoginState extends State<Login>
 
   PageController _pageController;
 
-  Color right = Colors.white;
-  Color left = Colors.black;
+  Color right = Colors.black;
+  Color left = Colors.white;
   String _logine, _loginemail;
   String _loginp;
   String _sname, _semail, _psw, _cpsw, _enrollment;
@@ -174,7 +174,7 @@ class _LoginState extends State<Login>
                     end: const FractionalOffset(1.0, 1.0),
                     stops: [0.0, 1.0],
                     tileMode: TileMode.clamp,
-                    colors: [Color(0xFFE1306C), Color(0xFF833ab4)])),
+                    colors: [Color(0xFF50CDFF), Color(0xffd8fbff)])),
             // Column is used to display the rest of the widgets vertically
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -201,13 +201,13 @@ class _LoginState extends State<Login>
                     onPageChanged: (i) {
                       if (i == 0) {
                         setState(() {
-                          right = Colors.white;
-                          left = Colors.black;
+                          right = Colors.black;
+                          left = Colors.white;
                         });
                       } else if (i == 1) {
                         setState(() {
-                          right = Colors.black;
-                          left = Colors.white;
+                          right = Colors.white;
+                          left = Colors.black;
                         });
                       }
                     },
@@ -276,7 +276,7 @@ class _LoginState extends State<Login>
                 highlightColor: Colors.transparent,
                 onPressed: _onSignInButtonPress,
                 child: Text(
-                  "Existing",
+                  "User",
                   style: TextStyle(
                       color: left,
                       fontSize: 16.0,
@@ -291,7 +291,7 @@ class _LoginState extends State<Login>
                 highlightColor: Colors.transparent,
                 onPressed: _onSignUpButtonPress,
                 child: Text(
-                  "New",
+                  "Society",
                   style: TextStyle(
                       color: right,
                       fontSize: 16.0,
@@ -351,7 +351,7 @@ class _LoginState extends State<Login>
                                 color: Colors.black,
                                 size: 22.0,
                               ),
-                              hintText: "Admission no.",
+                              hintText: "Username",
                               hintStyle: TextStyle(
                                   fontFamily: "WorkSansSemiBold",
                                   fontSize: 17.0),
@@ -410,29 +410,187 @@ class _LoginState extends State<Login>
               Container(
                 margin: EdgeInsets.only(top: 170.0),
                 decoration: new BoxDecoration(
+                  color: Color(0xFF50CDFF),
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Color(0xFFE1306C),
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                    BoxShadow(
-                      color: Color(0xFF833ab4),
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                  ],
-                  gradient: new LinearGradient(
-                      colors: [Color(0xFF833ab4), Color(0xFFE1306C)],
-                      begin: const FractionalOffset(0.2, 0.2),
-                      end: const FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp),
+                  border: Border.all(color: Colors.white, width: 3),
+                  // boxShadow: <BoxShadow>[
+                  //   BoxShadow(
+                  //     color: Color(0xffd8fbff),
+                  //     offset: Offset(1.0, 6.0),
+                  //     blurRadius: 20.0,
+                  //   ),
+                  //   BoxShadow(
+                  //     color: Color(0xFF50CDFF),
+                  //     offset: Offset(1.0, 6.0),
+                  //     blurRadius: 20.0,
+                  //   ),
+                  // ],
+                  // gradient: new LinearGradient(
+                  //     colors: [Color(0xFF50CDFF), Color(0xffd8fbff)],
+                  //     begin: const FractionalOffset(0.2, 0.2),
+                  //     end: const FractionalOffset(1.0, 1.0),
+                  //     stops: [0.0, 1.0],
+                  //     tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
                     highlightColor: Colors.transparent,
-                    splashColor: Color(0xFF833ab4),
+                    splashColor: Color(0xFF50CDFF),
+                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 42.0),
+                      child: Text(
+                        "LOGIN",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontFamily: "WorkSansBold"),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/guard');
+                      // login();
+                      // Navigator.pushNamed(context, '/home');
+                    } // showInSnackBar("Login button pressed")),
+                    ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+Widget _buildTeacherSignIn(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 23.0),
+      child: Column(
+        children: <Widget>[
+          Stack(
+            alignment: Alignment.topCenter,
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Card(
+                elevation: 2.0,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Container(
+                  width: 300.0,
+                  height: 190.0,
+                  child: Form(
+                    //key: _formkey,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            focusNode: myFocusNodeEmailLogin,
+                            validator: (input) {
+                              if (input.length < 8)
+                                return "Make sure your password consists of atleast 8 letters";
+                            },
+                            onSaved: (input) {
+                              _logine = input;
+                            },
+                            // keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(
+                                fontFamily: "WorkSansSemiBold",
+                                fontSize: 16.0,
+                                color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                Icons.event_note,
+                                color: Colors.black,
+                                size: 22.0,
+                              ),
+                              hintText: "Username",
+                              hintStyle: TextStyle(
+                                  fontFamily: "WorkSansSemiBold",
+                                  fontSize: 17.0),
+                            ),
+                          ),
+                        ),
+                        // Container(
+                        //   width: 250.0,
+                        //   height: 1.0,
+                        //   color: Colors.grey[400],
+                        // ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            focusNode: myFocusNodePasswordLogin,
+                            validator: (input) {
+                              if (input.length < 4)
+                                return "Make sure your password consists of atleast 8 letters";
+                            },
+                            onSaved: (input) {
+                              _loginp = input;
+                            },
+                            obscureText: _obscureTextLogin,
+                            style: TextStyle(
+                                fontFamily: "WorkSansSemiBold",
+                                fontSize: 16.0,
+                                color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                Icons.lock,
+                                size: 22.0,
+                                color: Colors.black,
+                              ),
+                              hintText: "Password",
+                              hintStyle: TextStyle(
+                                  fontFamily: "WorkSansSemiBold",
+                                  fontSize: 17.0),
+                              suffixIcon: GestureDetector(
+                                onTap: _toggleLogin,
+                                child: Icon(
+                                  Icons.check_box,
+                                  size: 15.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 170.0),
+                decoration: new BoxDecoration(
+                  color: Color(0xFF50CDFF),
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  border: Border.all(color: Colors.white, width: 3),
+                  // boxShadow: <BoxShadow>[
+                  //   BoxShadow(
+                  //     color: Color(0xffd8fbff),
+                  //     offset: Offset(1.0, 6.0),
+                  //     blurRadius: 20.0,
+                  //   ),
+                  //   BoxShadow(
+                  //     color: Color(0xFF50CDFF),
+                  //     offset: Offset(1.0, 6.0),
+                  //     blurRadius: 20.0,
+                  //   ),
+                  // ],
+                  // gradient: new LinearGradient(
+                  //     colors: [Color(0xFF50CDFF), Color(0xffd8fbff)],
+                  //     begin: const FractionalOffset(0.2, 0.2),
+                  //     end: const FractionalOffset(1.0, 1.0),
+                  //     stops: [0.0, 1.0],
+                  //     tileMode: TileMode.clamp),
+                ),
+                child: MaterialButton(
+                    highlightColor: Colors.transparent,
+                    splashColor: Color(0xFF50CDFF),
                     //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -453,377 +611,7 @@ class _LoginState extends State<Login>
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: FlatButton(
-                //TODO: Forgot Password Handler
-                onPressed: () {},
-                child: Text(
-                  "Forgot Password?",
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontFamily: "WorkSansMedium"),
-                )),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                        colors: [
-                          Colors.white10,
-                          Colors.white,
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 1.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  width: 100.0,
-                  height: 1.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Text(
-                    "Or",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontFamily: "WorkSansMedium"),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                        colors: [
-                          Colors.white,
-                          Colors.white10,
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 1.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  width: 100.0,
-                  height: 1.0,
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, right: 40.0),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Icon(
-                      Icons.face,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Icon(
-                      Icons.grain,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTeacherSignIn(BuildContext context) {
-    return Form(
-      key: _signkey,
-      child: Container(
-        padding: EdgeInsets.only(top: 23.0),
-        child: Column(
-          children: <Widget>[
-            Stack(
-              alignment: Alignment.topCenter,
-              overflow: Overflow.visible,
-              children: <Widget>[
-                //new
-                Card(
-                  elevation: 2.0,
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Container(
-                    width: 300.0,
-                    height: 460.0,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            autofocus: false,
-                            onSaved: (input) {
-                              _sname = input;
-                            },
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.words,
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.person,
-                                color: Colors.black,
-                              ),
-                              hintText: "Student Name",
-                              hintStyle: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 250.0,
-                          height: 1.0,
-                          color: Colors.grey[400],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            autofocus: false,
-                            onSaved: (input) {
-                              _enrollment = input;
-                            },
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.arrow_right,
-                                color: Colors.black,
-                              ),
-                              hintText: "Admission No.",
-                              hintStyle: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 250.0,
-                          height: 1.0,
-                          color: Colors.grey[400],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            autofocus: false,
-                            onSaved: (input) {
-                              _semail = input;
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.event_note,
-                                color: Colors.black,
-                              ),
-                              hintText: "Email Address",
-                              hintStyle: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 250.0,
-                          height: 1.0,
-                          color: Colors.grey[400],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            autofocus: false,
-                            onSaved: (input) {
-                              _psw = input;
-                            },
-                            obscureText: _obscureTextSignup,
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.lock,
-                                color: Colors.black,
-                              ),
-                              hintText: "Password",
-                              hintStyle: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 16.0),
-                              suffixIcon: GestureDetector(
-                                onTap: _toggleSignup,
-                                child: Icon(
-                                  Icons.check_box,
-                                  size: 15.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 250.0,
-                          height: 1.0,
-                          color: Colors.grey[400],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            autofocus: false,
-                            onSaved: (input) {
-                              _cpsw = input;
-                            },
-                            obscureText: _obscureTextSignupConfirm,
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.lock,
-                                color: Colors.black,
-                              ),
-                              hintText: "Confirmation",
-                              hintStyle: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 16.0),
-                              suffixIcon: GestureDetector(
-                                onTap: _toggleSignupConfirm,
-                                child: Icon(
-                                  Icons.check_box,
-                                  size: 15.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                    margin: EdgeInsets.only(top: 440.0),
-                    decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: Color(0xFFE1306C),
-                          offset: Offset(1.0, 6.0),
-                          blurRadius: 20.0,
-                        ),
-                        BoxShadow(
-                          color: Color(0xFF833ab4),
-                          offset: Offset(1.0, 6.0),
-                          blurRadius: 20.0,
-                        ),
-                      ],
-                      gradient: new LinearGradient(
-                          colors: [Color(0xFF833ab4), Color(0xFFE1306C)],
-                          begin: const FractionalOffset(0.2, 0.2),
-                          end: const FractionalOffset(1.0, 1.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp),
-                    ),
-                    child: MaterialButton(
-                      highlightColor: Colors.transparent,
-                      splashColor: Color(0xFF833ab4),
-                      //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 42.0),
-                        child: Text(
-                          "SIGN UP",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25.0,
-                              fontFamily: "WorkSansBold"),
-                        ),
-                      ),
-                      onPressed: () {
-                        Map<String, dynamic> data = <String, dynamic>{
-                          'name': _sname,
-                          'admission no': _enrollment,
-                          'email': _semail,
-                          'password': _psw
-                        };
-                        // signup(data);
-                      },
-                    )),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
