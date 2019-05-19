@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-String vName, vPhone, vPurpose, vFlat, vTime;
+String vName, vPhone, vPurpose, vFlat, vTime , oName;
 
 class NewVisitorPage extends StatefulWidget {
   @override
@@ -168,6 +168,37 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         // controller: _taskDesController,
                         decoration: InputDecoration(
                             hintText: 'Flat Number',
+                            hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.0)),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Owner Name',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                      TextField(
+                        autofocus: true,
+                        onChanged: (value) {
+                          vName = value;
+                        },
+                        // controller: _taskTitleController,
+                        decoration: InputDecoration(
+                            hintText: 'Owner Name',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
