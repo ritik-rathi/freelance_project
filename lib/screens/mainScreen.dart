@@ -29,7 +29,9 @@ class MainScreen extends StatelessWidget {
                   },
                   child: _optionCard('New Visitor', Color(0xFF50CDFF), Icon(Icons.supervisor_account, size: 50,))),
               _optionCard('Frequent visitor', Color(0xffd8fbff), Icon(Icons.card_membership, size: 50,)),
-              _optionCard('Delivery boy', Color(0xffd8fbff), Icon(Icons.shopping_cart, size: 50,)),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context , '/delivery'),
+                child: _optionCard('Delivery boy', Color(0xffd8fbff), Icon(Icons.shopping_cart, size: 50,))),
               _optionCard('Add resident', Color(0xFF50CDFF), Icon(Icons.home, size: 50,))
             ]),
         // Column(
