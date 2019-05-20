@@ -182,12 +182,12 @@ class _LoginState extends State<Login>
                 // Our logo. can be tweaked
                 Padding(
                   padding:
-                      const EdgeInsets.only(top: 75.0, left: 20.0, right: 20.0),
+                      const EdgeInsets.only(top: 150.0, left: 20.0, right: 20.0),
                   child: new Image(
-                    width: 100.0,
-                    height: 100.0,
+                    width: 150.0,
+                    height: 1.0,
                     fit: BoxFit.cover,
-                    image: new AssetImage('assets/logo.png'),
+                    image: new AssetImage('assets/images/logo.jpeg'),
                   ),
                 ),
                 //fucntion used for building the menu bar

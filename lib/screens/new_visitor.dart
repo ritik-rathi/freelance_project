@@ -99,7 +99,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        //autofocus: true,
                         onChanged: (value) {
                           vName = value;
                         },
@@ -130,7 +130,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        // autofocus: true,
                         onChanged: (value) {
                           vPhone = value;
                         },
@@ -161,7 +161,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        // autofocus: true,
                         onChanged: (value) {
                           vFlat = value;
                         },
@@ -192,7 +192,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        // autofocus: true,
                         onChanged: (value) {
                           vName = value;
                         },
@@ -223,7 +223,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        // autofocus: true,
                         onChanged: (value) {
                           vPurpose = value;
                         },
@@ -254,7 +254,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        // autofocus: true,
                         onChanged: (value) {
                           vTime = value;
                         },
@@ -289,7 +289,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
               ],
             ),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
+                borderRadius: BorderRadius.circular(5.0),
                 // border: Border.all(width: 2.0),
                 color: Colors.white,
                 boxShadow: [
