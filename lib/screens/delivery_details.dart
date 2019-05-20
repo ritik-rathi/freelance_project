@@ -1,17 +1,19 @@
 import 'dart:io';
+import 'dart:ui';
+import 'dart:ui' as prefix0;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-String vName, vPhone, vPurpose, vFlat, oName;
-String vTime = TimeOfDay.now().toString();
+String dName, dPhone, dOrg, rFlat, rName;
+String dTime = TimeOfDay.now().toString();
 
-class NewVisitorPage extends StatefulWidget {
+class DeliveryPage extends StatefulWidget {
   @override
-  _NewVisitorPageState createState() => _NewVisitorPageState();
+  _DeliveryPageState createState() => _DeliveryPageState();
 }
 
-class _NewVisitorPageState extends State<NewVisitorPage> {
+class _DeliveryPageState extends State<DeliveryPage> {
   File _image;
 
   Future getImage() async {
@@ -57,19 +59,22 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                     decoration: BoxDecoration(
                         color: Colors.black,
                         border: Border.all(width: 2.0, color: Colors.white)),
-                    child: _image == null
-                        ? Center(
-                            child: Text(
-                            'Add Image of the visitor',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w500),
-                          ))
-                        : Image.file(
-                            _image,
-                            fit: BoxFit.cover,
-                          )),
+                    child: Hero(
+                      tag: "Focus",
+                      child: _image == null
+                          ? Center(
+                              child: Text(
+                              'Add Image of Delivery Boy',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w500),
+                            ))
+                          : Image.file(
+                              _image,
+                              fit: BoxFit.cover,
+                            ),
+                    )),
               ),
             ),
             _buildAddCard()
@@ -78,7 +83,8 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: getImage,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffd8fbff),
+        foregroundColor: Colors.white,
         tooltip: 'Click Photo',
         child: Icon(Icons.camera_alt, color: Colors.black),
       ),
@@ -118,13 +124,12 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        //autofocus: true,
+                        autofocus: true,
                         onChanged: (value) {
-                          vName = value;
+                          dName = value;
                         },
-                        // controller: _taskTitleController,
                         decoration: InputDecoration(
-                            hintText: 'Visitor\'s Name',
+                            hintText: 'Name',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -149,13 +154,12 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        // autofocus: true,
+                        autofocus: true,
                         onChanged: (value) {
-                          vPhone = value;
+                          dPhone = value;
                         },
-                        // controller: _taskTimeController,
                         decoration: InputDecoration(
-                            hintText: 'Visitor\'s Phone Number',
+                            hintText: 'Phone Number',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -180,13 +184,12 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        // autofocus: true,
+                        autofocus: true,
                         onChanged: (value) {
-                          vFlat = value;
+                          rFlat = value;
                         },
-                        // controller: _taskDesController,
                         decoration: InputDecoration(
-                            hintText: 'Owner\'s Flat Number',
+                            hintText: 'Flat Number',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -203,7 +206,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Owner Name',
+                          'Recepient\'s Name',
                           style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -211,13 +214,12 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        // autofocus: true,
+                        autofocus: true,
                         onChanged: (value) {
-                          vName = value;
+                          rName = value;
                         },
-                        // controller: _taskTitleController,
                         decoration: InputDecoration(
-                            hintText: 'Owner Name',
+                            hintText: 'Name of the flat owner',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -234,7 +236,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Purpose',
+                          'Organization',
                           style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -242,13 +244,12 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        // autofocus: true,
+                        autofocus: true,
                         onChanged: (value) {
-                          vPurpose = value;
+                          dOrg = value;
                         },
-                        // controller: _taskDesController,
                         decoration: InputDecoration(
-                            hintText: 'Purpose',
+                            hintText: 'Name of the organization',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -277,7 +278,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
               ],
             ),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
+                borderRadius: BorderRadius.circular(20.0),
                 // border: Border.all(width: 2.0),
                 color: Colors.white,
                 boxShadow: [
@@ -303,13 +304,13 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
   //   DocumentReference databaseRef =
   //       Firestore.instance.collection("").document();
 
-  //   Map<String, dynamic> details= {
-  //     "visitor": vName,
-  //     "time": vTime,
-  //     "purpose": vPurpose,
-  //     "phone" : vPhone,
-  //     "flat no." : vFlat,
-  //     "visitee": oName
+  //   Map<String, dynamic> tasks = {
+  //     "deliveryBoy": dName,
+  //     "time": dTime,
+  //     "organization": dOrg,
+  //     "recepientName" : rName,
+  //     "recepientFlat": rFlat
+  //      "phoneNo." : dPhone
   //   };
   //   databaseRef.setData(tasks).whenComplete(() {
   //     print('Task created!');
