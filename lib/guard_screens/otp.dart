@@ -4,11 +4,176 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
-String phoneNo;
+
 String smsCode;
 String verificationId;
 
-class PhoneNumberAdd extends StatelessWidget {
+// class PhoneNumberAdd extends StatelessWidget {
+//   String phoneNo; //phone number to enter
+
+//   PhoneNumberAdd({Key key,this.phoneNo}) : super(key:key); // so that data can be passed
+
+//   //function working 
+//   Future<void> verifyPhone() async {
+//     final PhoneVerificationCompleted verificationCompleted =
+//         (AuthCredential auth) {
+//       print(
+//           'Inside _sendCodeToPhoneNumber: signInWithPhoneNumber auto succeeded: $auth');
+//     };
+
+//     final PhoneVerificationFailed verificationFailed =
+//         (AuthException authException) {
+//       print(
+//           'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+//     };
+
+//     final PhoneCodeSent codeSent =
+//         (String verificationId, [int forceResendingToken]) async {
+//       verificationId = verificationId;
+//       print("code sent to " + phoneNo);
+//     };
+
+//     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+//         (String verificationId) {
+//       verificationId = verificationId;
+//       print("time out");
+//     };
+
+//     await FirebaseAuth.instance.verifyPhoneNumber(
+//         phoneNumber: '+91-$phoneNo',
+//         timeout: const Duration(seconds: 5),
+//         verificationCompleted: verificationCompleted,
+//         verificationFailed: verificationFailed,
+//         codeSent: codeSent,
+//         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           backgroundColor: Colors.red,
+//           title: Text(
+//             "Login",
+//             style: TextStyle(
+//               color: Colors.white,
+//               fontWeight: FontWeight.bold,
+//             ),
+//           ),
+//         ),
+//         backgroundColor: Color(0xFFeaeaea),
+//         body: ListView(
+//           shrinkWrap: true,
+//           scrollDirection: Axis.vertical,
+//           children: <Widget>[
+//             Column(
+//                 mainAxisSize: MainAxisSize.max,
+//                 mainAxisAlignment: MainAxisAlignment.start,
+//                 crossAxisAlignment: CrossAxisAlignment.center,
+//                 children: <Widget>[
+//                   Padding(
+//                     padding: const EdgeInsets.only(
+//                         left: 16.0, top: 20.0, right: 16.0),
+//                     child: Text(
+//                       "Enter your phone number",
+//                       style: TextStyle(
+//                           fontSize: 18.0,
+//                           fontWeight: FontWeight.bold,
+//                           color: Colors.black),
+//                       textAlign: TextAlign.center,
+//                     ),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsets.only(top: 30.0),
+//                     child: Image(
+//                       image: AssetImage('Assets/images/otp-icon.png'),
+//                       height: 120.0,
+//                       width: 120.0,
+//                     ),
+//                   ),
+//                   Row(
+//                     children: <Widget>[
+//                       Flexible(
+//                         child: new Container(),
+//                         flex: 1,
+//                       ),
+//                       Flexible(
+//                         child: new TextFormField(
+//                           textAlign: TextAlign.center,
+//                           autofocus: false,
+//                           enabled: false,
+//                           initialValue: "+91",
+//                           style: TextStyle(fontSize: 20.0, color: Colors.black),
+//                         ),
+//                         flex: 3,
+//                       ),
+//                       Flexible(
+//                         child: new Container(),
+//                         flex: 1,
+//                       ),
+//                       Flexible(
+//                         child: new TextField(
+//                           onChanged: (value) {
+//                             phoneNo = value;
+//                           },
+//                           autofocus: false,
+//                           enabled: true,
+//                           keyboardType: TextInputType.number,
+//                           textInputAction: TextInputAction.done,
+//                           style: TextStyle(fontSize: 20.0, color: Colors.black),
+//                         ),
+//                         flex: 9,
+//                       ),
+//                       Flexible(
+//                         child: new Container(),
+//                         flex: 1,
+//                       ),
+//                     ],
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
+//                     child: new Container(
+//                       width: 150.0,
+//                       height: 40.0,
+//                       child: new RaisedButton(
+//                           onPressed: () {
+//                             verifyPhone();
+//                             Navigator.of(context).push(MaterialPageRoute(
+//                                 builder: (context) => OtpTesting()));
+//                           },
+//                           child: Text("Get OTP"),
+//                           textColor: Colors.white,
+//                           color: Colors.red,
+//                           shape: new RoundedRectangleBorder(
+//                               borderRadius: new BorderRadius.circular(30.0))),
+//                     ),
+//                   )
+//                 ])
+//           ],
+//         ));
+//   }
+// }
+
+class OtpTesting extends StatefulWidget {
+  String phoneNo;
+
+  OtpTesting({Key key,this.phoneNo}): super(key:key); // have to display number here as well
+
+  @override
+  _OtpTestingState createState() => _OtpTestingState();
+}
+
+class _OtpTestingState extends State<OtpTesting> {
+  TextEditingController controller1 = new TextEditingController();
+  TextEditingController controller2 = new TextEditingController();
+  TextEditingController controller3 = new TextEditingController();
+  TextEditingController controller4 = new TextEditingController();
+  TextEditingController controller5 = new TextEditingController();
+  TextEditingController controller6 = new TextEditingController();
+
+  TextEditingController currController = new TextEditingController();
+
+    //function working 
   Future<void> verifyPhone() async {
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential auth) {
@@ -25,7 +190,7 @@ class PhoneNumberAdd extends StatelessWidget {
     final PhoneCodeSent codeSent =
         (String verificationId, [int forceResendingToken]) async {
       verificationId = verificationId;
-      print("code sent to " + phoneNo);
+      print("code sent to " + widget.phoneNo);
     };
 
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
@@ -35,134 +200,13 @@ class PhoneNumberAdd extends StatelessWidget {
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: '+91-$phoneNo',
+        phoneNumber: '+91-${widget.phoneNo}',
         timeout: const Duration(seconds: 5),
         verificationCompleted: verificationCompleted,
         verificationFailed: verificationFailed,
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          title: Text(
-            "Login",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        backgroundColor: Color(0xFFeaeaea),
-        body: ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16.0, top: 20.0, right: 16.0),
-                    child: Text(
-                      "Enter your phone number",
-                      style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: Image(
-                      image: AssetImage('Assets/images/otp-icon.png'),
-                      height: 120.0,
-                      width: 120.0,
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Flexible(
-                        child: new Container(),
-                        flex: 1,
-                      ),
-                      Flexible(
-                        child: new TextFormField(
-                          textAlign: TextAlign.center,
-                          autofocus: false,
-                          enabled: false,
-                          initialValue: "+91",
-                          style: TextStyle(fontSize: 20.0, color: Colors.black),
-                        ),
-                        flex: 3,
-                      ),
-                      Flexible(
-                        child: new Container(),
-                        flex: 1,
-                      ),
-                      Flexible(
-                        child: new TextField(
-                          onChanged: (value) {
-                            phoneNo = value;
-                          },
-                          autofocus: false,
-                          enabled: true,
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          style: TextStyle(fontSize: 20.0, color: Colors.black),
-                        ),
-                        flex: 9,
-                      ),
-                      Flexible(
-                        child: new Container(),
-                        flex: 1,
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
-                    child: new Container(
-                      width: 150.0,
-                      height: 40.0,
-                      child: new RaisedButton(
-                          onPressed: () {
-                            verifyPhone();
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => OtpTesting()));
-                          },
-                          child: Text("Get OTP"),
-                          textColor: Colors.white,
-                          color: Colors.red,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0))),
-                    ),
-                  )
-                ])
-          ],
-        ));
-  }
-}
-
-class OtpTesting extends StatefulWidget {
-  @override
-  _OtpTestingState createState() => _OtpTestingState();
-}
-
-class _OtpTestingState extends State<OtpTesting> {
-  TextEditingController controller1 = new TextEditingController();
-  TextEditingController controller2 = new TextEditingController();
-  TextEditingController controller3 = new TextEditingController();
-  TextEditingController controller4 = new TextEditingController();
-  TextEditingController controller5 = new TextEditingController();
-  TextEditingController controller6 = new TextEditingController();
-
-  TextEditingController currController = new TextEditingController();
 
   @override
   void dispose() {
@@ -362,7 +406,7 @@ class _OtpTestingState extends State<OtpTesting> {
                     padding: const EdgeInsets.only(
                         left: 30.0, top: 2.0, right: 30.0),
                     child: Text(
-                      "$phoneNo",
+                      "${widget.phoneNo}",
                       style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,

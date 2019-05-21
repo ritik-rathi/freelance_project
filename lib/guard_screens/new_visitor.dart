@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
 
 String vName, vPhone, vPurpose, vFlat, oName;
@@ -269,7 +270,12 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                     ),
                     color: Colors.blue,
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OtpTesting(
+                                    phoneNo: vPhone,
+                                  )));
                       // _uploadDataToFirebase();
                     },
                   ),
