@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/screens/new_visitor.dart';
+import 'package:freelance/guard_screens/new_visitor.dart';
 
 class MainScreen extends StatelessWidget {
   final String user;
@@ -27,12 +27,41 @@ class MainScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(context, '/newvisitor');
                   },
-                  child: _optionCard('New Visitor', Color(0xFF50CDFF), Icon(Icons.supervisor_account, size: 50,))),
-              _optionCard('Frequent visitor', Color(0xffd8fbff), Icon(Icons.card_membership, size: 50,)),
+                  child: _optionCard(
+                      'New Visitor',
+                      Color(0xFF50CDFF),
+                      Icon(
+                        Icons.supervisor_account,
+                        size: 50,
+                      ))),
+              _optionCard(
+                  'Frequent visitor',
+                  Color(0xffd8fbff),
+                  Icon(
+                    Icons.card_membership,
+                    size: 50,
+                  )),
               GestureDetector(
-                onTap: () => Navigator.pushNamed(context , '/delivery'),
-                child: _optionCard('Delivery boy', Color(0xffd8fbff), Icon(Icons.shopping_cart, size: 50,))),
-              _optionCard('Add resident', Color(0xFF50CDFF), Icon(Icons.home, size: 50,))
+                  onTap: () => Navigator.pushNamed(context, '/delivery'),
+                  child: _optionCard(
+                      'Delivery boy',
+                      Color(0xffd8fbff),
+                      Icon(
+                        Icons.shopping_cart,
+                        size: 50,
+                      ))),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, '/maidrec');
+                },
+                child: _optionCard(
+                    'Maid record',
+                    Color(0xFF50CDFF),
+                    Icon(
+                      Icons.supervisor_account,
+                      size: 50,
+                    )),
+              )
             ]),
         // Column(
         //   mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +101,9 @@ class MainScreen extends StatelessWidget {
           Text(
             page,
             style: new TextStyle(
-                color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
+                color: Colors.black,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),

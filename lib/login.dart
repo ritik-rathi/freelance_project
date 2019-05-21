@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
-import 'package:freelance/screens/mainScreen.dart';
+import 'package:freelance/guard_screens/mainScreen.dart';
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
@@ -182,12 +182,12 @@ class _LoginState extends State<Login>
                 // Our logo. can be tweaked
                 Padding(
                   padding:
-                      const EdgeInsets.only(top: 75.0, left: 20.0, right: 20.0),
+                      const EdgeInsets.only(top: 150.0, left: 20.0, right: 20.0),
                   child: new Image(
-                    width: 100.0,
-                    height: 100.0,
+                    width: 150.0,
+                    height: 150.0,
                     fit: BoxFit.cover,
-                    image: new AssetImage('assets/logo.png'),
+                    image: new AssetImage('assets/images/logo.jpeg'),
                   ),
                 ),
                 //fucntion used for building the menu bar
@@ -448,7 +448,7 @@ class _LoginState extends State<Login>
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/guard');
+                      Navigator.pushNamed(context, '/user');
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),
@@ -604,6 +604,7 @@ Widget _buildTeacherSignIn(BuildContext context) {
                       ),
                     ),
                     onPressed: () {
+                      Navigator.pushNamed(context, '/guard');
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),
