@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/screens/new_visitor.dart';
+import 'package:freelance/guard_screens/new_visitor.dart';
 
 class MainScreen extends StatelessWidget {
   final String user;
@@ -50,13 +50,18 @@ class MainScreen extends StatelessWidget {
                         Icons.shopping_cart,
                         size: 50,
                       ))),
-              _optionCard(
-                  'Add resident',
-                  Color(0xFF50CDFF),
-                  Icon(
-                    Icons.home,
-                    size: 50,
-                  ))
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, '/maidrec');
+                },
+                child: _optionCard(
+                    'Maid record',
+                    Color(0xFF50CDFF),
+                    Icon(
+                      Icons.supervisor_account,
+                      size: 50,
+                    )),
+              )
             ]),
         // Column(
         //   mainAxisAlignment: MainAxisAlignment.center,

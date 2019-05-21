@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/login.dart';
-import 'package:freelance/screens/delivery_details.dart';
-import 'package:freelance/screens/mainScreen.dart';
-import 'package:freelance/screens/new_visitor.dart';
+import 'package:freelance/guard_screens/delivery_details.dart';
+import 'package:freelance/guard_screens/maidRec.dart';
+import 'package:freelance/guard_screens/mainScreen.dart';
+import 'package:freelance/guard_screens/new_visitor.dart';
+import 'package:freelance/user_screens/profile.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,8 +18,10 @@ class MyApp extends StatelessWidget {
       home: Login(),
       routes: {
         '/newvisitor': (context) => NewVisitorPage(),
+        '/user': (context) => Profile(),
         '/guard': (context) => MainScreen(),
-        '/delivery':(context) => DeliveryPage()
+        '/delivery':(context) => DeliveryPage(),
+        '/maidrec': (context) => MaidRec()
       },
     );
   }

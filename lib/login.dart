@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
-import 'package:freelance/screens/mainScreen.dart';
+import 'package:freelance/guard_screens/mainScreen.dart';
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
@@ -185,7 +185,7 @@ class _LoginState extends State<Login>
                       const EdgeInsets.only(top: 150.0, left: 20.0, right: 20.0),
                   child: new Image(
                     width: 150.0,
-                    height: 1.0,
+                    height: 150.0,
                     fit: BoxFit.cover,
                     image: new AssetImage('assets/images/logo.jpeg'),
                   ),
@@ -448,7 +448,7 @@ class _LoginState extends State<Login>
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/guard');
+                      Navigator.pushNamed(context, '/user');
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),
@@ -604,6 +604,7 @@ Widget _buildTeacherSignIn(BuildContext context) {
                       ),
                     ),
                     onPressed: () {
+                      Navigator.pushNamed(context, '/guard');
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),

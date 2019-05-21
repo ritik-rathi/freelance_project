@@ -30,7 +30,7 @@ dependencies:
   url_launcher: ^5.0.2
   gradient_widgets: ^0.4.1
   image_picker: ^0.6.0+3
-  sms: ^0.2.4
+  # sms: ^0.2.4
 
 dev_dependencies:
   flutter_test:

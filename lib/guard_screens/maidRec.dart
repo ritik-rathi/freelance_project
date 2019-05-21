@@ -6,12 +6,12 @@ import 'package:image_picker/image_picker.dart';
 String vName, vPhone, vPurpose, vFlat, oName;
 String vTime = TimeOfDay.now().toString();
 
-class NewVisitorPage extends StatefulWidget {
+class MaidRec extends StatefulWidget {
   @override
-  _NewVisitorPageState createState() => _NewVisitorPageState();
+  _MaidRecState createState() => _MaidRecState();
 }
 
-class _NewVisitorPageState extends State<NewVisitorPage> {
+class _MaidRecState extends State<MaidRec> {
   File _image;
 
   Future getImage() async {
@@ -92,11 +92,11 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
         children: <Widget>[
           Container(
             width: double.infinity,
-            height: 700.0,
+            height: 400.0,
             child: Column(
               children: <Widget>[
                 new Text(
-                  'Details',
+                  'Maid details',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 40.0,
@@ -124,7 +124,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         },
                         // controller: _taskTitleController,
                         decoration: InputDecoration(
-                            hintText: 'Visitor\'s Name',
+                            hintText: 'Maid\'s Name',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -155,7 +155,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         },
                         // controller: _taskTimeController,
                         decoration: InputDecoration(
-                            hintText: 'Visitor\'s Phone Number',
+                            hintText: 'Maid\'s Phone Number',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -172,7 +172,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Flat Number',
+                          'Flat and Time',
                           style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -186,7 +186,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         },
                         // controller: _taskDesController,
                         decoration: InputDecoration(
-                            hintText: 'Owner\'s Flat Number',
+                            hintText: 'Flat Number - Time',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -195,73 +195,73 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Owner Name',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ),
-                      TextField(
-                        // autofocus: true,
-                        onChanged: (value) {
-                          vName = value;
-                        },
-                        // controller: _taskTitleController,
-                        decoration: InputDecoration(
-                            hintText: 'Owner Name',
-                            hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.0)),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Purpose',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ),
-                      TextField(
-                        // autofocus: true,
-                        onChanged: (value) {
-                          vPurpose = value;
-                        },
-                        // controller: _taskDesController,
-                        decoration: InputDecoration(
-                            hintText: 'Purpose',
-                            hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.0)),
-                      )
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding:
+                //       const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                //   child: Column(
+                //     children: <Widget>[
+                //       Align(
+                //         alignment: Alignment.centerLeft,
+                //         child: Text(
+                //           'Owner Name',
+                //           style: TextStyle(
+                //               fontSize: 20.0,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.black),
+                //         ),
+                //       ),
+                //       TextField(
+                //         // autofocus: true,
+                //         onChanged: (value) {
+                //           vName = value;
+                //         },
+                //         // controller: _taskTitleController,
+                //         decoration: InputDecoration(
+                //             hintText: 'Owner Name',
+                //             hintStyle: TextStyle(
+                //                 color: Colors.grey,
+                //                 fontWeight: FontWeight.w500,
+                //                 fontSize: 12.0)),
+                //       )
+                //     ],
+                //   ),
+                // ),
+                // Padding(
+                //   padding:
+                //       const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                //   child: Column(
+                //     children: <Widget>[
+                //       Align(
+                //         alignment: Alignment.centerLeft,
+                //         child: Text(
+                //           'Purpose',
+                //           style: TextStyle(
+                //               fontSize: 20.0,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.black),
+                //         ),
+                //       ),
+                //       TextField(
+                //         // autofocus: true,
+                //         onChanged: (value) {
+                //           vPurpose = value;
+                //         },
+                //         // controller: _taskDesController,
+                //         decoration: InputDecoration(
+                //             hintText: 'Purpose',
+                //             hintStyle: TextStyle(
+                //                 color: Colors.grey,
+                //                 fontWeight: FontWeight.w500,
+                //                 fontSize: 12.0)),
+                //       )
+                //     ],
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(top: 18.0),
                   child: RaisedButton(
                     child: Text(
-                      'Submit',
+                      'Add record',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 30.0,
@@ -277,7 +277,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
               ],
             ),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
+                borderRadius: BorderRadius.circular(20.0),
                 // border: Border.all(width: 2.0),
                 color: Colors.white,
                 boxShadow: [
