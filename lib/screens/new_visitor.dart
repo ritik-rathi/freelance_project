@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import ;
 
 String vName, vPhone, vPurpose, vFlat, oName;
 String vTime = TimeOfDay.now().toString();
@@ -118,7 +120,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           vName = value;
                         },
@@ -149,7 +151,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           vPhone = value;
                         },
@@ -180,7 +182,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           vFlat = value;
                         },
@@ -211,7 +213,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           vName = value;
                         },
@@ -242,7 +244,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           vPurpose = value;
                         },
