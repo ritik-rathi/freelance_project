@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'HOMANTRA',
       theme: ThemeData(fontFamily: 'Poppins', primaryColor: Color(0xFF50CDFF)),
-      home: Profile(),
+      home: Login(),
       routes: {
         '/newvisitor': (context) => NewVisitorPage(),
         '/user': (context) => Profile(),

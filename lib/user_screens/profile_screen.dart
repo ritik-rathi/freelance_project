@@ -5,25 +5,15 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
+        body: Container(
+          height: 250,
           child: Stack(
             children: <Widget>[
               Container(
                 alignment: Alignment.topCenter,
-                height: 250.0,
+                height: 160.0,
                 width: double.infinity,
                 color: Color(0xFF50CDFF),
-              ),
-              Positioned(
-                top: 100.0,
-                left: 20.0,
-                child: Card(
-                  child: Container(
-                    width: 200,
-                    height: 400.0,
-                    color: Colors.green,
-                  ),
-                ),
               ),
               Positioned(
                   right: 20.0,
@@ -37,11 +27,23 @@ class ProfileScreen extends StatelessWidget {
                     onPressed: () {},
                   )),
               Positioned(
-                top: 20.0,
-                left: 20.0,
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/logo.jpeg'),
-                  radius: 50,
+                top: 80.0,
+                left: 90,
+                right: 90,
+                child: Container(
+                  height: 160,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black
+                    ),
+                    borderRadius: BorderRadius.circular(140) 
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/logo.jpeg'),
+                    radius: 80,
+                  ),
                 ),
               ),
             ],

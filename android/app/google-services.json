@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "94119762808",
+    "firebase_url": "https://homantra-90dbe.firebaseio.com",
+    "project_id": "homantra-90dbe",
+    "storage_bucket": "homantra-90dbe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:94119762808:android:56a1a5a6650dcb5e",
+        "android_client_info": {
+          "package_name": "com.example.freelance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "94119762808-egmucao1rkhf2ou5o5d0dd6ggss8v9sp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.freelance",
+            "certificate_hash": "1cce1e7f9c7c615966d630de1cb0b25fabfe3ced"
+          }
+        },
+        {
+          "client_id": "94119762808-6uc4jnj24g4gqh80tsphialjq62ms7bh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA51COtznom3ytdOmQb0roY1Bspwg3oe8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "94119762808-6uc4jnj24g4gqh80tsphialjq62ms7bh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
