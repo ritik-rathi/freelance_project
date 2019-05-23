@@ -1,9 +1,13 @@
+/* ************************************************************************
+   This is the implementation of a super cool Navbar by Aayush Malhotra aka AadumKhor.
+   Kindly use it for your projects and give me good karma since isme mehnat lagi hai meri.
+   *******************Thank You!************************************************/
+
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
 class NavBar extends StatefulWidget {
-  final List<IconData>
-      icons; //icons taht it will contain we can add text as well
+  final List<IconData> icons;
   final int selectedIndex; // which icon is selected
   final Color bgColor; //color of the navbar that can be varied by the user
   final List<String> names;
@@ -26,12 +30,13 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
   int selectedIndex = 0; // which is selected
   int newIndex = 0; // new one that is to be selected
-  final _circleBottomPosition = 50 + kBottomNavigationBarHeight * 0.4;
+  final _circleBottomPosition = 50 + kBottomNavigationBarHeight * 0.6;
   final double kCircleSize = 62.0;
 
   Animation<double> positionAnim; // when it is positioned
   Animation<double> riseAnim; // when it rises  to place
   Animation<double> sinkAnim; // when it falls to place
+  Animation<double> textAnim; // moving of the text
   AnimationController controller; // controller as usual
 
   Size _size; // to determine the size of the circle
@@ -45,6 +50,9 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
     positionAnim = new Tween<double>(
             begin: (selectedIndex) * 1.0, end: (selectedIndex + 1) * 1.0)
         .animate(CurvedAnimation(curve: Curves.bounceIn, parent: controller));
+    textAnim = new Tween<double>(
+            begin: (selectedIndex) * 1.0, end: (selectedIndex + 1) * 1.0)
+        .animate(CurvedAnimation(curve: Curves.ease, parent: controller));
     sinkAnim = new Tween<double>(begin: 0.0, end: _circleBottomPosition)
         .animate(CurvedAnimation(
             parent: controller,
@@ -76,25 +84,11 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
             child: Opacity(
               opacity: getOpacityForIndex(i),
               child: Container(
-                height: kBottomNavigationBarHeight * 1.6,
+                height: kBottomNavigationBarHeight * 1.0,
                 width: _size.width / 5,
-                child: Column(
-                  children: <Widget>[
-                    Icon(
-                      widget.icons[i],
-                      color: Colors.grey,
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      getNameOfIcon(),
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0),
-                    )
-                  ],
+                child: Icon(
+                  widget.icons[i],
+                  color: Colors.grey,
                 ),
               ),
             ),
@@ -127,6 +121,11 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
     }
     newIndex = index;
     positionAnim = Tween<double>(begin: selectedIndex * 1.0, end: index * 1.0)
+        .animate(CurvedAnimation(
+      parent: controller,
+      curve: Curves.ease,
+    ));
+    textAnim = Tween<double>(begin: selectedIndex * 1.0, end: index * 1.0)
         .animate(CurvedAnimation(
       parent: controller,
       curve: Curves.ease,
@@ -172,17 +171,6 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       color: Colors.white,
     );
   }
-
-  String getNameOfIcon() {
-    String name;
-    if (controller.value < 0.5) {
-      name = widget.names[selectedIndex];
-    } else {
-      name = widget.names[newIndex];
-    }
-    return name;
-  }
-
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
@@ -192,32 +180,24 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       color: widget.bgColor,
       child: Stack(
         children: <Widget>[
-          ClipPath(
-            clipBehavior: Clip.antiAlias,
-            clipper: NavBarClipper(
-                controller.isAnimating
-                    ? positionAnim.value
-                    : selectedIndex * 1.0,
-                widget.icons.length),
-            child: Container(
-              height: kBottomNavigationBarHeight * 1.6,
-              width: _size.width,
-              child: Material(
-                color: Colors.white,
-                elevation: 4,
-                child: Container(
-                  margin:
-                      EdgeInsets.only(top: kBottomNavigationBarHeight * 0.4),
-                  height: kBottomNavigationBarHeight * 1.2,
-                  width: _size.width,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: smallIcons(),
-                  ),
+          Container(
+            height: kBottomNavigationBarHeight * 1.55,
+            width: _size.width,
+            child: Material(
+              color: Color(0xff0d2956),
+              elevation: 4,
+              child: Container(
+                margin: EdgeInsets.only(top: kBottomNavigationBarHeight * 0.1),
+                height: kBottomNavigationBarHeight,
+                width: _size.width,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: smallIcons(),
                 ),
               ),
             ),
           ),
+          // the circle
           Positioned(
               left: (controller.isAnimating
                       ? positionAnim.value
@@ -238,80 +218,27 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                   ),
                 ),
               )),
+          //the texxt
+          Positioned(
+              left: (controller.isAnimating ? textAnim.value : selectedIndex) *
+                  (_size.width / widget.icons.length),
+              top: getCircleYPosition() + 65,
+              child: Container(
+                margin: EdgeInsets.only(left: circleLeftPadding + 8, bottom: 8),
+                child: SizedBox(
+                  height: kCircleSize,
+                  width: kCircleSize,
+                  child: Text(
+                    widget.names[selectedIndex],
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              )),
         ],
       ),
     );
-  }
-}
-
-class NavBarClipper extends CustomClipper<Path> {
-  final numberOfIcons; // number of icons in the navbar
-  final iconHeight = 52.0; // height of icons
-  final topPaddingFactor = 0.2; //space to be left from the main page
-
-  final double animatedIndex; // index of animation
-
-  NavBarClipper(this.animatedIndex, this.numberOfIcons);
-
-  @override
-  Path getClip(Size size) {
-    final sectionWidth = size.width / numberOfIcons;
-    var path = new Path();
-    // path.moveTo(0.0, 0.0);
-    // path.addOval(Rect.fromLTRB(-iconHeight, 0.0, sectionWidth, -iconHeight));
-
-    // Draw notch
-
-    final curveControlOffset = sectionWidth * 0.45;
-
-    final topPadding = topPaddingFactor * size.height;
-
-    path.lineTo((animatedIndex * sectionWidth) - curveControlOffset, 0);
-
-    final firstControlPoint = Offset((animatedIndex * sectionWidth), 0);
-
-    final secondControlPoint =
-        Offset((animatedIndex * sectionWidth), iconHeight);
-    final secondEndPoint =
-        Offset((animatedIndex * sectionWidth) + curveControlOffset, iconHeight);
-
-    path.cubicTo(
-        firstControlPoint.dx,
-        firstControlPoint.dy,
-        secondControlPoint.dx,
-        secondControlPoint.dy,
-        secondEndPoint.dx,
-        secondEndPoint.dy);
-
-    path.lineTo(
-        ((animatedIndex + 1) * sectionWidth) - curveControlOffset, iconHeight);
-    final thirdControlPoint =
-        Offset(((animatedIndex + 1) * sectionWidth), iconHeight);
-
-    final fourthControlPoint = Offset(((animatedIndex + 1) * sectionWidth), 0);
-    final fourthEndPoint =
-        Offset(((animatedIndex + 1) * sectionWidth) + curveControlOffset, 0);
-
-    path.cubicTo(
-        thirdControlPoint.dx,
-        thirdControlPoint.dy,
-        fourthControlPoint.dx,
-        fourthControlPoint.dy,
-        fourthEndPoint.dx,
-        fourthEndPoint.dy);
-    path.lineTo(size.width, 0);
-
-    path = path
-        .transform(Matrix4.translation(math.Vector3(0, topPadding, 0)).storage);
-
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper oldClipper) {
-    return (oldClipper as NavBarClipper).animatedIndex != animatedIndex;
   }
 }

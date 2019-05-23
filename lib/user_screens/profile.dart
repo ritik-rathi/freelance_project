@@ -37,7 +37,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: NavBar(
-          bgColor: Colors.transparent,
+          bgColor: Color(0xff0d2956),
           names: ['Home', 'Visitors', 'Maids'],
           icons: [Icons.home, Icons.transit_enterexit, Icons.person],
           touchCallback: (int index) {
