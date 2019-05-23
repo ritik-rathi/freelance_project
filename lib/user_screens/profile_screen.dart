@@ -28,19 +28,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Positioned(
                       top: 180,
-                      left: 20,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          height: 30,
-                          width: 70,
-                          child: Center(
-                            child: Text('EDIT',
-                                style: TextStyle(color: color, fontSize: 20)),
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: color)),
+                      left: 30,
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: color)
+                        ),
+                        child: IconButton(
+                          onPressed: (){},
+                          icon: Icon(Icons.edit, size: 30),
+                          color: color,
                         ),
                       ),
                     ),
@@ -48,15 +47,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       top: 180,
                       right: 30,
                       child: Container(
-                        height: 40,
-                        width: 40,
+                        height: 50,
+                        width: 50,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: color)
                         ),
                         child: IconButton(
                           onPressed: (){},
-                          icon: Icon(Icons.local_phone),
+                          icon: Icon(Icons.local_phone, size: 30),
                           color: color,
                         ),
                       ),
