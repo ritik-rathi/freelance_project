@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:freelance/navbar.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
+import 'package:freelance/user_screens/visitor_log.dart';
 
 var vTime = TimeOfDay.now();
 
@@ -31,7 +32,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  List<Widget> pages = [ProfileScreen(), visitorLog(), maid()];
+  List<Widget> pages = [ProfileScreen(), VisitorLog(), maid()];
 
   @override
   Widget build(BuildContext context) {
@@ -157,57 +158,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       ],
                     ),
                   ),
-                );
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  static Widget visitorLog() {
-    return Container(
-      margin: EdgeInsets.only(top: 50, left: 20, right: 20),
-      child: Column(
-        children: <Widget>[
-          Text('Visitor Log',
-              style: TextStyle(
-                  color: Color(0xFF50CDFF),
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold)),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                      elevation: 3,
-                      child: Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.all(5),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text('Name: Ritik',
-                                    style: TextStyle(fontSize: 20)),
-                                Text('$vTime')
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text('Purpose: abcdefghijk',
-                                    style: TextStyle(fontSize: 20),
-                                    maxLines: 100,
-                                    textAlign: TextAlign.start),
-                              ],
-                            )
-                          ],
-                        ),
-                      )),
                 );
               },
             ),
