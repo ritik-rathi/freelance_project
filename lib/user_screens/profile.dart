@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:freelance/navbar.dart';
+import 'package:freelance/user_screens/maid_screen.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
 import 'package:freelance/user_screens/visitor_log.dart';
 
@@ -32,7 +33,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  List<Widget> pages = [ProfileScreen(), VisitorLog(), maid()];
+  List<Widget> pages = [ProfileScreen(), VisitorLog(), MaidScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -48,122 +49,5 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           },
         ),
         body: pages[selectedIndex]);
-  }
-
-  // static Widget profile() {
-  //   return Scaffold(
-  //     floatingActionButton: FloatingActionButton.extended(
-  //       onPressed: () {},
-  //       icon: Icon(Icons.edit),
-  //       label: Text('Edit info'),
-  //     ),
-  //     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-  //     body: prefix0.Container(
-  //       margin: prefix0.EdgeInsets.fromLTRB(16, 50, 16, 16),
-  //       child: prefix0.Stack(
-  //         children: <Widget>[
-  //           Positioned(
-  //             left: 20.0,
-  //             top: 20.0,
-  //             child: CircleAvatar(
-  //               backgroundImage: AssetImage('assets/images/logo.jpeg'),
-  //               radius: 50,
-  //             ),
-  //           ),
-  //           SizedBox(height: 30),
-  //           prefix0.Row(
-  //             children: <Widget>[
-  //               Icon(Icons.account_circle, size: 30),
-  //               SizedBox(width: 15),
-  //               Text('Ritik', style: TextStyle(fontSize: 25))
-  //             ],
-  //           ),
-  //           SizedBox(height: 15),
-  //           Row(
-  //             children: <Widget>[
-  //               Icon(Icons.phone, size: 30),
-  //               SizedBox(width: 15),
-  //               Text('9990637630', style: TextStyle(fontSize: 25))
-  //             ],
-  //           ),
-  //           SizedBox(height: 15),
-  //           Row(
-  //             children: <Widget>[
-  //               Icon(Icons.mail, size: 30),
-  //               SizedBox(width: 15),
-  //               Text('rathi27ritik@gmail.com', style: TextStyle(fontSize: 25))
-  //             ],
-  //           ),
-  //           SizedBox(height: 15),
-  //           Row(
-  //             children: <Widget>[
-  //               Icon(Icons.home, size: 30),
-  //               SizedBox(width: 15),
-  //               Text('1/522, Vaishali', style: TextStyle(fontSize: 25))
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  static Widget maid() {
-    return Container(
-      margin: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
-      child: Column(
-        children: <Widget>[
-          Text('Maid Schedules',
-              style: TextStyle(
-                  color: Color(0xFF50CDFF),
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold)),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 3,
-                  child: Container(
-                    margin: EdgeInsets.all(8),
-                    child: prefix0.Column(
-                      children: <Widget>[
-                        prefix0.Row(
-                          children: <prefix0.Widget>[
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Icon(Icons.account_circle, size: 100),
-                            SizedBox(width: 50),
-                            Text('Shanta', style: TextStyle(fontSize: 25)),
-                          ],
-                        ),
-                        Text('Schedule:', style: TextStyle(fontSize: 20)),
-                        Text('9am - 402', style: TextStyle(fontSize: 20)),
-                        Text('10am - 410', style: TextStyle(fontSize: 20)),
-                        Text('11am - 803', style: TextStyle(fontSize: 20)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            prefix0.Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: FloatingActionButton(
-                                backgroundColor: Color(0xFF50CDFF),
-                                onPressed: () {},
-                                child: Icon(Icons.call),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          )
-        ],
-      ),
-    );
   }
 }

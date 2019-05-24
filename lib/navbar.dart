@@ -181,7 +181,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       child: Stack(
         children: <Widget>[
           Container(
-            height: kBottomNavigationBarHeight * 1.55,
+            height: kBottomNavigationBarHeight * 1,
             width: _size.width,
             child: Material(
               color: Color(0xff0d2956),
@@ -203,7 +203,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                       ? positionAnim.value
                       : selectedIndex) *
                   (_size.width / widget.icons.length),
-              top: getCircleYPosition(),
+              top: getCircleYPosition()-20,
               child: Container(
                 margin: EdgeInsets.only(left: circleLeftPadding),
                 child: SizedBox(
@@ -222,7 +222,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
           Positioned(
               left: (controller.isAnimating ? textAnim.value : selectedIndex) *
                   (_size.width / widget.icons.length),
-              top: getCircleYPosition() + 65,
+              top: getCircleYPosition()+40,
               child: Container(
                 margin: EdgeInsets.only(left: circleLeftPadding + 8, bottom: 8),
                 child: SizedBox(

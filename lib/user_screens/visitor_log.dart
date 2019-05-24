@@ -20,7 +20,14 @@ class VisitorLog extends StatelessWidget {
                 fontSize: 30.0,
                 fontWeight: FontWeight.w600),
           ),
-          _visitorCard()
+          Expanded(
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return _visitorCard();
+              }
+            ),
+          )
         ],
       ),
     );
