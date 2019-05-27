@@ -54,10 +54,12 @@ class _DeliveryPageState extends State<DeliveryPage> {
                   Navigator.push(context, focusRoute);
                 },
                 child: Container(
+                  margin: EdgeInsets.only(top: 20),
                     width: double.infinity,
                     height: 256.0,
                     decoration: BoxDecoration(
                         color: Colors.black,
+                        shape: BoxShape.circle,
                         border: Border.all(width: 2.0, color: Colors.white)),
                     child: Hero(
                       tag: "Focus",
