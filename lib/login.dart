@@ -604,7 +604,7 @@ Widget _buildTeacherSignIn(BuildContext context) {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/guard');
+                      Navigator.pushNamed(context, '/splash');
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),

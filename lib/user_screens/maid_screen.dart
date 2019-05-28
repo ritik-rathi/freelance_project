@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class MaidScreen extends StatelessWidget {
-  Color highlightColor = Color(0xffedff2d);
-  Color color = Color(0xFF50CDFF);
+  final Color highlightColor = Color(0xffedff2d);
+  final Color color = Color(0xFF50CDFF);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
           Container(
-            height: 200.0,
+            height: 0.0,
             width: double.infinity,
             color: color,
           ),

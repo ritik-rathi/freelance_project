@@ -20,13 +20,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'HOMANTRA',
       theme: ThemeData(fontFamily: 'Raleway', primaryColor: Color(0xFF50CDFF)),
-      home: NewVisitorPage(),
+      home: Login(),
       routes: {
         '/newvisitor': (context) => NewVisitorPage(),
         '/user': (context) => Profile(),
         '/guard': (context) => MainScreen(),
         '/delivery': (context) => DeliveryPage(),
-        '/maidrec': (context) => MaidRec()
+        '/maidrec': (context) => MaidRec(),
+        '/splash': (context) => SplashScreen()
       },
     );
   }
