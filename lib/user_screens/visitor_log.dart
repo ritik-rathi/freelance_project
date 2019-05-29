@@ -32,7 +32,7 @@ class VisitorLog extends StatelessWidget {
     return Expanded(
       child: StreamBuilder(
           stream: Firestore.instance
-              .collection("societies/I6Y2LcU6vzD7ypacQ501/vistors")
+              .collection("societies/I6Y2LcU6vzD7ypacQ501/visitors")
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -43,7 +43,7 @@ class VisitorLog extends StatelessWidget {
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.documents[index];
                     String vName = ds["name"];
-                    String time = ds["visitTime"];
+                    var time = ds["visitTime"].toString().substring(10, 11);
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
