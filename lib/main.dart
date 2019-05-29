@@ -7,6 +7,7 @@ import 'package:freelance/guard_screens/mainScreen.dart';
 import 'package:freelance/guard_screens/new_visitor.dart';
 import 'package:freelance/splashscreen.dart';
 import 'package:freelance/user_screens/profile.dart';
+import 'package:freelance/user_screens/visitor_log.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'HOMANTRA',
       theme: ThemeData(fontFamily: 'Raleway', primaryColor: Color(0xFF50CDFF)),
-      home: Login(),
+      home: VisitorLog(),
       routes: {
         '/newvisitor': (context) => NewVisitorPage(),
         '/user': (context) => Profile(),
