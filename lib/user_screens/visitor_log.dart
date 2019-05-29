@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class VisitorLog extends StatelessWidget {
   @override
@@ -29,18 +30,18 @@ class VisitorLog extends StatelessWidget {
 
   Widget _buildList() {
     return Expanded(
-      child: StreamBuilder<Object>(
+      child: StreamBuilder(
           stream: Firestore.instance
               .collection("societies/I6Y2LcU6vzD7ypacQ501/vistors")
               .snapshots(),
-          builder: (context, snapshots) {
-            if (!snapshots.hasData) {
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
               return CircularProgressIndicator();
             } else {
               return ListView.builder(
-                  itemCount: snapshots.data.documents.length,
+                  itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshots.data.documents[index];
+                    DocumentSnapshot ds = snapshot.data.documents[index];
                     String vName = ds["name"];
                     String time = ds["visitTime"];
                     return Padding(
