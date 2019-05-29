@@ -86,9 +86,15 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
               child: Container(
                 height: kBottomNavigationBarHeight * 1.0,
                 width: _size.width / 5,
-                child: Icon(
-                  widget.icons[i],
-                  color: Colors.grey,
+                child: Column(
+                  children: <Widget>[
+                    Icon(
+                      widget.icons[i],
+                      color: Colors.grey,
+                    ),
+                    SizedBox(height: 8.0,),
+                    Text(widget.names[i] , style: TextStyle(color: Colors.white , fontSize: 15.0 , fontWeight: FontWeight.bold),)
+                  ],
                 ),
               ),
             ),
@@ -218,25 +224,25 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                   ),
                 ),
               )),
-          //the texxt
-          Positioned(
-              left: (controller.isAnimating ? textAnim.value : selectedIndex) *
-                  (_size.width / widget.icons.length),
-              top: getCircleYPosition()+40,
-              child: Container(
-                margin: EdgeInsets.only(left: circleLeftPadding + 8, bottom: 8),
-                child: SizedBox(
-                  height: kCircleSize,
-                  width: kCircleSize,
-                  child: Text(
-                    widget.names[selectedIndex],
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              )),
+          // the texxt
+          // Positioned(
+          //     left: (controller.isAnimating ? textAnim.value : selectedIndex) *
+          //         (_size.width / widget.icons.length),
+          //     top: getCircleYPosition()+40,
+          //     child: Container(
+          //       margin: EdgeInsets.only(left: circleLeftPadding + 8, bottom: 8),
+          //       child: SizedBox(
+          //         height: kCircleSize,
+          //         width: kCircleSize,
+          //         child: Text(
+          //           widget.names[selectedIndex],
+          //           style: TextStyle(
+          //               color: Colors.white,
+          //               fontSize: 15.0,
+          //               fontWeight: FontWeight.bold),
+          //         ),
+          //       ),
+          //     )),
         ],
       ),
     );
