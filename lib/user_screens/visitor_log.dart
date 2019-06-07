@@ -9,18 +9,24 @@ class VisitorLog extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Container(
-              height: 200.0, width: double.infinity, color: Color(0xFF50CDFF)),
+            height: 160.0,
+            width: double.infinity,
+            color: Color(0xFF50CDFF),
+            child: Column(children: [
+              SizedBox(height: 110),
+              Text(
+                'Your Visitors',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    letterSpacing: 2.5,
+                    color: Colors.white,
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w600),
+              ),
+            ]),
+          ),
           SizedBox(
             height: 10.0,
-          ),
-          Text(
-            'Your Visitors',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                letterSpacing: 2.5,
-                color: Colors.black,
-                fontSize: 30.0,
-                fontWeight: FontWeight.w600),
           ),
           _buildList()
         ],
@@ -29,6 +35,8 @@ class VisitorLog extends StatelessWidget {
   }
 
   Widget _buildList() {
+    int c = 0;
+    int i = 0;
     return Expanded(
       child: StreamBuilder(
           stream: Firestore.instance
@@ -43,6 +51,11 @@ class VisitorLog extends StatelessWidget {
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.documents[index];
                     String vName = ds["name"];
+                    // while (vName[i] != "i") {
+                    //   i++;
+                    //   c++;
+                    // }
+                    //String name = vName.substring(0, c);
                     var time = ds["visitTime"].toString().substring(10, 11);
                     return Padding(
                       padding: const EdgeInsets.symmetric(

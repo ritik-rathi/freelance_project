@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:freelance/user_screens/maid_sched.dart';
 import 'package:freelance/login.dart';
 import 'package:freelance/guard_screens/delivery_details.dart';
 import 'package:freelance/guard_screens/maidRec.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         '/guard': (context) => MainScreen(),
         '/delivery': (context) => DeliveryPage(),
         '/maidrec': (context) => MaidRec(),
-        '/splash': (context) => SplashScreen()
+        '/splash': (context) => SplashScreen(),
+        '/maidSched': (context) => MaidSched()
       },
     );
   }
