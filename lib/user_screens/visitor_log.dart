@@ -55,7 +55,7 @@ class VisitorLog extends StatelessWidget {
                     //   i++;
                     //   c++;
                     // }
-                    //String name = vName.substring(0, c);
+                    List<String> name = vName.split(' ');
                     var time = ds["visitTime"].toString().substring(10, 11);
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -82,7 +82,7 @@ class VisitorLog extends StatelessWidget {
                                 RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                      text: vName,
+                                      text: name[0],
                                       style: TextStyle(
                                           color: Colors.black,
                                           letterSpacing: 1.5,

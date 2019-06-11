@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-import 'dart:ui' as prefix0;
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

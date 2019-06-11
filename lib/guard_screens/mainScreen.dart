@@ -34,13 +34,18 @@ class MainScreen extends StatelessWidget {
                         Icons.supervisor_account,
                         size: 50,
                       ))),
-              _optionCard(
-                  'Frequent visitor',
-                  Color(0xffd8fbff),
-                  Icon(
-                    Icons.card_membership,
-                    size: 50,
-                  )),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, '/frequent');
+                },
+                child: _optionCard(
+                    'Frequent visitor',
+                    Color(0xffd8fbff),
+                    Icon(
+                      Icons.card_membership,
+                      size: 50,
+                    )),
+              ),
               GestureDetector(
                   onTap: () => Navigator.pushNamed(context, '/delivery'),
                   child: _optionCard(
@@ -51,11 +56,11 @@ class MainScreen extends StatelessWidget {
                         size: 50,
                       ))),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.pushNamed(context, '/maidrec');
                 },
                 child: _optionCard(
-                    'Maid record',
+                    'New Maid',
                     Color(0xFF50CDFF),
                     Icon(
                       Icons.supervisor_account,
