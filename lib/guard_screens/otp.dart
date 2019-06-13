@@ -1,17 +1,18 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
+import 'dart:math';
+import 'package:http/http.dart' as http;
 
 String smsCode;
 String verificationId;
+int otp = Random().nextInt(999999);
+String entered = '';
 
 class OtpTesting extends StatefulWidget {
   final String phoneNo;
 
-  OtpTesting({Key key,this.phoneNo}): super(key:key); // have to display number here as well
+  OtpTesting({Key key, this.phoneNo})
+      : super(key: key); // have to display number here as well
 
   @override
   _OtpTestingState createState() => _OtpTestingState();
@@ -27,39 +28,18 @@ class _OtpTestingState extends State<OtpTesting> {
 
   TextEditingController currController = new TextEditingController();
 
-    //function working 
-  Future<void> verifyPhone() async {
-    final PhoneVerificationCompleted verificationCompleted =
-        (AuthCredential auth) {
-      print(
-          'Inside _sendCodeToPhoneNumber: signInWithPhoneNumber auto succeeded: $auth');
-    };
+  void sendOTP() {
+    var apiKey =
+        "u89iYz/h3dU-3Ab3nrQBqIYMbe8KSzowDCSTslyGNM"; //from the acc that I am using
+    var message = "Your OTP is $otp"; //vary otp using dart
+    var sender = "TXTLCL"; //default sender, can be changed
+    var number = "91${widget.phoneNo}"; //coz test
 
-    final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
-      print(
-          'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
-    };
+    var url =
+        'https://api.textlocal.in/send/?+apiKey=$apiKey&message=$message&sender=$sender&numbers=$number';
 
-    final PhoneCodeSent codeSent =
-        (String verificationId, [int forceResendingToken]) async {
-      verificationId = verificationId;
-      print("code sent to " + widget.phoneNo);
-    };
-
-    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationId) {
-      verificationId = verificationId;
-      print("time out");
-    };
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: '+91-${widget.phoneNo}',
-        timeout: const Duration(seconds: 5),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+    var response = http.post(url).then((res) => print(res));
+    print("CAlled");
   }
 
   @override
@@ -76,6 +56,7 @@ class _OtpTestingState extends State<OtpTesting> {
   @override
   void initState() {
     super.initState();
+    //sendOTP();
     currController = controller1;
   }
 
@@ -440,9 +421,20 @@ class _OtpTestingState extends State<OtpTesting> {
                           MaterialButton(
                               onPressed: () {
                                 deleteText();
+                                entered = '';
+                                print(entered);
+                                controller1.text = '';
+                                controller2.text = '';
+                                controller3.text = '';
+                                controller4.text = '';
+                                controller5.text = '';
+                                controller6.text = '';
+                                currController = controller1;
                               },
-                              child: Image.asset('Assets/images/delete.png',
-                                  width: 25.0, height: 25.0)),
+                              child: Icon(
+                                Icons.backspace,
+                                color: Colors.black,
+                              )),
                           MaterialButton(
                             onPressed: () {
                               inputTextToField("0");
@@ -454,9 +446,11 @@ class _OtpTestingState extends State<OtpTesting> {
                                 textAlign: TextAlign.center),
                           ),
                           MaterialButton(
-                            color: Colors.red,
+                              color: Colors.red,
                               onPressed: () {
-                                matchOtp(smsCode);
+                                matchOtp(otp);
+                                print(entered);
+                                entered = '';
                               },
                               child: Text('Verify')),
                         ],
@@ -478,36 +472,42 @@ class _OtpTestingState extends State<OtpTesting> {
     if (currController == controller1) {
       controller1.text = str;
       currController = controller2;
+      entered += str;
     }
 
     //Edit second textField
     else if (currController == controller2) {
       controller2.text = str;
       currController = controller3;
+      entered += str;
     }
 
     //Edit third textField
     else if (currController == controller3) {
       controller3.text = str;
       currController = controller4;
+      entered += str;
     }
 
     //Edit fourth textField
     else if (currController == controller4) {
       controller4.text = str;
       currController = controller5;
+      entered += str;
     }
 
     //Edit fifth textField
     else if (currController == controller5) {
       controller5.text = str;
       currController = controller6;
+      entered += str;
     }
 
     //Edit sixth textField
     else if (currController == controller6) {
       controller6.text = str;
       currController = controller6;
+      entered += str;
     }
   }
 
@@ -539,26 +539,39 @@ class _OtpTestingState extends State<OtpTesting> {
     }
   }
 
-  Future matchOtp(String smsCode) async {
-    // AuthCredential authProvider = PhoneAuthProvider.getCredential(
-    //     verificationId: verificationId, smsCode: smsCode);
-    // await FirebaseAuth.instance.signInWithCredential(authProvider).whenComplete((){
-    //   print("Sign In successful");
-    // });
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Successfully"),
-            content: Text("Otp matched successfully."),
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.check),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  })
-            ],
-          );
-        });
+  Future matchOtp(int otp) async {
+    if (otp.toString() == entered) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Successfully"),
+              content: Text("Otp matched successfully."),
+              actions: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.check),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/guard');                      
+                    })
+              ],
+            );
+          });
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Wrong OTP"),
+              content: Text("Please try again."),
+              actions: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.check),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+            );
+          });
+    }
   }
 }
