@@ -18,7 +18,7 @@ var numbers = "919953610152"; //coz test
 var url =
     'https://api.textlocal.in/send/?+apiKey=$apiKey&message=$message&sender=$sender&numbers=$numbers';
 
-var response = http.get(url).then((res) {
+var response = http.get(url).then((res){
   print(res);
 });
 

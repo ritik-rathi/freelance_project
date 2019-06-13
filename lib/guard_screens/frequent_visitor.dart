@@ -41,63 +41,64 @@ class _FrequentState extends State<Frequent>
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-              child: GestureDetector(
-                onTap: () {
-                  Route focusRoute = new MaterialPageRoute(
-                      builder: (context) => Scaffold(
-                          backgroundColor: Colors.black,
-                          body: Center(
-                              child: Hero(
-                                  tag: "Focus",
-                                  child: _image == null
-                                      ? Text('Add Image to view',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.w500))
-                                      : Image.file(_image)))));
-                  Navigator.push(context, focusRoute);
-                },
-                child: Container(
-                    margin: EdgeInsets.only(top: 20),
-                    width: double.infinity,
-                    height: 256.0,
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 2.0, color: Colors.white)),
-                    child: Hero(
-                      tag: "Focus",
-                      child: _image == null
-                          ? Center(
-                              child: Text(
-                              'Add Image of Delivery Boy',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.w500),
-                            ))
-                          : Image.file(
-                              _image,
-                              fit: BoxFit.cover,
-                            ),
-                    )),
-              ),
-            ),
+            prefix1.SizedBox(height: 100),
+            // Padding(
+            //   padding:
+            //       const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       Route focusRoute = new MaterialPageRoute(
+            //           builder: (context) => Scaffold(
+            //               backgroundColor: Colors.black,
+            //               body: Center(
+            //                   child: Hero(
+            //                       tag: "Focus",
+            //                       child: _image == null
+            //                           ? Text('Add Image to view',
+            //                               style: TextStyle(
+            //                                   color: Colors.white,
+            //                                   fontSize: 20.0,
+            //                                   fontWeight: FontWeight.w500))
+            //                           : Image.file(_image)))));
+            //       Navigator.push(context, focusRoute);
+            //     },
+            //     child: Container(
+            //         margin: EdgeInsets.only(top: 20),
+            //         width: double.infinity,
+            //         height: 256.0,
+            //         decoration: BoxDecoration(
+            //             color: Colors.black,
+            //             shape: BoxShape.circle,
+            //             border: Border.all(width: 2.0, color: Colors.white)),
+            //         child: Hero(
+            //           tag: "Focus",
+            //           child: _image == null
+            //               ? Center(
+            //                   child: Text(
+            //                   'Add Image of Delivery Boy',
+            //                   style: TextStyle(
+            //                       color: Colors.white,
+            //                       fontSize: 20.0,
+            //                       fontWeight: FontWeight.w500),
+            //                 ))
+            //               : Image.file(
+            //                   _image,
+            //                   fit: BoxFit.cover,
+            //                 ),
+            //         )),
+            //   ),
+            // ),
             _buildAddCard()
           ],
         ),
       ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: getImage,
-        backgroundColor: Color(0xffd8fbff),
-        foregroundColor: Colors.white,
-        tooltip: 'Click Photo',
-        child: Icon(Icons.camera_alt, color: Colors.black),
-      ),
+      // floatingActionButton: new FloatingActionButton(
+      //   onPressed: getImage,
+      //   backgroundColor: Color(0xffd8fbff),
+      //   foregroundColor: Colors.white,
+      //   tooltip: 'Click Photo',
+      //   child: Icon(Icons.camera_alt, color: Colors.black),
+      // ),
     );
   }
 
@@ -122,7 +123,7 @@ class _FrequentState extends State<Frequent>
                       blurRadius: 15.0)
                 ]),
             width: double.infinity,
-            height: _controller.previousIndex == 1 ? 500 : 610,
+            height: 470,
             child: Column(
               children: <Widget>[
                 Container(
@@ -147,7 +148,7 @@ class _FrequentState extends State<Frequent>
                 ),
                 Container(
                   width: double.maxFinite,
-                  height: 700,
+                  height: 410,
                   child: TabBarView(
                     controller: _controller,
                     children: <Widget>[maid(), driver()],
@@ -168,74 +169,18 @@ class _FrequentState extends State<Frequent>
     return Container(
       width: double.maxFinite,
       child: Column(
+        
         children: <Widget>[
-          new Text(
-            'Details',
+          //SizedBox(height: 70),
+          Text(
+            'Unique ID',
             style: TextStyle(
-                color: Colors.black,
                 fontSize: 40.0,
-                fontWeight: FontWeight.w100),
+                fontWeight: FontWeight.w100,
+                color: Colors.black),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Name',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    dName = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Name',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Phone Number',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    dPhone = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Phone Number',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            padding: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
             child: Column(
               children: <Widget>[
                 Align(
@@ -254,7 +199,7 @@ class _FrequentState extends State<Frequent>
                     dName = value;
                   },
                   decoration: InputDecoration(
-                      hintText: 'ID',
+                      hintText: 'Enter ID',
                       hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w500,
@@ -264,65 +209,7 @@ class _FrequentState extends State<Frequent>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Flat Number',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    rFlat = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Flat Number',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Recepient\'s Name',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    rName = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Name of the flat owner',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 18.0),
+            padding: const EdgeInsets.only(top: 50.0),
             child: RaisedButton(
               child: Text(
                 'Submit',
@@ -347,74 +234,18 @@ class _FrequentState extends State<Frequent>
     return Container(
       width: double.maxFinite,
       child: Column(
+        
         children: <Widget>[
-          new Text(
-            'Details',
+          //SizedBox(height: 70),
+          Text(
+            'Unique ID',
             style: TextStyle(
-                color: Colors.black,
                 fontSize: 40.0,
-                fontWeight: FontWeight.w100),
+                fontWeight: FontWeight.w100,
+                color: Colors.black),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Name',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    dName = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Name',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Phone Number',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    dPhone = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Phone Number',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            padding: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
             child: Column(
               children: <Widget>[
                 Align(
@@ -433,7 +264,7 @@ class _FrequentState extends State<Frequent>
                     dName = value;
                   },
                   decoration: InputDecoration(
-                      hintText: 'ID',
+                      hintText: 'Enter ID',
                       hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w500,
@@ -443,7 +274,7 @@ class _FrequentState extends State<Frequent>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 18.0),
+            padding: const EdgeInsets.only(top: 50.0),
             child: RaisedButton(
               child: Text(
                 'Submit',

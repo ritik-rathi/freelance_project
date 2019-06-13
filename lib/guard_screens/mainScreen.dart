@@ -60,7 +60,7 @@ class MainScreen extends StatelessWidget {
                   Navigator.pushNamed(context, '/maidrec');
                 },
                 child: _optionCard(
-                    'New Maid',
+                    'New Maid/Driver',
                     Color(0xFF50CDFF),
                     Icon(
                       Icons.supervisor_account,

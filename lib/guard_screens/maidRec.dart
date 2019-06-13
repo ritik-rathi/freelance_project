@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,8 +12,13 @@ class MaidRec extends StatefulWidget {
   _MaidRecState createState() => _MaidRecState();
 }
 
-class _MaidRecState extends State<MaidRec> {
+class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
   File _image;
+  TabController _controller;
+
+  initState() {
+    _controller = TabController(vsync: this, initialIndex: 0, length: 2);
+  }
 
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -92,188 +98,37 @@ class _MaidRecState extends State<MaidRec> {
         children: <Widget>[
           Container(
             width: double.infinity,
-            height: 400.0,
+            height: 410,
             child: Column(
               children: <Widget>[
-                new Text(
-                  'Maid details',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w100),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Name',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
+                Container(
+                  width: double.maxFinite,
+                  height: 60,
+                  child: TabBar(
+                    unselectedLabelColor: Colors.grey,
+                    unselectedLabelStyle: TextStyle(fontSize: 15),
+                    labelColor: Colors.black,
+                    labelStyle:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    controller: _controller,
+                    tabs: <Widget>[
+                      Tab(
+                        child: Text('Maid'),
                       ),
-                      TextField(
-                        //autofocus: true,
-                        onChanged: (value) {
-                          vName = value;
-                        },
-                        // controller: _taskTitleController,
-                        decoration: InputDecoration(
-                            hintText: 'Maid\'s Name',
-                            hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.0)),
+                      Tab(
+                        child: Text('Driver'),
                       )
                     ],
                   ),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Phone Number',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ),
-                      TextField(
-                        // autofocus: true,
-                        onChanged: (value) {
-                          vPhone = value;
-                        },
-                        // controller: _taskTimeController,
-                        decoration: InputDecoration(
-                            hintText: 'Maid\'s Phone Number',
-                            hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.0)),
-                      )
-                    ],
+                Container(
+                  width: double.maxFinite,
+                  height: 341,
+                  child: TabBarView(
+                    controller: _controller,
+                    children: <Widget>[maid('Flat and time'), maid('Owner')],
                   ),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Flat and Time',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ),
-                      TextField(
-                        // autofocus: true,
-                        onChanged: (value) {
-                          vFlat = value;
-                        },
-                        // controller: _taskDesController,
-                        decoration: InputDecoration(
-                            hintText: 'Flat Number - Time',
-                            hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.0)),
-                      )
-                    ],
-                  ),
-                ),
-                // Padding(
-                //   padding:
-                //       const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                //   child: Column(
-                //     children: <Widget>[
-                //       Align(
-                //         alignment: Alignment.centerLeft,
-                //         child: Text(
-                //           'Owner Name',
-                //           style: TextStyle(
-                //               fontSize: 20.0,
-                //               fontWeight: FontWeight.bold,
-                //               color: Colors.black),
-                //         ),
-                //       ),
-                //       TextField(
-                //         // autofocus: true,
-                //         onChanged: (value) {
-                //           vName = value;
-                //         },
-                //         // controller: _taskTitleController,
-                //         decoration: InputDecoration(
-                //             hintText: 'Owner Name',
-                //             hintStyle: TextStyle(
-                //                 color: Colors.grey,
-                //                 fontWeight: FontWeight.w500,
-                //                 fontSize: 12.0)),
-                //       )
-                //     ],
-                //   ),
-                // ),
-                // Padding(
-                //   padding:
-                //       const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                //   child: Column(
-                //     children: <Widget>[
-                //       Align(
-                //         alignment: Alignment.centerLeft,
-                //         child: Text(
-                //           'Purpose',
-                //           style: TextStyle(
-                //               fontSize: 20.0,
-                //               fontWeight: FontWeight.bold,
-                //               color: Colors.black),
-                //         ),
-                //       ),
-                //       TextField(
-                //         // autofocus: true,
-                //         onChanged: (value) {
-                //           vPurpose = value;
-                //         },
-                //         // controller: _taskDesController,
-                //         decoration: InputDecoration(
-                //             hintText: 'Purpose',
-                //             hintStyle: TextStyle(
-                //                 color: Colors.grey,
-                //                 fontWeight: FontWeight.w500,
-                //                 fontSize: 12.0)),
-                //       )
-                //     ],
-                //   ),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 18.0),
-                  child: RaisedButton(
-                    child: Text(
-                      'Add record',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    color: Colors.blue,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      // _uploadDataToFirebase();
-                    },
-                  ),
-                )
               ],
             ),
             decoration: BoxDecoration(
@@ -293,6 +148,129 @@ class _MaidRecState extends State<MaidRec> {
           ),
           SizedBox(
             height: 50.0,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget maid(String det) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          new Text(
+            'Details',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 40.0,
+                fontWeight: FontWeight.w100),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Name',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
+                TextField(
+                  //autofocus: true,
+                  onChanged: (value) {
+                    vName = value;
+                  },
+                  // controller: _taskTitleController,
+                  decoration: InputDecoration(
+                      hintText: 'Maid\'s Name',
+                      hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0)),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Phone Number',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
+                TextField(
+                  // autofocus: true,
+                  onChanged: (value) {
+                    vPhone = value;
+                  },
+                  // controller: _taskTimeController,
+                  decoration: InputDecoration(
+                      hintText: 'Maid\'s Phone Number',
+                      hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0)),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    det,
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
+                TextField(
+                  // autofocus: true,
+                  onChanged: (value) {
+                    vFlat = value;
+                  },
+                  // controller: _taskDesController,
+                  decoration: InputDecoration(
+                      hintText: det,
+                      hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0)),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: RaisedButton(
+              child: Text(
+                'Add record',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              color: Colors.blue,
+              onPressed: () {
+                Navigator.pop(context);
+                // _uploadDataToFirebase();
+              },
+            ),
           )
         ],
       ),
