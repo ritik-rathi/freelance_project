@@ -14,22 +14,23 @@ String entered = '';
 DateTime time = DateTime.now();
 
 class OtpTesting extends StatefulWidget {
-  final String phoneNo;
-  final String name;
-  final String house;
-  final bool isGuest;
-  final String purpose;
-  final String ownName;
-  final File image;
-  final String flatTime;
-  final String uid;
+  final String phoneNo; // used in all
+  final String name; // used in all
+  final String house; //used in all
+  final bool isGuest; //useless
+  final String purpose; // only visitor
+  final String ownName; // all
+  final File image; // all
+  final String flatTime; // only maid
+  final String uid; // only maid and driver
+  final String org; //only delviery
 
-  
   // have to display number here as well
   final int firebaseMode;
 
   OtpTesting(
       {Key key,
+      this.org,
       this.phoneNo,
       this.house,
       this.name,
@@ -55,6 +56,25 @@ class _OtpTestingState extends State<OtpTesting> {
   TextEditingController controller6 = new TextEditingController();
 
   TextEditingController currController = new TextEditingController();
+
+  Function _getFirebaseFunc(int index) {
+    switch (index) {
+      case (0):
+        return _uploadDataToFirebase();
+        break;
+      case (1):
+        return _uploadDataToFirebase_delivery();
+        break;
+      case (2):
+        return _uploadDataToFirebase_driver();
+        break;
+      case (3):
+        return _uploadDataToFirebase_maid();
+        break;
+      default:
+        return _uploadDataToFirebase();
+    }
+  }
 
   void sendOTP() {
     var apiKey =
@@ -580,7 +600,7 @@ class _OtpTestingState extends State<OtpTesting> {
                     icon: Icon(Icons.check),
                     onPressed: () {
                       Navigator.of(context).pushNamed('/guard');
-                      _uploadDataToFirebase();
+                      _getFirebaseFunc(widget.firebaseMode);
                       _uploadImageToFB(otp);
                     })
               ],
@@ -628,9 +648,30 @@ class _OtpTestingState extends State<OtpTesting> {
     });
   }
 
+  _uploadDataToFirebase_delivery() {
+    DocumentReference databaseRef = Firestore.instance
+        .collection("/societies/I6Y2LcU6vzD7ypacQ501/delivery")
+        .document();
+
+    Map<String, dynamic> tasks = {
+      "house": widget.house,
+      "visitTime": time.toString(),
+      "purpose": widget.purpose,
+      "isGuset": widget.isGuest,
+      "name": widget.name,
+      "otp": otp,
+      "mobile": widget.phoneNo,
+      "owner": widget.ownName
+    };
+    databaseRef.setData(tasks).whenComplete(() {
+      print('User created!');
+    });
+  }
+
   _uploadDataToFirebase_maid() {
-    DocumentReference databaseRef =
-        Firestore.instance.collection("/societies/I6Y2LcU6vzD7ypacQ501/maids").document();
+    DocumentReference databaseRef = Firestore.instance
+        .collection("/societies/I6Y2LcU6vzD7ypacQ501/maids")
+        .document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
@@ -645,8 +686,9 @@ class _OtpTestingState extends State<OtpTesting> {
   }
 
   _uploadDataToFirebase_driver() {
-    DocumentReference databaseRef =
-        Firestore.instance.collection("/societies/I6Y2LcU6vzD7ypacQ501/drivers").document();
+    DocumentReference databaseRef = Firestore.instance
+        .collection("/societies/I6Y2LcU6vzD7ypacQ501/drivers")
+        .document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
@@ -660,10 +702,9 @@ class _OtpTestingState extends State<OtpTesting> {
     });
   }
 
-  Future<String> _uploadImageToFB(int otp) async{
-    StorageReference ref =
-    FirebaseStorage.instance.ref().child(otp.toString());
-   StorageUploadTask uploadTask = ref.putFile(widget.image);
-   return await (await uploadTask.onComplete).ref.getDownloadURL();
+  Future<String> _uploadImageToFB(int otp) async {
+    StorageReference ref = FirebaseStorage.instance.ref().child(otp.toString());
+    StorageUploadTask uploadTask = ref.putFile(widget.image);
+    return await (await uploadTask.onComplete).ref.getDownloadURL();
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
 
 String dName, dPhone, dOrg, rFlat, rName;
@@ -52,7 +53,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                   Navigator.push(context, focusRoute);
                 },
                 child: Container(
-                  margin: EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 20),
                     width: double.infinity,
                     height: 256.0,
                     decoration: BoxDecoration(
@@ -270,8 +271,17 @@ class _DeliveryPageState extends State<DeliveryPage> {
                     ),
                     color: Colors.blue,
                     onPressed: () {
-                      Navigator.pop(context);
-                      // _uploadDataToFirebase();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OtpTesting(
+                                    firebaseMode: 1,
+                                    name: dName,
+                                    phoneNo: dPhone,
+                                    org: dOrg,
+                                    ownName: rName,
+                                    house: rFlat,
+                                  )));
                     },
                   ),
                 )
@@ -279,7 +289,6 @@ class _DeliveryPageState extends State<DeliveryPage> {
             ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
-                // border: Border.all(width: 2.0),
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
@@ -299,21 +308,4 @@ class _DeliveryPageState extends State<DeliveryPage> {
       ),
     );
   }
-  // after firebase integration
-  // _uploadDataToFirebase() {
-  //   DocumentReference databaseRef =
-  //       Firestore.instance.collection("").document();
-
-  //   Map<String, dynamic> tasks = {
-  //     "deliveryBoy": dName,
-  //     "time": dTime,
-  //     "organization": dOrg,
-  //     "recepientName" : rName,
-  //     "recepientFlat": rFlat
-  //      "phoneNo." : dPhone
-  //   };
-  //   databaseRef.setData(tasks).whenComplete(() {
-  //     print('Task created!');
-  //   });
-  // }
 }
