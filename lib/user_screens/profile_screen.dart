@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:share/share.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 
@@ -15,6 +16,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
         body: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,7 +46,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             shape: BoxShape.circle,
                             border: Border.all(color: Color(0xff1A2980))),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            editInfo();
+                          },
                           icon: Icon(
                             Icons.edit,
                             size: 30,
@@ -74,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         top: 20.0,
                         child: IconButton(
                           icon: Icon(
-                            Icons.menu,
+                            Icons.more_vert,
                             size: 30.0,
                             color: Colors.white,
                           ),
@@ -192,32 +196,182 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ]));
   }
 
+  Future editInfo() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset: false,
+            body: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(width: 2.0, color: Color(0xff1A2980))),
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                height: 450.0,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          'Edit Info',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30.0,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Name',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextField(
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Name',
+                            hintStyle: TextStyle(
+                                color: Colors.grey[900],
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.2),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'Phone number',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Phone Number',
+                            hintStyle: TextStyle(
+                                color: Colors.grey[900],
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.2),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'Address',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextField(
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Address',
+                            hintStyle: TextStyle(
+                                color: Colors.grey[900],
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.2),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'E-mail ID',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'you@example.com',
+                            hintStyle: TextStyle(
+                                color: Colors.grey[900],
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.2),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Center(
+                        child: MaterialButton(
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0)),
+                          color: Color(0xff1A2980),
+                          child: Text(
+                            'Upload changes',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   Future<bool> dialog(BuildContext context) {
     return showDialog(
         context: context,
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            height: 85,
-            width: 120,
-            child: Card(
-              color: Colors.white,
-              elevation: 2,
-              child: Column(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text('Edit info', style: TextStyle(fontSize: 20)),
+        builder: (context) => Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                height: 85,
+                width: 120,
+                child: Card(
+                  color: Colors.white,
+                  elevation: 2,
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '.');
+                      },
+                      child: Text('Logout',
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Color(0xff1A2980),
+                              fontWeight: FontWeight.w400)),
+                    ),
                   ),
-                  Divider(),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text('Logout', style: TextStyle(fontSize: 20)),
-                  )
-                ],
+                ),
               ),
-            ),
-          ),
-        ));
+            ));
   }
 }

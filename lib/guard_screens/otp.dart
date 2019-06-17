@@ -13,7 +13,6 @@ int otp = Random().nextInt(999999);
 String entered = '';
 DateTime time = DateTime.now();
 
-
 class OtpTesting extends StatefulWidget {
   final String phoneNo;
   final String name;
@@ -26,8 +25,22 @@ class OtpTesting extends StatefulWidget {
   final String uid;
 
   
-  OtpTesting({Key key, this.phoneNo, this.house, this.name, this.isGuest, this.purpose, this.ownName, this.image, this.flatTime, this.uid})
-      : super(key: key); // have to display number here as well
+  // have to display number here as well
+  final int firebaseMode;
+
+  OtpTesting(
+      {Key key,
+      this.phoneNo,
+      this.house,
+      this.name,
+      this.isGuest,
+      this.purpose,
+      this.ownName,
+      this.firebaseMode,
+      this.image,
+      this.flatTime,
+      this.uid})
+      : assert(firebaseMode != null); // have to display number here as well
 
   @override
   _OtpTestingState createState() => _OtpTestingState();
@@ -466,7 +479,6 @@ class _OtpTestingState extends State<OtpTesting> {
                                 matchOtp(otp);
                                 print(entered);
                                 entered = '';
-                              
                               },
                               child: Text('Verify')),
                         ],
@@ -567,9 +579,9 @@ class _OtpTestingState extends State<OtpTesting> {
                 IconButton(
                     icon: Icon(Icons.check),
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/guard');     
-                      _uploadDataToFirebase();  
-                      _uploadImageToFB(otp);               
+                      Navigator.of(context).pushNamed('/guard');
+                      _uploadDataToFirebase();
+                      _uploadImageToFB(otp);
                     })
               ],
             );
@@ -586,7 +598,7 @@ class _OtpTestingState extends State<OtpTesting> {
                     icon: Icon(Icons.check),
                     onPressed: () {
                       setState(() {
-                       otp = null; 
+                        otp = null;
                       });
                       Navigator.of(context).pop();
                     })
@@ -597,8 +609,9 @@ class _OtpTestingState extends State<OtpTesting> {
   }
 
   _uploadDataToFirebase() {
-    DocumentReference databaseRef =
-        Firestore.instance.collection("/societies/I6Y2LcU6vzD7ypacQ501/visitors").document();
+    DocumentReference databaseRef = Firestore.instance
+        .collection("/societies/I6Y2LcU6vzD7ypacQ501/visitors")
+        .document();
 
     Map<String, dynamic> tasks = {
       "house": widget.house,

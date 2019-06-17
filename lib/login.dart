@@ -42,115 +42,6 @@ class _LoginState extends State<Login>
   final GlobalKey<FormState> _signkey = GlobalKey<FormState>();
   AnimationController fadeAnimationController;
   Animation fadeAnimation;
-//   Future<void> login() async {
-//     final formState = _formkey.currentState;
-//     if (formState.validate()) {
-//       formState.save();
-//       try {
-//         print("all done 1");
-//         var email;
-//         var name;
-//         print(_logine);
-//         print(_loginp);
-//         var documnet =
-//             Firestore.instance.collection('/students').document(_logine);
-//         documnet.get().then((snp) {
-//           var data = snp.data;
-//           name = data['name'];
-          
-//           email = data['email'];
-//           print(email);
-//         });
-//         Future.delayed(const Duration(seconds: 8), () {
-//           setState(() {
-//             print(email);
-//             log(email, name);
-//           });
-//         });
-//       } catch (e) {
-//         print(e);
-//       }
-//     }
-//   }
-
-//   Future log(mail, name) async {
-// print("object");
-//     try {
-//       FirebaseUser user = await FirebaseAuth.instance
-//           .signInWithEmailAndPassword(email: mail, password: _loginp);
-//       Navigator.push(context,
-//           MaterialPageRoute(builder: (context) => MainScreen(user: _logine)));
-//     } catch (e) {
-//       print(e);
-//     }
-//   }
-
-//   Widget checking() {
-//     return new StreamBuilder(
-//         stream: Firestore.instance
-//             .collection('/students')
-//             .document('AB157945')
-//             .snapshots(),
-//         builder: (context, snapshot) {
-//           if (!snapshot.hasData) {
-//             return new Text("Loading");
-//           }
-//           print("object");
-//           var userDocument = snapshot.data;
-//           return new Text(userDocument["name"]);
-//         });
-//   }
-
-//   Widget something(BuildContext build) {
-//     print("object");
-//     StreamBuilder(
-//       stream: Firestore.instance
-//           .collection('/students')
-//           .document(_logine)
-//           .snapshots(),
-//       builder: (context, snapshot) {
-//         if (!snapshot.hasData) return Text("Some error occured");
-//         print("cool");
-//         var userdata = snapshot.data;
-//         return Text(userdata['email']);
-//         // print('object');
-//         // _loginemail = userdata['email'];
-//       },
-//     );
-//   }
-
-//   Future<void> signup(data) async {
-//     final formState = _signkey.currentState;
-// // print(data._semail);
-//     String s = "ankit";
-//     if (formState.validate()) {
-//       print(_semail);
-//       print(_psw);
-//       print(_cpsw);
-//       print(_enrollment);
-//       if (_cpsw == _psw) {
-//         print("working");
-//         // Navigator.of(context).pushNamed("/welcome");
-//         formState.save();
-
-//         try {
-//           Firestore.instance
-//               .collection('/students')
-//               .document(_enrollment)
-//               .setData(data);
-//           something(context);
-//           FirebaseUser user = await FirebaseAuth.instance
-//               .createUserWithEmailAndPassword(email: _semail, password: _psw);
-//           Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                   builder: (context) => MainScreen(user: "ankit")));
-//         } catch (e) {
-//           // print(e);
-//         }
-//       }
-//     }
-//   }
 
   @override
   Widget build(BuildContext context) {
@@ -508,7 +399,7 @@ class _LoginState extends State<Login>
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/user');
+                      Navigator.pushReplacementNamed(context, '/user');
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),
@@ -629,24 +520,6 @@ Widget _buildTeacherSignIn(BuildContext context) {
                   color: Color(0xFF50CDFF),
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   border: Border.all(color: Colors.white, width: 3),
-                  // boxShadow: <BoxShadow>[
-                  //   BoxShadow(
-                  //     color: Color(0xffd8fbff),
-                  //     offset: Offset(1.0, 6.0),
-                  //     blurRadius: 20.0,
-                  //   ),
-                  //   BoxShadow(
-                  //     color: Color(0xFF50CDFF),
-                  //     offset: Offset(1.0, 6.0),
-                  //     blurRadius: 20.0,
-                  //   ),
-                  // ],
-                  // gradient: new LinearGradient(
-                  //     colors: [Color(0xFF50CDFF), Color(0xffd8fbff)],
-                  //     begin: const FractionalOffset(0.2, 0.2),
-                  //     end: const FractionalOffset(1.0, 1.0),
-                  //     stops: [0.0, 1.0],
-                  //     tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
                     highlightColor: Colors.transparent,
@@ -664,7 +537,7 @@ Widget _buildTeacherSignIn(BuildContext context) {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/splash');
+                      Navigator.pushReplacementNamed(context, '/splash');
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),
