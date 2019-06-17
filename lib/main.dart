@@ -24,7 +24,9 @@ class MyApp extends StatelessWidget {
       title: 'HOMANTRA',
       theme: ThemeData(fontFamily: 'Raleway', primaryColor: Color(0xFF50CDFF)),
       home: Login(),
+      initialRoute: '.',
       routes: {
+        '.' : (context) => Login(),
         '/newvisitor': (context) => NewVisitorPage(),
         '/user': (context) => Profile(),
         '/guard': (context) => MainScreen(),

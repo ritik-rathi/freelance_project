@@ -255,6 +255,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                                       isGuest: true,
                                       ownName: oName,
                                       image: _image,
+                                      firebaseMode: 0,
                                     )));
                       }
                       else showDialog(
@@ -267,7 +268,6 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                           );
                         }
                       );
-                      // _uploadDataToFirebase();
                     },
                   ),
                 )
@@ -275,7 +275,6 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
             ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
-                // border: Border.all(width: 2.0),
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
@@ -295,21 +294,4 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
       ),
     );
   }
-  // after firebase integration
-  // _uploadDataToFirebase() {
-  //   DocumentReference databaseRef =
-  //       Firestore.instance.collection("").document();
-
-  //   Map<String, dynamic> details= {
-  //     "visitor": vName,
-  //     "time": vTime,
-  //     "purpose": vPurpose,
-  //     "phone" : vPhone,
-  //     "flat no." : vFlat,
-  //     "visitee": oName
-  //   };
-  //   databaseRef.setData(tasks).whenComplete(() {
-  //     print('Task created!');
-  //   });
-  // }
 }
