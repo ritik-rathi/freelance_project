@@ -204,37 +204,6 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Owner Name',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ),
-                      TextField(
-                        autofocus: false,
-                        onChanged: (value) {
-                          vName = value;
-                        },
-                        // controller: _taskTitleController,
-                        decoration: InputDecoration(
-                            hintText: 'Owner Name',
-                            hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.0)),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
                           'Purpose',
                           style: TextStyle(
                               fontSize: 20.0,
@@ -270,12 +239,34 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                     ),
                     color: Colors.blue,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OtpTesting(
-                                    phoneNo: vPhone,
-                                  )));
+                      if (vName != null &&
+                          vPhone != null &&
+                          vFlat != null &&
+                          vTime != null &&
+                          vPurpose != null) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OtpTesting(
+                                      phoneNo: vPhone,
+                                      name: vName,
+                                      house: vFlat,
+                                      purpose: vPurpose,
+                                      isGuest: true,
+                                      ownName: oName,
+                                      image: _image,
+                                    )));
+                      }
+                      else showDialog(
+                        context: context,
+                        builder: (context){
+                          return AlertDialog(
+                            title: Center(
+                              child: Text('Please enter details'), 
+                            ),
+                          );
+                        }
+                      );
                       // _uploadDataToFirebase();
                     },
                   ),

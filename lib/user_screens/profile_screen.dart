@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
+import 'package:flutter_share_me/flutter_share_me.dart';
 
 Color color = Color(0xFF50CDFF);
 
@@ -24,7 +27,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       alignment: Alignment.topCenter,
                       height: 160.0,
                       width: double.infinity,
-                      color: Color(0xFF50CDFF),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Color(0xFF50CDFF), Color(0xff1A2980)],
+                      )),
                     ),
                     Positioned(
                       top: 180,
@@ -33,12 +41,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 50,
                         width: 50,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: color)
-                        ),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Color(0xff1A2980))),
                         child: IconButton(
-                          onPressed: (){},
-                          icon: Icon(Icons.edit, size: 30,),
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.edit,
+                            size: 30,
+                          ),
                           color: color,
                         ),
                       ),
@@ -50,11 +60,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 50,
                         width: 50,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: color)
-                        ),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Color(0xff1A2980))),
                         child: IconButton(
-                          onPressed: (){},
+                          onPressed: () {},
                           icon: Icon(Icons.local_phone, size: 30),
                           color: color,
                         ),
@@ -97,7 +106,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Ritik Rathi', style: TextStyle(fontSize: 25, color: color))
+                    Text('Ritik Rathi',
+                        style: TextStyle(fontSize: 25, color: color))
                   ],
                 ),
               ),
@@ -123,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               SizedBox(height: 8),
-              Divider(color: color),
+              Divider(color: Color(0xff1A2980)),
               SizedBox(height: 8),
               Container(
                 margin: EdgeInsets.only(left: 15),
@@ -144,14 +154,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               SizedBox(height: 8),
-              Divider(color: color),
+              Divider(color: Color(0xff1A2980)),
               SizedBox(height: 8),
               Container(
                 margin: EdgeInsets.only(left: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Council member', style: TextStyle(fontSize: 25, color: color))
+                    Text('Council member',
+                        style: TextStyle(fontSize: 25, color: color))
                   ],
                 ),
               ),
@@ -165,7 +176,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-
+              SizedBox(height: 50),
+              FlatButton(
+                onPressed: () {
+                  try {
+                    FlutterShareMe().shareToWhatsApp(
+                        msg:
+                            'hello,this is my github:https://github.com/lizhuoyuan');
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: Text('Share app'),
+              )
             ]));
   }
 

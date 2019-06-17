@@ -37,9 +37,7 @@ class _LoginState extends State<Login>
 
   Color right = Colors.black;
   Color left = Colors.white;
-  String _logine, _loginemail;
-  String _loginp;
-  String _sname, _semail, _psw, _cpsw, _enrollment;
+  String uid, sid, flat, upwd, spwd;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final GlobalKey<FormState> _signkey = GlobalKey<FormState>();
   AnimationController fadeAnimationController;
@@ -174,7 +172,7 @@ class _LoginState extends State<Login>
                     end: const FractionalOffset(1.0, 1.0),
                     stops: [0.0, 1.0],
                     tileMode: TileMode.clamp,
-                    colors: [Color(0xFF50CDFF), Color(0xffd8fbff)])),
+                    colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
             // Column is used to display the rest of the widgets vertically
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -322,7 +320,7 @@ class _LoginState extends State<Login>
                 ),
                 child: Container(
                   width: 300.0,
-                  height: 190.0,
+                  height: 350.0,
                   child: Form(
                     key: _formkey,
                     child: Column(
@@ -337,7 +335,7 @@ class _LoginState extends State<Login>
                                 return "Make sure your password consists of atleast 8 letters";
                             },
                             onSaved: (input) {
-                              _logine = input;
+                              uid = input;
                             },
                             // keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
@@ -352,6 +350,68 @@ class _LoginState extends State<Login>
                                 size: 22.0,
                               ),
                               hintText: "Username",
+                              hintStyle: TextStyle(
+                                  fontFamily: "WorkSansSemiBold",
+                                  fontSize: 17.0),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            focusNode: myFocusNodeEmailLogin,
+                            validator: (input) {
+                              if (input.length < 8)
+                                return "Make sure your password consists of atleast 8 letters";
+                            },
+                            onSaved: (input) {
+                              sid = input;
+                            },
+                            // keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(
+                                fontFamily: "WorkSansSemiBold",
+                                fontSize: 16.0,
+                                color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                Icons.event_note,
+                                color: Colors.black,
+                                size: 22.0,
+                              ),
+                              hintText: "Society ID",
+                              hintStyle: TextStyle(
+                                  fontFamily: "WorkSansSemiBold",
+                                  fontSize: 17.0),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          child: TextFormField(
+                            focusNode: myFocusNodeEmailLogin,
+                            validator: (input) {
+                              if (input.length < 8)
+                                return "Make sure your password consists of atleast 8 letters";
+                            },
+                            onSaved: (input) {
+                              flat = input;
+                            },
+                            // keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(
+                                fontFamily: "WorkSansSemiBold",
+                                fontSize: 16.0,
+                                color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              icon: Icon(
+                                Icons.event_note,
+                                color: Colors.black,
+                                size: 22.0,
+                              ),
+                              hintText: "Flat Number",
                               hintStyle: TextStyle(
                                   fontFamily: "WorkSansSemiBold",
                                   fontSize: 17.0),
@@ -373,7 +433,7 @@ class _LoginState extends State<Login>
                                 return "Make sure your password consists of atleast 8 letters";
                             },
                             onSaved: (input) {
-                              _loginp = input;
+                              upwd = input;
                             },
                             obscureText: _obscureTextLogin,
                             style: TextStyle(
@@ -408,7 +468,7 @@ class _LoginState extends State<Login>
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 170.0),
+                margin: EdgeInsets.only(top: 325.0),
                 decoration: new BoxDecoration(
                   color: Color(0xFF50CDFF),
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -493,7 +553,7 @@ Widget _buildTeacherSignIn(BuildContext context) {
                                 return "Make sure your password consists of atleast 8 letters";
                             },
                             onSaved: (input) {
-                              _logine = input;
+                              sid = input;
                             },
                             // keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
@@ -529,7 +589,7 @@ Widget _buildTeacherSignIn(BuildContext context) {
                                 return "Make sure your password consists of atleast 8 letters";
                             },
                             onSaved: (input) {
-                              _loginp = input;
+                              spwd = input;
                             },
                             obscureText: _obscureTextLogin,
                             style: TextStyle(

@@ -13,7 +13,12 @@ class MaidScreen extends StatelessWidget {
           Container(
             height: 160.0,
             width: double.infinity,
-            color: Color(0xFF50CDFF),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topCenter, 
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF50CDFF), Color(0xff1A2980)],
+            )),
             child: Column(children: [
               SizedBox(height: 110),
               Text(
@@ -45,7 +50,7 @@ class MaidScreen extends StatelessWidget {
                         var mobile = ds["mobile"];
                         var houses = ds["houses"][0]["house"];
                         return GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Navigator.pushNamed(context, '/maidSched');
                           },
                           child: Padding(

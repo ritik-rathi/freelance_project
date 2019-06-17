@@ -3,8 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:random_string/random_string.dart';
 
-String vName, vPhone, vPurpose, vFlat, oName;
+String vName, vPhone, vPurpose, vFlat, oName, uid;
 String vTime = TimeOfDay.now().toString();
 
 class MaidRec extends StatefulWidget {
@@ -267,7 +268,19 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
               ),
               color: Colors.blue,
               onPressed: () {
-                Navigator.pop(context);
+                uid = randomAlphaNumeric(6);
+                print(uid);
+                showDialog(
+                  context: context,
+                  builder: (context){
+                    return AlertDialog(
+                      title: Center(
+                        child: Text('Unique ID is: $uid', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      ),
+                    );
+                  }
+                );
+                // Navigator.pop(context);
                 // _uploadDataToFirebase();
               },
             ),

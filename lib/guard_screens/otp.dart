@@ -2,16 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 String smsCode;
 String verificationId;
 int otp = Random().nextInt(999999);
 String entered = '';
+DateTime time = DateTime.now();
+
 
 class OtpTesting extends StatefulWidget {
   final String phoneNo;
+  final String name;
+  final String house;
+  final bool isGuest;
+  final String purpose;
+  final String ownName;
+  final File image;
 
-  OtpTesting({Key key, this.phoneNo})
+  
+  
+  OtpTesting({Key key, this.phoneNo, this.house, this.name, this.isGuest, this.purpose, this.ownName, this.image})
       : super(key: key); // have to display number here as well
 
   @override
@@ -56,7 +70,7 @@ class _OtpTestingState extends State<OtpTesting> {
   @override
   void initState() {
     super.initState();
-    //sendOTP();
+    sendOTP();
     currController = controller1;
   }
 
@@ -451,6 +465,7 @@ class _OtpTestingState extends State<OtpTesting> {
                                 matchOtp(otp);
                                 print(entered);
                                 entered = '';
+                              
                               },
                               child: Text('Verify')),
                         ],
@@ -551,7 +566,9 @@ class _OtpTestingState extends State<OtpTesting> {
                 IconButton(
                     icon: Icon(Icons.check),
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/guard');                      
+                      Navigator.of(context).pushNamed('/guard');     
+                      _uploadDataToFirebase();  
+                      _uploadImageToFB(otp);               
                     })
               ],
             );
@@ -567,11 +584,40 @@ class _OtpTestingState extends State<OtpTesting> {
                 IconButton(
                     icon: Icon(Icons.check),
                     onPressed: () {
+                      setState(() {
+                       otp = null; 
+                      });
                       Navigator.of(context).pop();
                     })
               ],
             );
           });
     }
+  }
+
+  _uploadDataToFirebase() {
+    DocumentReference databaseRef =
+        Firestore.instance.collection("/societies/I6Y2LcU6vzD7ypacQ501/visitors").document();
+
+    Map<String, dynamic> tasks = {
+      "house": widget.house,
+      "visitTime": time.toString(),
+      "purpose": widget.purpose,
+      "isGuset": widget.isGuest,
+      "name": widget.name,
+      "otp": otp,
+      "mobile": widget.phoneNo,
+      "owner": widget.ownName
+    };
+    databaseRef.setData(tasks).whenComplete(() {
+      print('User created!');
+    });
+  }
+
+  Future<String> _uploadImageToFB(int otp) async{
+    StorageReference ref =
+    FirebaseStorage.instance.ref().child(otp.toString());
+   StorageUploadTask uploadTask = ref.putFile(widget.image);
+   return await (await uploadTask.onComplete).ref.getDownloadURL();
   }
 }

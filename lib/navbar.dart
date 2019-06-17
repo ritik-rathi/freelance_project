@@ -187,10 +187,10 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       child: Stack(
         children: <Widget>[
           Container(
-            height: kBottomNavigationBarHeight * 1,
+            height: kBottomNavigationBarHeight * 1.1,
             width: _size.width,
             child: Material(
-              color: Color(0xff0d2956),
+              color: Color(0xff1A2980),
               elevation: 4,
               child: Container(
                 margin: EdgeInsets.only(top: kBottomNavigationBarHeight * 0.1),
@@ -216,7 +216,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                   height: kCircleSize,
                   width: kCircleSize,
                   child: Material(
-                    color: Color(0xfff2a10c),
+                    color: Colors.pink,
                     elevation: 2.0,
                     type: MaterialType.circle,
                     clipBehavior: Clip.antiAlias,

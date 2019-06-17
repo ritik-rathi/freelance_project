@@ -11,7 +11,12 @@ class VisitorLog extends StatelessWidget {
           Container(
             height: 160.0,
             width: double.infinity,
-            color: Color(0xFF50CDFF),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF50CDFF), Color(0xff1A2980)],
+            )),
             child: Column(children: [
               SizedBox(height: 110),
               Text(
@@ -37,16 +42,16 @@ class VisitorLog extends StatelessWidget {
   Widget _buildList() {
     int c = 0;
     int i = 0;
-    return Expanded(
-      child: StreamBuilder(
-          stream: Firestore.instance
-              .collection("societies/I6Y2LcU6vzD7ypacQ501/visitors")
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return CircularProgressIndicator();
-            } else {
-              return ListView.builder(
+    return StreamBuilder(
+        stream: Firestore.instance
+            .collection("societies/I6Y2LcU6vzD7ypacQ501/visitors")
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Expanded(
+              child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.documents[index];
@@ -112,9 +117,9 @@ class VisitorLog extends StatelessWidget {
                         ),
                       ),
                     );
-                  });
-            }
-          }),
-    );
+                  }),
+            );
+          }
+        });
   }
 }
