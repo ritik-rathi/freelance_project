@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
@@ -127,7 +128,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   height: 341,
                   child: TabBarView(
                     controller: _controller,
-                    children: <Widget>[maid('Flat and time'), maid('Owner')],
+                    children: <Widget>[maid(), driver()],
                   ),
                 ),
               ],
@@ -155,7 +156,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget maid(String det) {
+  Widget maid() {
     return Container(
       child: Column(
         children: <Widget>[
@@ -233,7 +234,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    det,
+                    'Flat - time',
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -247,7 +248,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   },
                   // controller: _taskDesController,
                   decoration: InputDecoration(
-                      hintText: det,
+                      hintText: 'Flat - time',
                       hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w500,
@@ -271,15 +272,172 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 uid = randomAlphaNumeric(6);
                 print(uid);
                 showDialog(
-                  context: context,
-                  builder: (context){
-                    return AlertDialog(
-                      title: Center(
-                        child: Text('Unique ID is: $uid', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                      ),
-                    );
-                  }
-                );
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Center(
+                          child: Text('Unique ID is: $uid',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20)),
+                        ),
+                      );
+                    });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtpTesting(
+                              phoneNo: vPhone,
+                              name: vName,
+                              flatTime: vFlat,
+                              uid: uid,
+                              image: _image,
+                            )));
+                // Navigator.pop(context);
+                // _uploadDataToFirebase();
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget driver() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          new Text(
+            'Details',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 40.0,
+                fontWeight: FontWeight.w100),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Name',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
+                TextField(
+                  //autofocus: true,
+                  onChanged: (value) {
+                    vName = value;
+                  },
+                  // controller: _taskTitleController,
+                  decoration: InputDecoration(
+                      hintText: 'Maid\'s Name',
+                      hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0)),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Phone Number',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
+                TextField(
+                  // autofocus: true,
+                  onChanged: (value) {
+                    vPhone = value;
+                  },
+                  // controller: _taskTimeController,
+                  decoration: InputDecoration(
+                      hintText: 'Maid\'s Phone Number',
+                      hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0)),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Owner',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
+                TextField(
+                  // autofocus: true,
+                  onChanged: (value) {
+                    vFlat = value;
+                  },
+                  // controller: _taskDesController,
+                  decoration: InputDecoration(
+                      hintText: 'Owner',
+                      hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0)),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: RaisedButton(
+              child: Text(
+                'Add record',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              color: Colors.blue,
+              onPressed: () {
+                uid = randomAlphaNumeric(6);
+                print(uid);
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Center(
+                          child: Text('Unique ID is: $uid',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20)),
+                        ),
+                      );
+                    });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtpTesting(
+                              phoneNo: vPhone,
+                              name: vName,
+                              ownName: vFlat,
+                              uid: uid,
+                              image: _image,
+                            )));
                 // Navigator.pop(context);
                 // _uploadDataToFirebase();
               },

@@ -22,10 +22,11 @@ class OtpTesting extends StatefulWidget {
   final String purpose;
   final String ownName;
   final File image;
+  final String flatTime;
+  final String uid;
 
   
-  
-  OtpTesting({Key key, this.phoneNo, this.house, this.name, this.isGuest, this.purpose, this.ownName, this.image})
+  OtpTesting({Key key, this.phoneNo, this.house, this.name, this.isGuest, this.purpose, this.ownName, this.image, this.flatTime, this.uid})
       : super(key: key); // have to display number here as well
 
   @override
@@ -608,6 +609,38 @@ class _OtpTestingState extends State<OtpTesting> {
       "otp": otp,
       "mobile": widget.phoneNo,
       "owner": widget.ownName
+    };
+    databaseRef.setData(tasks).whenComplete(() {
+      print('User created!');
+    });
+  }
+
+  _uploadDataToFirebase_maid() {
+    DocumentReference databaseRef =
+        Firestore.instance.collection("/societies/I6Y2LcU6vzD7ypacQ501/maids").document();
+
+    Map<String, dynamic> tasks = {
+      "name": widget.name,
+      "otp": otp,
+      "mobile": widget.phoneNo,
+      "flatTime": widget.flatTime,
+      "uid": widget.uid
+    };
+    databaseRef.setData(tasks).whenComplete(() {
+      print('User created!');
+    });
+  }
+
+  _uploadDataToFirebase_driver() {
+    DocumentReference databaseRef =
+        Firestore.instance.collection("/societies/I6Y2LcU6vzD7ypacQ501/drivers").document();
+
+    Map<String, dynamic> tasks = {
+      "name": widget.name,
+      "otp": otp,
+      "mobile": widget.phoneNo,
+      "owner": widget.ownName,
+      "uid": widget.uid
     };
     databaseRef.setData(tasks).whenComplete(() {
       print('User created!');
