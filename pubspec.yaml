@@ -36,6 +36,8 @@ dependencies:
   random_string: ^0.0.2
   share: 0.6.1+1
   flutter_share_me: ^0.2.1
+  image: ^2.1.4
+  cloud_functions: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:

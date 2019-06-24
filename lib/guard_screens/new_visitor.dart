@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:image/image.dart' as Im;
 import 'package:flutter/material.dart';
 import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,9 +17,11 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
 
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
-
+    Im.Image imageFile = Im.decodeImage(tempImage.readAsBytesSync());
+    File compressedImage = tempImage
+      ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
     setState(() {
-      _image = tempImage;
+      _image = compressedImage;
     });
   }
 
@@ -257,17 +259,16 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                                       image: _image,
                                       firebaseMode: 0,
                                     )));
-                      }
-                      else showDialog(
-                        context: context,
-                        builder: (context){
-                          return AlertDialog(
-                            title: Center(
-                              child: Text('Please enter details'), 
-                            ),
-                          );
-                        }
-                      );
+                      } else
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Center(
+                                  child: Text('Please enter details'),
+                                ),
+                              );
+                            });
                     },
                   ),
                 )
