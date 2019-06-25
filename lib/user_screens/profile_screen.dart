@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+<<<<<<< HEAD
 //import 'package:share/share.dart';
+=======
+>>>>>>> 567d96662aed4368b87675bcd38c235a93288662
 import 'package:flutter_share_me/flutter_share_me.dart';
 
 Color color = Color(0xFF50CDFF);

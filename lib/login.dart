@@ -141,7 +141,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     myFocusNodePassword.dispose();
     myFocusNodeEmail.dispose();
     myFocusNodeName.dispose();
-    _pageController?.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 

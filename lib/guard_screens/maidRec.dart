@@ -1,13 +1,60 @@
 import 'dart:io';
-import 'dart:math';
-
+import 'package:image/image.dart' as Im;
 import 'package:flutter/material.dart';
 import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
 String vName, vPhone, vPurpose, vFlat, oName, uid;
+int numFlats = 0;
 String vTime = TimeOfDay.now().toString();
+
+double _getVariableHeight() {
+  switch (numFlats) {
+    case (0):
+      return 410.0;
+      break;
+    case (1):
+      return 510.0;
+      break;
+    case (2):
+      return 610.0;
+      break;
+    case (3):
+      return 710.0;
+      break;
+    case (4):
+      return 810.0;
+      break;
+    case (5):
+      return 910.0;
+      break;
+    case (6):
+      return 1010.0;
+      break;
+    case (7):
+      return 1110.0;
+      break;
+    default:
+      return 410.0;
+  }
+}
+
+createList(int d) {
+  var textEditingControllers = <TextEditingController>[];
+
+  var textFields = <TextField>[];
+  var finalList = <Padding>[];
+  var list = new List<int>.generate(d, (i) => i + 1);
+  print(list);
+
+  list.forEach((i) {
+    var textEditingController = new TextEditingController();
+    textEditingControllers.add(textEditingController);
+    return textFields.add(new TextField(controller: textEditingController));
+  });
+  return textFields;
+}
 
 class MaidRec extends StatefulWidget {
   @override
@@ -18,15 +65,18 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
   File _image;
   TabController _controller;
 
-  initState() {
+  void initState() {
+    super.initState();
     _controller = TabController(vsync: this, initialIndex: 0, length: 2);
   }
 
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
-
+    Im.Image imageFile = Im.decodeImage(tempImage.readAsBytesSync());
+    File compressedImage = tempImage
+      ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
     setState(() {
-      _image = tempImage;
+      _image = compressedImage;
     });
   }
 
@@ -100,7 +150,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
         children: <Widget>[
           Container(
             width: double.infinity,
-            height: 410,
+            height: _getVariableHeight(),
             child: Column(
               children: <Widget>[
                 Container(
@@ -125,7 +175,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 ),
                 Container(
                   width: double.maxFinite,
-                  height: 341,
+                  height: _getVariableHeight() - 100,
                   child: TabBarView(
                     controller: _controller,
                     children: <Widget>[maid(), driver()],
@@ -182,11 +232,9 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 TextField(
-                  //autofocus: true,
                   onChanged: (value) {
                     vName = value;
                   },
-                  // controller: _taskTitleController,
                   decoration: InputDecoration(
                       hintText: 'Maid\'s Name',
                       hintStyle: TextStyle(
@@ -234,7 +282,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Flat - time',
+                    'Number of flats',
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -242,13 +290,13 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 TextField(
-                  // autofocus: true,
                   onChanged: (value) {
-                    vFlat = value;
+                    setState(() {
+                      numFlats = int.parse(value);
+                    });
                   },
-                  // controller: _taskDesController,
                   decoration: InputDecoration(
-                      hintText: 'Flat - time',
+                      hintText: 'Number of houses for this maid',
                       hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w500,
@@ -257,6 +305,46 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
               ],
             ),
           ),
+          numFlats == 0
+              ? SizedBox(height: 30.0)
+              : Expanded(
+                  child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: numFlats,
+                  itemBuilder: (context, index) {
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 20.0, right: 20.0),
+                      child: Column(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Number of flats',
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                numFlats = int.parse(value);
+                              });
+                            },
+                            decoration: InputDecoration(
+                                hintText: 'Number of houses for this maid',
+                                hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12.0)),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                )),
           Padding(
             padding: const EdgeInsets.only(top: 18.0),
             child: RaisedButton(
@@ -288,7 +376,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                         builder: (context) => OtpTesting(
                               phoneNo: vPhone,
                               name: vName,
-                              flatTime: vFlat,
+                              flatdetails: vFlat,
                               uid: uid,
                               image: _image,
                             )));
@@ -334,7 +422,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   },
                   // controller: _taskTitleController,
                   decoration: InputDecoration(
-                      hintText: 'Maid\'s Name',
+                      hintText: 'Driver\'s Name',
                       hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w500,
@@ -364,7 +452,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   },
                   // controller: _taskTimeController,
                   decoration: InputDecoration(
-                      hintText: 'Maid\'s Phone Number',
+                      hintText: 'Driver\'s Phone Number',
                       hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w500,
@@ -447,21 +535,4 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
       ),
     );
   }
-  // after firebase integration
-  // _uploadDataToFirebase() {
-  //   DocumentReference databaseRef =
-  //       Firestore.instance.collection("").document();
-
-  //   Map<String, dynamic> details= {
-  //     "visitor": vName,
-  //     "time": vTime,
-  //     "purpose": vPurpose,
-  //     "phone" : vPhone,
-  //     "flat no." : vFlat,
-  //     "visitee": oName
-  //   };
-  //   databaseRef.setData(tasks).whenComplete(() {
-  //     print('Task created!');
-  //   });
-  // }
 }

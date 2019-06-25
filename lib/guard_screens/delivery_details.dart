@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as Im;
 
 String dName, dPhone, dOrg, rFlat, rName;
 String dTime = TimeOfDay.now().toString();
@@ -17,9 +18,11 @@ class _DeliveryPageState extends State<DeliveryPage> {
 
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
-
+    Im.Image imageFile = Im.decodeImage(tempImage.readAsBytesSync());
+    File compressedImage = tempImage
+      ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
     setState(() {
-      _image = tempImage;
+      _image = compressedImage;
     });
   }
 
