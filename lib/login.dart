@@ -6,8 +6,10 @@ import 'dart:async';
 
 import 'package:freelance/guard_screens/mainScreen.dart';
 
-var firestore =
-    Firestore.instance.collection('/society/0aklfheb/users').snapshots();
+String uid, sid, flat, upwd, spwd;
+
+var query =
+    Firestore.instance.collection('/society/0aklfheb/users').document().snapshots();
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
@@ -15,18 +17,13 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   Future login() async {
-    var length = await firestore.length;
-    setState(() {
-      print('I AM RITIK RATHI');
-      try {
-        print('length = $length');
-      } catch (e) {
-        print('Error hai bc $e');
-      }
-      print('i AM A GREAT GUY.');
-    });
+    bool contains = await query.contains('55g5c5');
+    if (contains) {
+      print('I am AadumKhor');
+    } else {
+      print('Nope');
+    }
   }
-
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
@@ -52,7 +49,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
   Color right = Colors.black;
   Color left = Colors.white;
-  String uid, sid, flat, upwd, spwd;
+
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final GlobalKey<FormState> _signkey = GlobalKey<FormState>();
   AnimationController fadeAnimationController;
