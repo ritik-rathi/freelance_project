@@ -8,21 +8,18 @@ import 'package:freelance/guard_screens/mainScreen.dart';
 
 String uid, sid, flat, upwd, spwd;
 
-var query =
-    Firestore.instance.collection('/society/0aklfheb/users').document().snapshots();
+var query = Firestore.instance
+    .collection('/society/0aklfheb/users').document().snapshots();
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
-  Future login() async {
-    bool contains = await query.contains('55g5c5');
-    if (contains) {
-      print('I am AadumKhor');
-    } else {
-      print('Nope');
-    }
+class _LoginState extends State<Login> with TickerProviderStateMixin {
+  
+  void login() async {
+    var contains =query.contains('aayush');
+    print(contains);
   }
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
