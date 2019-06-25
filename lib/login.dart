@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart' as prefix0;
 import 'dart:async';
 
 import 'package:freelance/guard_screens/mainScreen.dart';
@@ -26,7 +27,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       print('i AM A GREAT GUY.');
     });
   }
-
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
@@ -419,7 +419,15 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       // for(int i=0; i< 200; i++){
 
                       // }
-                      login();
+                      StreamBuilder(
+                        stream: Firestore.instance
+                            .collection('/society/0aklfheb/users')
+                            .snapshots(),
+                        builder: (context, snapshot){
+                          int length = snapshot.data.documents.length;
+                          print(length);
+                        },
+                      );
                       Navigator.pushReplacementNamed(context, '/user');
 
                       // login();
