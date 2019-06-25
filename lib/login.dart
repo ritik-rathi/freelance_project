@@ -6,12 +6,27 @@ import 'dart:async';
 
 import 'package:freelance/guard_screens/mainScreen.dart';
 
+var firestore =
+    Firestore.instance.collection('/society/0aklfheb/users').snapshots();
+
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login>
-    with SingleTickerProviderStateMixin {
+class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+  Future login() async {
+    var length = await firestore.length;
+    setState(() {
+      print('I AM RITIK RATHI');
+      try {
+        print('length = $length');
+      } catch (e) {
+        print('Error hai bc $e');
+      }
+      print('i AM A GREAT GUY.');
+    });
+  }
+
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
@@ -70,8 +85,8 @@ class _LoginState extends State<Login>
               children: <Widget>[
                 // Our logo. can be tweaked
                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 150.0, left: 20.0, right: 20.0),
+                  padding: const EdgeInsets.only(
+                      top: 150.0, left: 20.0, right: 20.0),
                   child: new Image(
                     width: 150.0,
                     height: 150.0,
@@ -132,6 +147,7 @@ class _LoginState extends State<Login>
 
   @override
   void initState() {
+    login();
     fadeAnimationController =
         new AnimationController(vsync: this, duration: Duration(seconds: 5));
     fadeAnimation = new CurvedAnimation(
@@ -399,7 +415,13 @@ class _LoginState extends State<Login>
                       ),
                     ),
                     onPressed: () {
+                      // var length = await firestore.length;
+                      // for(int i=0; i< 200; i++){
+
+                      // }
+                      login();
                       Navigator.pushReplacementNamed(context, '/user');
+
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),
@@ -412,7 +434,7 @@ class _LoginState extends State<Login>
     );
   }
 
-Widget _buildTeacherSignIn(BuildContext context) {
+  Widget _buildTeacherSignIn(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 23.0),
       child: Column(
