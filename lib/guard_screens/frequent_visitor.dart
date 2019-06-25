@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart' as prefix1;
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'dart:ui';
 
 String dName, dPhone, dOrg, rFlat, rName;
@@ -22,16 +19,6 @@ class _FrequentState extends State<Frequent>
     super.initState();
   }
 
-  File _image;
-
-  Future getImage() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      _image = tempImage;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,63 +29,10 @@ class _FrequentState extends State<Frequent>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             prefix1.SizedBox(height: 100),
-            // Padding(
-            //   padding:
-            //       const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-            //   child: GestureDetector(
-            //     onTap: () {
-            //       Route focusRoute = new MaterialPageRoute(
-            //           builder: (context) => Scaffold(
-            //               backgroundColor: Colors.black,
-            //               body: Center(
-            //                   child: Hero(
-            //                       tag: "Focus",
-            //                       child: _image == null
-            //                           ? Text('Add Image to view',
-            //                               style: TextStyle(
-            //                                   color: Colors.white,
-            //                                   fontSize: 20.0,
-            //                                   fontWeight: FontWeight.w500))
-            //                           : Image.file(_image)))));
-            //       Navigator.push(context, focusRoute);
-            //     },
-            //     child: Container(
-            //         margin: EdgeInsets.only(top: 20),
-            //         width: double.infinity,
-            //         height: 256.0,
-            //         decoration: BoxDecoration(
-            //             color: Colors.black,
-            //             shape: BoxShape.circle,
-            //             border: Border.all(width: 2.0, color: Colors.white)),
-            //         child: Hero(
-            //           tag: "Focus",
-            //           child: _image == null
-            //               ? Center(
-            //                   child: Text(
-            //                   'Add Image of Delivery Boy',
-            //                   style: TextStyle(
-            //                       color: Colors.white,
-            //                       fontSize: 20.0,
-            //                       fontWeight: FontWeight.w500),
-            //                 ))
-            //               : Image.file(
-            //                   _image,
-            //                   fit: BoxFit.cover,
-            //                 ),
-            //         )),
-            //   ),
-            // ),
             _buildAddCard()
           ],
         ),
       ),
-      // floatingActionButton: new FloatingActionButton(
-      //   onPressed: getImage,
-      //   backgroundColor: Color(0xffd8fbff),
-      //   foregroundColor: Colors.white,
-      //   tooltip: 'Click Photo',
-      //   child: Icon(Icons.camera_alt, color: Colors.black),
-      // ),
     );
   }
 
@@ -221,7 +155,6 @@ class _FrequentState extends State<Frequent>
               color: Colors.blue,
               onPressed: () {
                 Navigator.pop(context);
-                // _uploadDataToFirebase();
               },
             ),
           )
@@ -233,10 +166,8 @@ class _FrequentState extends State<Frequent>
   Widget maid() {
     return Container(
       width: double.maxFinite,
-      child: Column(
-        
+      child: Column(        
         children: <Widget>[
-          //SizedBox(height: 70),
           Text(
             'Unique ID',
             style: TextStyle(
@@ -286,7 +217,6 @@ class _FrequentState extends State<Frequent>
               color: Colors.blue,
               onPressed: () {
                 Navigator.pop(context);
-                // _uploadDataToFirebase();
               },
             ),
           )

@@ -126,7 +126,7 @@ class _LoginState extends State<Login>
     myFocusNodePassword.dispose();
     myFocusNodeEmail.dispose();
     myFocusNodeName.dispose();
-    _pageController?.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 

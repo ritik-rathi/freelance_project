@@ -22,7 +22,7 @@ class OtpTesting extends StatefulWidget {
   final String purpose; // only visitor
   final String ownName; // all
   final File image; // all
-  final String flatTime; // only maid
+  final String flatdetails; // only maid
   final String uid; // only maid and driver
   final String org; //only delviery
 
@@ -40,7 +40,7 @@ class OtpTesting extends StatefulWidget {
       this.ownName,
       this.firebaseMode,
       this.image,
-      this.flatTime,
+      this.flatdetails,
       this.uid})
       : assert(firebaseMode != null); // have to display number here as well
 
@@ -105,7 +105,7 @@ class _OtpTestingState extends State<OtpTesting> {
   @override
   void initState() {
     super.initState();
-    sendOTP();
+    // sendOTP();
     currController = controller1;
   }
 
@@ -600,7 +600,7 @@ class _OtpTestingState extends State<OtpTesting> {
                 IconButton(
                     icon: Icon(Icons.check),
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/guard');
+                      Navigator.of(context).pushReplacementNamed('/guard');
                       _getFirebaseFunc(widget.firebaseMode);
                       _uploadImageToFB(otp);
                     })
@@ -631,7 +631,7 @@ class _OtpTestingState extends State<OtpTesting> {
 
   _uploadDataToFirebase() {
     DocumentReference databaseRef = Firestore.instance
-        .collection("/societies/I6Y2LcU6vzD7ypacQ501/visitors")
+        .collection("/society/0aklfheb/visitors")
         .document();
 
     Map<String, dynamic> tasks = {
@@ -651,18 +651,17 @@ class _OtpTestingState extends State<OtpTesting> {
 
   _uploadDataToFirebase_delivery() {
     DocumentReference databaseRef = Firestore.instance
-        .collection("/societies/I6Y2LcU6vzD7ypacQ501/delivery")
+        .collection("/society/0aklfheb/delivery")
         .document();
 
     Map<String, dynamic> tasks = {
-      "house": widget.house,
-      "visitTime": time.toString(),
-      "purpose": widget.purpose,
-      "isGuset": widget.isGuest,
       "name": widget.name,
-      "otp": otp,
       "mobile": widget.phoneNo,
-      "owner": widget.ownName
+      "flat": widget.house,
+      "visitTime": time.toString(),
+      "organization": widget.purpose,
+      "recepient": widget.ownName,      
+      "otp": otp,
     };
     databaseRef.setData(tasks).whenComplete(() {
       print('User created!');
@@ -671,14 +670,13 @@ class _OtpTestingState extends State<OtpTesting> {
 
   _uploadDataToFirebase_maid() {
     DocumentReference databaseRef = Firestore.instance
-        .collection("/societies/I6Y2LcU6vzD7ypacQ501/maids")
+        .collection("/society/0aklfheb/maids")
         .document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
-      "otp": otp,
       "mobile": widget.phoneNo,
-      "flatTime": widget.flatTime,
+      "flatTime": widget.flatdetails,
       "uid": widget.uid
     };
     databaseRef.setData(tasks).whenComplete(() {
@@ -688,12 +686,11 @@ class _OtpTestingState extends State<OtpTesting> {
 
   _uploadDataToFirebase_driver() {
     DocumentReference databaseRef = Firestore.instance
-        .collection("/societies/I6Y2LcU6vzD7ypacQ501/drivers")
+        .collection("/society/0aklfheb/driver")
         .document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
-      "otp": otp,
       "mobile": widget.phoneNo,
       "owner": widget.ownName,
       "uid": widget.uid
