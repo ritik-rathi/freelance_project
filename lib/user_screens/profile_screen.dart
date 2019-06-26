@@ -1,10 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-//import 'package:share/share.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
+import 'package:freelance/login.dart';
 
 Color color = Color(0xFF50CDFF);
+var query = Firestore.instance.collection('/society/0aklfheb/users');
+var name, email, phone, flat, block;
+
+void credential() {
+  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
+    name = data.documents[0]['user-1'].toString();
+    print('aaaaaaaaaa........$name');
+  });
+  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
+    email = data.documents[0]['Email'].toString();
+    print('aaaaaaaaaa........$email');
+  });
+  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
+    phone = data.documents[0]['Phone - 1'];
+    print('aaaaaaaaaa........$phone');
+  });
+  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
+    flat = data.documents[0]['Flat'].toString();
+    print('aaaaaaaaaa........$flat');
+  });
+  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
+    block = data.documents[0]['Block'].toString();
+    print('aaaaaaaaaa........$block');
+  });
+}
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -12,6 +37,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  @override
+  void initState() {
+    credential();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Ritik Rathi',
+                    Text(name,
                         style: TextStyle(fontSize: 25, color: color))
                   ],
                 ),
@@ -121,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('rathi27ritik@gmail.com',
+                    Text(email,
                         style: TextStyle(fontSize: 20))
                   ],
                 ),
@@ -132,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('9990637630', style: TextStyle(fontSize: 20))
+                    Text('$phone', style: TextStyle(fontSize: 20))
                   ],
                 ),
               ),
@@ -153,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('1/522, Vaishali', style: TextStyle(fontSize: 20))
+                    Text('$block - $flat', style: TextStyle(fontSize: 20))
                   ],
                 ),
               ),
@@ -176,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('RWA, Mahagun society', style: TextStyle(fontSize: 20))
+                    Text('', style: TextStyle(fontSize: 20))
                   ],
                 ),
               ),

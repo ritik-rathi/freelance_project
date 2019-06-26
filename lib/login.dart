@@ -7,20 +7,27 @@ import 'dart:async';
 
 import 'package:freelance/guard_screens/mainScreen.dart';
 
-String uid, sid, flat, upwd, spwd;
+//Implement society id check
 
-var query = Firestore.instance
-    .collection('/society/0aklfheb/users').document().snapshots();
+bool loggedIn = false;
+String uid, sid, flat, upwd, spwd;
+var tid, tpwd;
+var query = Firestore.instance.collection('/society/0aklfheb/users');
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> with TickerProviderStateMixin {
-  
-  void login() async {
-    var contains =query.contains('aayush');
-    print(contains);
+  void login(String id, String pwd) {
+    query.where('Email', isEqualTo: id).snapshots().listen((data) {
+      tid = data.documents.length;
+      print('aaaaaaaaaa........$tid');
+    });
+    query.where('Password', isEqualTo: pwd).snapshots().listen((data) {
+      tpwd = data.documents.length;
+      print('pass - $tpwd');
+    });
   }
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
@@ -142,7 +149,10 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    login();
+    //login();
+    tid = 0;
+    tpwd = 0;
+    loggedIn = false;
     fadeAnimationController =
         new AnimationController(vsync: this, duration: Duration(seconds: 5));
     fadeAnimation = new CurvedAnimation(
@@ -230,13 +240,14 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         Padding(
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
+                          child: TextField(
                             focusNode: myFocusNodeEmailLogin,
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            onSaved: (input) {
+                            // validator: (input) {
+                            //   if (input.length < 8)
+                            //     return "Make sure your password consists of atleast 8 letters";
+                            // },
+
+                            onChanged: (input) {
                               uid = input;
                             },
                             // keyboardType: TextInputType.emailAddress,
@@ -261,15 +272,16 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         Padding(
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
+                          child: TextField(
                             focusNode: myFocusNodeEmailLogin,
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            onSaved: (input) {
+                            // validator: (input) {
+                            //   if (input.length < 8)
+                            //     return "Make sure your password consists of atleast 8 letters";
+                            // },
+                            onChanged: (input) {
                               sid = input;
                             },
+
                             // keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
                                 fontFamily: "WorkSansSemiBold",
@@ -292,13 +304,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         Padding(
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
+                          child: TextField(
                             focusNode: myFocusNodeEmailLogin,
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            onSaved: (input) {
+                            // validator: (input) {
+                            //   if (input.length < 8)
+                            //     return "Make sure your password consists of atleast 8 letters";
+                            // },
+                            onChanged: (input) {
                               flat = input;
                             },
                             // keyboardType: TextInputType.emailAddress,
@@ -328,13 +340,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         Padding(
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
+                          child: TextField(
                             focusNode: myFocusNodePasswordLogin,
-                            validator: (input) {
-                              if (input.length < 4)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            onSaved: (input) {
+                            // validator: (input) {
+                            //   if (input.length < 4)
+                            //     return "Make sure your password consists of atleast 8 letters";
+                            // },
+                            onChanged: (input) {
                               upwd = input;
                             },
                             obscureText: _obscureTextLogin,
@@ -410,25 +422,38 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       ),
                     ),
                     onPressed: () {
-                      // var length = await firestore.length;
-                      // for(int i=0; i< 200; i++){
-
+                      login(uid, upwd);
+                      if (tid == 1 && tpwd == 1) {
+                        Navigator.pushReplacementNamed(context, '/user');
+                        setState(() {
+                          tid = 0;
+                          tpwd = 0;
+                        });
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: prefix0.Text('Enter valid credentials'),
+                              );
+                            });
+                      }
+                      // if (loggedIn) {
+                      //   Navigator.pushReplacementNamed(context, '/user');
+                      //   setState(() {
+                      //    loggedIn = false;
+                      //   });
                       // }
-                      StreamBuilder(
-                        stream: Firestore.instance
-                            .collection('/society/0aklfheb/users')
-                            .snapshots(),
-                        builder: (context, snapshot){
-                          int length = snapshot.data.documents.length;
-                          print(length);
-                        },
-                      );
-                      Navigator.pushReplacementNamed(context, '/user');
-
-                      // login();
-                      // Navigator.pushNamed(context, '/home');
-                    } // showInSnackBar("Login button pressed")),
-                    ),
+                      // else {
+                      //   showDialog(
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return AlertDialog(
+                      //           title: prefix0.Text('Enter valid credentials'),
+                      //         );
+                      //       });
+                      // }
+                    }),
               ),
             ],
           ),
@@ -468,7 +493,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               if (input.length < 8)
                                 return "Make sure your password consists of atleast 8 letters";
                             },
-                            onSaved: (input) {
+                            onFieldSubmitted: (input) {
                               sid = input;
                             },
                             // keyboardType: TextInputType.emailAddress,
@@ -504,7 +529,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               if (input.length < 4)
                                 return "Make sure your password consists of atleast 8 letters";
                             },
-                            onSaved: (input) {
+                            onFieldSubmitted: (input) {
                               spwd = input;
                             },
                             obscureText: _obscureTextLogin,

@@ -44,7 +44,7 @@ class VisitorLog extends StatelessWidget {
     int i = 0;
     return StreamBuilder(
         stream: Firestore.instance
-            .collection("societies/I6Y2LcU6vzD7ypacQ501/visitors")
+            .collection("/society/0aklfheb/visitors")
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
