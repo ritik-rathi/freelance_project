@@ -4,23 +4,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart' as prefix0;
 import 'dart:async';
-
+import 'package:http/http.dart' as http;
 import 'package:freelance/guard_screens/mainScreen.dart';
 
-String uid, sid, flat, upwd, spwd;
+String uid = '', sid, flat, upwd, spwd;
+int length;
 
 var query = Firestore.instance
-    .collection('/society/0aklfheb/users').document().snapshots();
+    .collection('/society/0aklfheb/users')
+    .document()
+    .snapshots()
+    .where((ds) => ds.data.containsValue('Casej342@gmail.con'));
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> with TickerProviderStateMixin {
-  
   void login() async {
-    var contains =query.contains('aayush');
-    print(contains);
+    print(length);
   }
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
@@ -418,13 +420,15 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         stream: Firestore.instance
                             .collection('/society/0aklfheb/users')
                             .snapshots(),
-                        builder: (context, snapshot){
+                        builder: (context, snapshot) {
                           int length = snapshot.data.documents.length;
                           print(length);
                         },
                       );
                       Navigator.pushReplacementNamed(context, '/user');
-
+                      var resp = http.get(
+                          "https://us-central1-homantra-90dbe.cloudfunctions.net/addFirestoreDataToAlgolia");
+                      print(resp);
                       // login();
                       // Navigator.pushNamed(context, '/home');
                     } // showInSnackBar("Login button pressed")),

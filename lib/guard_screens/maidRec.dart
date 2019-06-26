@@ -306,7 +306,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
             ),
           ),
           numFlats == 0
-              ? SizedBox(height: 30.0)
+              ? SizedBox(height: 10.0)
               : Expanded(
                   child: ListView.builder(
                   scrollDirection: Axis.vertical,
