@@ -655,10 +655,6 @@ class _OtpTestingState extends State<OtpTesting> {
         .document();
 
     Map<String, dynamic> tasks = {
-      "house": widget.house,
-      "visitTime": time.toString(),
-      "organisation": widget.org, 
-      "isGuset": widget.isGuest,
       "name": widget.name,
       "mobile": widget.phoneNo,
       "flat": widget.house,

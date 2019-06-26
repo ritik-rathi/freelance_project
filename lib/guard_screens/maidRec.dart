@@ -12,48 +12,51 @@ String vTime = TimeOfDay.now().toString();
 double _getVariableHeight() {
   switch (numFlats) {
     case (0):
-      return 410.0;
-      break;
-    case (1):
       return 510.0;
       break;
-    case (2):
+    case (1):
       return 610.0;
       break;
-    case (3):
+    case (2):
       return 710.0;
       break;
-    case (4):
+    case (3):
       return 810.0;
       break;
-    case (5):
+    case (4):
       return 910.0;
       break;
-    case (6):
+    case (5):
       return 1010.0;
       break;
-    case (7):
+    case (6):
       return 1110.0;
       break;
+    case (7):
+      return 1210.0;
+      break;
     default:
-      return 410.0;
+      return 510.0;
   }
 }
 
 createList(int d) {
-  var textEditingControllers = <TextEditingController>[];
-
+  var headings = <Text>[];
   var textFields = <TextField>[];
   var finalList = <Padding>[];
-  var list = new List<int>.generate(d, (i) => i + 1);
-  print(list);
+
+  var list = [];
+  // print(list);
 
   list.forEach((i) {
-    var textEditingController = new TextEditingController();
-    textEditingControllers.add(textEditingController);
-    return textFields.add(new TextField(controller: textEditingController));
+    var text = 'Flat- $i';
+    headings.add(Text(
+      text,
+      style: TextStyle(color: Colors.black, fontSize: 22.0),
+    ));
+    textFields.add(new TextField());
   });
-  return textFields;
+  return headings;
 }
 
 class MaidRec extends StatefulWidget {
@@ -114,6 +117,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                     height: 256.0,
                     decoration: BoxDecoration(
                         color: Colors.black,
+                        shape: BoxShape.circle,
                         border: Border.all(width: 2.0, color: Colors.white)),
                     child: _image == null
                         ? Center(
@@ -157,6 +161,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   width: double.maxFinite,
                   height: 60,
                   child: TabBar(
+                    isScrollable: false,
                     unselectedLabelColor: Colors.grey,
                     unselectedLabelStyle: TextStyle(fontSize: 15),
                     labelColor: Colors.black,
@@ -175,7 +180,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 ),
                 Container(
                   width: double.maxFinite,
-                  height: _getVariableHeight() - 100,
+                  height: _getVariableHeight() - 70,
                   child: TabBarView(
                     controller: _controller,
                     children: <Widget>[maid(), driver()],
@@ -305,46 +310,115 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
               ],
             ),
           ),
-          numFlats == 0
-              ? SizedBox(height: 30.0)
-              : Expanded(
-                  child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: numFlats,
-                  itemBuilder: (context, index) {
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 20.0, right: 20.0),
-                      child: Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Number of flats',
-                              style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+              child: Text(
+                'Flats and Times',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: numFlats == 0
+                ? Center(
+                    child: Text(
+                      numFlats ==0 ? 'Enter number of flats' : 'Enter less flats',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w300),
+                    ),
+                  )
+                : Container(
+                    height: _getVariableHeight() - 600,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: numFlats,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding:
+                              const EdgeInsets.only(left: 20.0, right: 20.0),
+                          child: Card(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Flat',
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      TextField(
+                                        onChanged: (value) {
+                                          setState(() {
+                                            numFlats = int.parse(value);
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                            hintText:
+                                                'Flat Number',
+                                            hintStyle: TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12.0)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Time',
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      TextField(
+                                        onChanged: (value) {
+                                          setState(() {
+                                            numFlats = int.parse(value);
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                            hintText:
+                                                '24hour format',
+                                            hintStyle: TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12.0)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          TextField(
-                            onChanged: (value) {
-                              setState(() {
-                                numFlats = int.parse(value);
-                              });
-                            },
-                            decoration: InputDecoration(
-                                hintText: 'Number of houses for this maid',
-                                hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12.0)),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                )),
+                        );
+                      },
+                    ),
+                  ),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 18.0),
             child: RaisedButton(

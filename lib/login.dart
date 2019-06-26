@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart' as prefix0;
 import 'dart:async';
-
+import 'package:http/http.dart' as http;
 import 'package:freelance/guard_screens/mainScreen.dart';
 
 //Implement society id check
