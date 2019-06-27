@@ -9,7 +9,7 @@ import 'package:freelance/guard_screens/mainScreen.dart';
 
 //Implement society id check
 
-bool loggedIn = false;
+bool email = false, password = false;
 String uid, sid, flat, upwd, spwd;
 var tid, tpwd;
 var query = Firestore.instance.collection('/society/0aklfheb/users');
@@ -19,15 +19,24 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> with TickerProviderStateMixin {
-  void login(String id, String pwd) {
+  Future<bool> emailID(String id) async{
     query.where('Email', isEqualTo: id).snapshots().listen((data) {
       tid = data.documents.length;
       print('aaaaaaaaaa........$tid');
+      if(tid == 1) email = true;
     });
+    print('Email function');
+    return email;
+  }
+
+  Future<bool> passWord(String pwd) async{
     query.where('Password', isEqualTo: pwd).snapshots().listen((data) {
       tpwd = data.documents.length;
       print('pass - $tpwd');
+      if(tpwd == 1) password = true;
     });
+    print('pwd function');
+    return password;
   }
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
@@ -152,7 +161,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     //login();
     tid = 0;
     tpwd = 0;
-    loggedIn = false;
     fadeAnimationController =
         new AnimationController(vsync: this, duration: Duration(seconds: 5));
     fadeAnimation = new CurvedAnimation(
@@ -422,8 +430,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       ),
                     ),
                     onPressed: () {
-                      login(uid, upwd);
-                      if (tid == 1 && tpwd == 1) {
+                      print('testing ');
+                      Future<bool> x = emailID(uid);
+                      Future<bool> y = passWord(upwd);
+                      print('$x .... $y');
+                      if (x && y) {
                         Navigator.pushReplacementNamed(context, '/user');
                         setState(() {
                           tid = 0;
