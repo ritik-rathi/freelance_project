@@ -5,9 +5,29 @@ import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
-String vName, vPhone, vPurpose, vFlat, oName, uid;
+String name, phone, flat, time, oName, uid;
 int numFlats = 0;
-String vTime = TimeOfDay.now().toString();
+
+Map<int, dynamic> finalMap = {};
+Map<String, dynamic> partMap = {};
+Map<int, TextEditingController> flatControllers = {};
+Map<int, TextEditingController> timeControllers = {};
+Map<int, TextEditingController> _getMap() {
+  for (var i = 0; i < numFlats; i++) {
+    var test = new TextEditingController();
+    flatControllers.addAll({i: test});
+  }
+  // print(controllers);
+  return flatControllers;
+}
+
+Map<int, TextEditingController> _getTimeMap() {
+  for (var i = 0; i < numFlats; i++) {
+    timeControllers.addAll({i: new TextEditingController()});
+  }
+  // print(controllers);
+  return timeControllers;
+}
 
 double _getVariableHeight() {
   switch (numFlats) {
@@ -70,6 +90,8 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
 
   void initState() {
     super.initState();
+    _getMap();
+    _getTimeMap();
     _controller = TabController(vsync: this, initialIndex: 0, length: 2);
   }
 
@@ -238,7 +260,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 ),
                 TextField(
                   onChanged: (value) {
-                    vName = value;
+                    name = value;
                   },
                   decoration: InputDecoration(
                       hintText: 'Maid\'s Name',
@@ -267,7 +289,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 TextField(
                   // autofocus: true,
                   onChanged: (value) {
-                    vPhone = value;
+                    phone = value;
                   },
                   // controller: _taskTimeController,
                   decoration: InputDecoration(
@@ -301,7 +323,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                     });
                   },
                   decoration: InputDecoration(
-                      hintText: 'Number of houses for this maid',
+                      hintText: 'Number of houses(max 7)',
                       hintStyle: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w500,
@@ -330,7 +352,9 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
             child: numFlats == 0
                 ? Center(
                     child: Text(
-                      numFlats ==0 ? 'Enter number of flats' : 'Enter less flats',
+                      numFlats == 0
+                          ? 'Enter number of flats'
+                          : 'Enter less flats',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20.0,
@@ -357,7 +381,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          'Flat',
+                                          'Flat- ${index + 1}',
                                           style: TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.bold,
@@ -365,14 +389,18 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                                         ),
                                       ),
                                       TextField(
+                                        controller: flatControllers[index],
                                         onChanged: (value) {
+                                          flat = value;
+                                          print(flat);
                                           setState(() {
-                                            numFlats = int.parse(value);
+                                            partMap.addAll({"flat": flat});
+                                            finalMap.addAll({index: partMap});
+                                            flat = '';
                                           });
                                         },
                                         decoration: InputDecoration(
-                                            hintText:
-                                                'Flat Number',
+                                            hintText: 'Flat Number',
                                             hintStyle: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.w500,
@@ -395,14 +423,17 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                                         ),
                                       ),
                                       TextField(
-                                        onChanged: (value) {
+                                        controller: timeControllers[index],
+                                        onSubmitted: (value) {
+                                          time = value;
                                           setState(() {
-                                            numFlats = int.parse(value);
+                                            partMap.addAll({"time": time});
+                                            finalMap.addAll({index: partMap});
+                                            time = '';
                                           });
                                         },
                                         decoration: InputDecoration(
-                                            hintText:
-                                                '24hour format',
+                                            hintText: '24hour format',
                                             hintStyle: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.w500,
@@ -444,16 +475,17 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                         ),
                       );
                     });
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OtpTesting(
-                              phoneNo: vPhone,
-                              name: vName,
-                              flatdetails: vFlat,
-                              uid: uid,
-                              image: _image,
-                            )));
+                print(finalMap);
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => OtpTesting(
+                //               phoneNo: phone,
+                //               name: name,
+                //               flatdetails: _getMap(),
+                //               uid: uid,
+                //               image: _image,
+                //             )));
                 // Navigator.pop(context);
                 // _uploadDataToFirebase();
               },
@@ -492,7 +524,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 TextField(
                   //autofocus: true,
                   onChanged: (value) {
-                    vName = value;
+                    name = value;
                   },
                   // controller: _taskTitleController,
                   decoration: InputDecoration(
@@ -522,7 +554,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 TextField(
                   // autofocus: true,
                   onChanged: (value) {
-                    vPhone = value;
+                    phone = value;
                   },
                   // controller: _taskTimeController,
                   decoration: InputDecoration(
@@ -552,7 +584,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 TextField(
                   // autofocus: true,
                   onChanged: (value) {
-                    vFlat = value;
+                    oName = value;
                   },
                   // controller: _taskDesController,
                   decoration: InputDecoration(
@@ -594,9 +626,9 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                     context,
                     MaterialPageRoute(
                         builder: (context) => OtpTesting(
-                              phoneNo: vPhone,
-                              name: vName,
-                              ownName: vFlat,
+                              phoneNo: phone,
+                              name: name,
+                              ownName: oName,
                               uid: uid,
                               image: _image,
                             )));

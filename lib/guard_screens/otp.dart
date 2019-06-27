@@ -22,7 +22,7 @@ class OtpTesting extends StatefulWidget {
   final String purpose; // only visitor
   final String ownName; // all
   final File image; // all
-  final String flatdetails; // only maid
+  final Map flatdetails; // only maid
   final String uid; // only maid and driver
   final String org; //only delviery
 
