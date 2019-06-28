@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/guard_screens/new_visitor.dart';
 
 class MainScreen extends StatelessWidget {
   final String user;
