@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart' as prefix0;
 import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'package:freelance/guard_screens/mainScreen.dart';
 
 //Implement society id check
 
@@ -19,25 +15,26 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> with TickerProviderStateMixin {
-  Future<bool> emailID(String id) async{
-    query.where('Email', isEqualTo: id).snapshots().listen((data) {
-      tid = data.documents.length;
-      print('aaaaaaaaaa........$tid');
-      if(tid == 1) email = true;
-    });
-    print('Email function');
-    return email;
+  int l1 = 0, l2 = 0, l3 = 0;
+  Future<int> emailID(String id, String pwd) async {
+    var c = await query.where('Email', isEqualTo: id).snapshots().first;
+    l1 = c.documents.length;
+    print(l1);
+
+    var d = await query.where('Password', isEqualTo: pwd).snapshots().first;
+    l2 = d.documents.length;
+    print(l2);
+
+    if (l1 == 1 && l2 == 1) l3 = 1;
+    return l3;
+    // .listen((data) {
+    //   tid = data.documents.length;
+    //   print('aaaaaaaaaa........$tid');
+    //   if (tid == 1) email = true;
+    // });
   }
 
-  Future<bool> passWord(String pwd) async{
-    query.where('Password', isEqualTo: pwd).snapshots().listen((data) {
-      tpwd = data.documents.length;
-      print('pass - $tpwd');
-      if(tpwd == 1) password = true;
-    });
-    print('pwd function');
-    return password;
-  }
+  //void passWord(String pwd) async {}
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
@@ -46,8 +43,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   final FocusNode myFocusNodeEmail = FocusNode();
   final FocusNode myFocusNodeName = FocusNode();
 
-  TextEditingController loginEmailController = new TextEditingController();
-  TextEditingController loginPasswordController = new TextEditingController();
+  TextEditingController emailCon = new TextEditingController();
+  TextEditingController idCon = new TextEditingController();
 
   bool _obscureTextLogin = true;
   bool _obscureTextSignup = true;
@@ -254,7 +251,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             //   if (input.length < 8)
                             //     return "Make sure your password consists of atleast 8 letters";
                             // },
-
+                            controller: emailCon,
                             onChanged: (input) {
                               uid = input;
                             },
@@ -357,6 +354,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             onChanged: (input) {
                               upwd = input;
                             },
+                            controller: idCon,
                             obscureText: _obscureTextLogin,
                             style: TextStyle(
                                 fontFamily: "WorkSansSemiBold",
@@ -431,24 +429,33 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     ),
                     onPressed: () {
                       print('testing ');
-                      Future<bool> x = emailID(uid);
-                      Future<bool> y = passWord(upwd);
-                      print('$x .... $y');
-                      if (true) {
-                        Navigator.pushReplacementNamed(context, '/user');
-                        setState(() {
-                          tid = 0;
-                          tpwd = 0;
-                        });
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: prefix0.Text('Enter valid credentials'),
-                              );
-                            });
-                      }
+                      emailID(emailCon.text, idCon.text).then((l3) {
+                        if (l3 == 1) {
+                          print('object');
+                          Navigator.pushReplacementNamed(context, '/user');
+                        }
+                      });
+                      emailCon.clear();
+                      idCon.clear();
+          
+                      //var x = (bool)emailID(uid);
+                      // if (x) {
+                      //   if (passWord(upwd)) {
+                      //     Navigator.pushReplacementNamed(context, '/user');
+                      //     setState(() {
+                      //       tid = 0;
+                      //       tpwd = 0;
+                      //     });
+                      //   }
+                      // } else {
+                      //   showDialog(
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return AlertDialog(
+                      //           title: prefix0.Text('Enter valid credentials'),
+                      //         );
+                      //       });
+                      // }
                       // if (loggedIn) {
                       //   Navigator.pushReplacementNamed(context, '/user');
                       //   setState(() {

@@ -476,7 +476,6 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   }
                 }
                 print(finalMap);
-
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -628,12 +627,12 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                     context,
                     MaterialPageRoute(
                         builder: (context) => OtpTesting(
+                              firebaseMode: 2,
                               phoneNo: phone,
                               name: name,
                               ownName: oName,
                               uid: uid,
                               image: _image,
-                              firebaseMode: 2,
                             )));
                 // Navigator.pop(context);
                 // _uploadDataToFirebase();
