@@ -11,6 +11,9 @@ import 'package:freelance/splashscreen.dart';
 import 'package:freelance/user_screens/profile.dart';
 import 'package:freelance/user_screens/visitor_log.dart';
 
+
+bool isLoggedIn = false;
+
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'HOMANTRA',
       theme: ThemeData(fontFamily: 'Raleway', primaryColor: Color(0xFF50CDFF)),
       home: Login(),
-      // initialRoute: '.',
+      initialRoute: isLoggedIn ? '.' : '/user',
       routes: {
         '.' : (context) => Login(),
         '/newvisitor': (context) => NewVisitorPage(),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart' as prefix0;
+import 'package:freelance/main.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:freelance/guard_screens/mainScreen.dart';
@@ -31,14 +32,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
     if (l1 == 1 && l2 == 1) l3 = 1;
     return l3;
-    // .listen((data) {
-    //   tid = data.documents.length;
-    //   print('aaaaaaaaaa........$tid');
-    //   if (tid == 1) email = true;
-    // });
   }
-
-  //void passWord(String pwd) async {}
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
@@ -437,44 +431,22 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         if (l3 == 1) {
                           print('object');
                           Navigator.pushReplacementNamed(context, '/user');
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title:
+                                      prefix0.Text('Enter valid credentials'),
+                                );
+                              });
                         }
                       });
                       emailCon.clear();
                       idCon.clear();
-          
-                      //var x = (bool)emailID(uid);
-                      // if (x) {
-                      //   if (passWord(upwd)) {
-                      //     Navigator.pushReplacementNamed(context, '/user');
-                      //     setState(() {
-                      //       tid = 0;
-                      //       tpwd = 0;
-                      //     });
-                      //   }
-                      // } else {
-                      //   showDialog(
-                      //       context: context,
-                      //       builder: (context) {
-                      //         return AlertDialog(
-                      //           title: prefix0.Text('Enter valid credentials'),
-                      //         );
-                      //       });
-                      // }
-                      // if (loggedIn) {
-                      //   Navigator.pushReplacementNamed(context, '/user');
-                      //   setState(() {
-                      //    loggedIn = false;
-                      //   });
-                      // }
-                      // else {
-                      //   showDialog(
-                      //       context: context,
-                      //       builder: (context) {
-                      //         return AlertDialog(
-                      //           title: prefix0.Text('Enter valid credentials'),
-                      //         );
-                      //       });
-                      // }
+                      setState(() {
+                        isLoggedIn = true;
+                      });
                     }),
               ),
             ],

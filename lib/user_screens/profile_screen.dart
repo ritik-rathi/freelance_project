@@ -3,32 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:freelance/login.dart';
+import 'package:freelance/main.dart';
 
 Color color = Color(0xFF50CDFF);
 var query = Firestore.instance.collection('/society/0aklfheb/users');
-var name, email, phone, flat, block;
+var name, email, phone, flat, block, profile;
 
-void credential() {
-  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
-    name = data.documents[0]['user-1'].toString();
-    print('aaaaaaaaaa........$name');
-  });
-  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
-    email = data.documents[0]['Email'].toString();
-    print('aaaaaaaaaa........$email');
-  });
-  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
-    phone = data.documents[0]['Phone - 1'];
-    print('aaaaaaaaaa........$phone');
-  });
-  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
-    flat = data.documents[0]['Flat'].toString();
-    print('aaaaaaaaaa........$flat');
-  });
-  query.where('Email', isEqualTo: uid).snapshots().listen((data) {
-    block = data.documents[0]['Block'].toString();
-    print('aaaaaaaaaa........$block');
-  });
+Future<void> credential() async {
+  profile = await query.where('Email', isEqualTo: uid).snapshots().first;
+
+  name = profile.documents[0]['user-1'];
+  print('aaaaaaaaaa........$name');
+
+  email = profile.documents[0]['Email'].toString();
+  print('aaaaaaaaaa........$email');
+
+  phone = profile.documents[0]['Phone - 1'];
+  print('aaaaaaaaaa........$phone');
+
+  flat = profile.documents[0]['Flat'].toString();
+  print('aaaaaaaaaa........$flat');
+
+  block = profile.documents[0]['Block'].toString();
+  print('aaaaaaaaaa........$block');
 }
 
 class ProfileScreen extends StatefulWidget {
@@ -37,195 +34,204 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   @override
-  void initState() {
-    credential();
-    // TODO: implement initState
-    super.initState();
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
-        body: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 250,
-                child: Stack(
-                  children: <Widget>[
+        body: StreamBuilder(
+          stream: query.where('Email', isEqualTo: uid).snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData)
+              return CircularProgressIndicator();
+            else {
+              return Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                     Container(
-                      alignment: Alignment.topCenter,
-                      height: 160.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0xFF50CDFF), Color(0xff1A2980)],
-                      )),
-                    ),
-                    Positioned(
-                      top: 180,
-                      left: 30,
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Color(0xff1A2980))),
-                        child: IconButton(
-                          onPressed: () {
-                            editInfo();
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            size: 30,
+                      height: 250,
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            alignment: Alignment.topCenter,
+                            height: 160.0,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Color(0xFF50CDFF), Color(0xff1A2980)],
+                            )),
                           ),
-                          color: color,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 180,
-                      right: 30,
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Color(0xff1A2980))),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.local_phone, size: 30),
-                          color: color,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                        right: 20.0,
-                        top: 20.0,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.more_vert,
-                            size: 30.0,
-                            color: Colors.white,
+                          Positioned(
+                            top: 180,
+                            left: 30,
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Color(0xff1A2980))),
+                              child: IconButton(
+                                onPressed: () {
+                                  editInfo();
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  size: 30,
+                                ),
+                                color: color,
+                              ),
+                            ),
                           ),
-                          onPressed: () => dialog(context),
-                        )),
-                    Positioned(
-                      top: 75.0,
-                      left: 100,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey, width: 3)),
-                        // height: 160,
-                        // width: 160,
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/logo.jpeg'),
-                          radius: 80,
-                        ),
+                          Positioned(
+                            top: 180,
+                            right: 30,
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Color(0xff1A2980))),
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.local_phone, size: 30),
+                                color: color,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                              right: 20.0,
+                              top: 20.0,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  size: 30.0,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () => dialog(context),
+                              )),
+                          Positioned(
+                            top: 75.0,
+                            left: 100,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey, width: 3)),
+                              // height: 160,
+                              // width: 160,
+                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/images/logo.jpeg'),
+                                radius: 80,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(name,
-                        style: TextStyle(fontSize: 25, color: color))
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(email,
-                        style: TextStyle(fontSize: 20))
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('$phone', style: TextStyle(fontSize: 20))
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Divider(color: Color(0xff1A2980)),
-              SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Owner', style: TextStyle(fontSize: 25, color: color))
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('$block - $flat', style: TextStyle(fontSize: 20))
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Divider(color: Color(0xff1A2980)),
-              SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Council member',
-                        style: TextStyle(fontSize: 25, color: color))
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('', style: TextStyle(fontSize: 20))
-                  ],
-                ),
-              ),
-              SizedBox(height: 50),
-              FlatButton(
-                onPressed: () {
-                  try {
-                    FlutterShareMe().shareToWhatsApp(
-                        msg:
-                            'hello,this is my github:https://github.com/lizhuoyuan');
-                  } catch (e) {
-                    print(e);
-                  }
-                },
-                child: Text('Share app'),
-              )
-            ]));
+                    SizedBox(height: 8),
+                    Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(snapshot.data.documents[0]['user-1'],
+                              style: TextStyle(fontSize: 25, color: color))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(snapshot.data.documents[0]['Email'],
+                              style: TextStyle(fontSize: 20))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('${snapshot.data.documents[0]['Phone - 1']}',
+                              style: TextStyle(fontSize: 20))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Divider(color: Color(0xff1A2980)),
+                    SizedBox(height: 8),
+                    Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('Owner',
+                              style: TextStyle(fontSize: 25, color: color))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                              '${snapshot.data.documents[0]['Flat']} - ${snapshot.data.documents[0]['Block']}',
+                              style: TextStyle(fontSize: 20))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Divider(color: Color(0xff1A2980)),
+                    SizedBox(height: 8),
+                    Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('Council member',
+                              style: TextStyle(fontSize: 25, color: color))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Container(
+                      margin: EdgeInsets.only(left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('', style: TextStyle(fontSize: 20))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 50),
+                    FlatButton(
+                      onPressed: () {
+                        try {
+                          FlutterShareMe().shareToWhatsApp(
+                              msg:
+                                  'hello,this is my github:https://github.com/lizhuoyuan');
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                      child: Text('Share app'),
+                    )
+                  ]);
+            }
+          },
+        ));
   }
 
   Future editInfo() {
@@ -394,6 +400,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, '.');
+                        setState(() {
+                         isLoggedIn = false; 
+                        });
                       },
                       child: Text('Logout',
                           style: TextStyle(
