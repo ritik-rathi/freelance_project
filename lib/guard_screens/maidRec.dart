@@ -8,26 +8,15 @@ import 'package:random_string/random_string.dart';
 String name, phone, flat, time, oName, uid;
 int numFlats = 0;
 
-Map<int, dynamic> finalMap = {};
-Map<String, dynamic> partMap = {};
-Map<int, TextEditingController> flatControllers = {};
-Map<int, TextEditingController> timeControllers = {};
-Map<int, TextEditingController> _getMap() {
-  for (var i = 0; i < numFlats; i++) {
-    var test = new TextEditingController();
-    flatControllers.addAll({i: test});
-  }
-  // print(controllers);
-  return flatControllers;
-}
-
-Map<int, TextEditingController> _getTimeMap() {
-  for (var i = 0; i < numFlats; i++) {
-    timeControllers.addAll({i: new TextEditingController()});
-  }
-  // print(controllers);
-  return timeControllers;
-}
+Map<int, dynamic> finalMap = {
+  0: {"flat": "", "time": ""},
+  1: {"flat": "", "time": ""},
+  2: {"flat": "", "time": ""},
+  3: {"flat": "", "time": ""},
+  4: {"flat": "", "time": ""},
+  5: {"flat": "", "time": ""},
+  6: {"flat": "", "time": ""}
+};
 
 double _getVariableHeight() {
   switch (numFlats) {
@@ -87,11 +76,19 @@ class MaidRec extends StatefulWidget {
 class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
   File _image;
   TabController _controller;
+  var flatControllers = <TextEditingController>[];
+  var timeControllers = <TextEditingController>[];
 
   void initState() {
     super.initState();
-    _getMap();
-    _getTimeMap();
+    // _getMap();
+    // _getTimeMap();
+    for (int i = 0; i < 7; i++) {
+      flatControllers.add(new TextEditingController());
+      timeControllers.add(new TextEditingController());
+    }
+    print(flatControllers.length + timeControllers.length);
+    print(timeControllers.length);
     _controller = TabController(vsync: this, initialIndex: 0, length: 2);
   }
 
@@ -391,13 +388,10 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                                       TextField(
                                         controller: flatControllers[index],
                                         onChanged: (value) {
-                                          flat = value;
-                                          print(flat);
-                                          setState(() {
-                                            partMap.addAll({"flat": flat});
-                                            finalMap.addAll({index: partMap});
-                                            flat = '';
-                                          });
+                                          print("$index" +
+                                              flatControllers[index].text);
+                                          finalMap[index]["flat"] =
+                                              flatControllers[index].text;
                                         },
                                         decoration: InputDecoration(
                                             hintText: 'Flat Number',
@@ -424,13 +418,10 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                                       ),
                                       TextField(
                                         controller: timeControllers[index],
-                                        onSubmitted: (value) {
-                                          time = value;
-                                          setState(() {
-                                            partMap.addAll({"time": time});
-                                            finalMap.addAll({index: partMap});
-                                            time = '';
-                                          });
+                                        onChanged: (value) {
+                                          print(timeControllers[index].text);
+                                          finalMap[index]["time"] =
+                                              timeControllers[index].text;
                                         },
                                         decoration: InputDecoration(
                                             hintText: '24hour format',
@@ -475,17 +466,28 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                         ),
                       );
                     });
+                for (int i = 0; i < 7; i++) {
+                  flatControllers[i].clear();
+                  timeControllers[i].clear();
+                  if (finalMap[i]["flat"] == "" || finalMap[i]["time"] == "") {
+                    finalMap.remove(i);
+                  } else {
+                    continue;
+                  }
+                }
                 print(finalMap);
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => OtpTesting(
-                //               phoneNo: phone,
-                //               name: name,
-                //               flatdetails: _getMap(),
-                //               uid: uid,
-                //               image: _image,
-                //             )));
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtpTesting(
+                              phoneNo: phone,
+                              name: name,
+                              flatdetails: finalMap,
+                              uid: uid,
+                              image: _image,
+                              firebaseMode: 3,
+                            )));
                 // Navigator.pop(context);
                 // _uploadDataToFirebase();
               },
@@ -631,6 +633,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                               ownName: oName,
                               uid: uid,
                               image: _image,
+                              firebaseMode: 2,
                             )));
                 // Navigator.pop(context);
                 // _uploadDataToFirebase();

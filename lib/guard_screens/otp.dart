@@ -38,7 +38,7 @@ class OtpTesting extends StatefulWidget {
       this.isGuest,
       this.purpose,
       this.ownName,
-      this.firebaseMode,
+      @required this.firebaseMode,
       this.image,
       this.flatdetails,
       this.uid})
