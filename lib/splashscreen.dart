@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,7 +21,12 @@ class _SplashScreenState extends State<SplashScreen> {
       color: Color(0xFF50CDFF),
       height: MediaQuery.of(context).size.height,
       child: Center(
-        child: Image.asset('assets/images/logo.jpeg' , fit: BoxFit.scaleDown,width: 200.0,height: 200.0,),
+        child: Image.asset(
+          'assets/images/logo.jpeg',
+          fit: BoxFit.scaleDown,
+          width: 200.0,
+          height: 200.0,
+        ),
       ),
     );
   }

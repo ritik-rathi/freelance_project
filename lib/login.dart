@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+<<<<<<< HEAD
 import 'package:flutter/widgets.dart' as prefix0;
 import 'package:freelance/main.dart';
+=======
+>>>>>>> 4286b73af4931abf0c1527262297d8d52afcfce2
 import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'package:freelance/guard_screens/mainScreen.dart';
 
 //Implement society id check
 

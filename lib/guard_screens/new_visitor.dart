@@ -113,7 +113,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Name',
+                          'Visitor Name',
                           style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -128,6 +128,37 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         // controller: _taskTitleController,
                         decoration: InputDecoration(
                             hintText: 'Visitor\'s Name',
+                            hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.0)),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Owner Name',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                      TextField(
+                        autofocus: false,
+                        onChanged: (value) {
+                          oName = value;
+                        },
+                        // controller: _taskTitleController,
+                        decoration: InputDecoration(
+                            hintText: 'Owner\'s Name',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,

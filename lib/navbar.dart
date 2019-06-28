@@ -4,7 +4,6 @@
    *******************Thank You!************************************************/
 
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math_64.dart' as math;
 
 class NavBar extends StatefulWidget {
   final List<IconData> icons;
@@ -92,8 +91,16 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                       widget.icons[i],
                       color: Colors.grey,
                     ),
-                    SizedBox(height: 8.0,),
-                    Text(widget.names[i] , style: TextStyle(color: Colors.white , fontSize: 15.0 , fontWeight: FontWeight.bold),)
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    Text(
+                      widget.names[i],
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold),
+                    )
                   ],
                 ),
               ),
@@ -177,6 +184,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
       color: Colors.white,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
@@ -209,7 +217,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                       ? positionAnim.value
                       : selectedIndex) *
                   (_size.width / widget.icons.length),
-              top: getCircleYPosition()-20,
+              top: getCircleYPosition() - 20,
               child: Container(
                 margin: EdgeInsets.only(left: circleLeftPadding),
                 child: SizedBox(

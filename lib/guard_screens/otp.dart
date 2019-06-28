@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:http/http.dart' as http;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'package:cloud_functions/cloud_functions.dart' as func;
 
 String smsCode;
 String verificationId;
@@ -38,7 +36,7 @@ class OtpTesting extends StatefulWidget {
       this.isGuest,
       this.purpose,
       this.ownName,
-      this.firebaseMode,
+      @required this.firebaseMode,
       this.image,
       this.flatdetails,
       this.uid})
@@ -87,8 +85,8 @@ class _OtpTestingState extends State<OtpTesting> {
     var url =
         'https://api.textlocal.in/send/?+apiKey=$apiKey&message=$message&sender=$sender&numbers=$number';
 
-    var response = http.post(url).then((res) => print(res));
-    print("CAlled");
+    http.post(url).then((res) => print(res));
+    print("Called");
   }
 
   @override
@@ -630,9 +628,8 @@ class _OtpTestingState extends State<OtpTesting> {
   }
 
   _uploadDataToFirebase() {
-    DocumentReference databaseRef = Firestore.instance
-        .collection("/society/0aklfheb/visitors")
-        .document();
+    DocumentReference databaseRef =
+        Firestore.instance.collection("/society/0aklfheb/visitors").document();
 
     Map<String, dynamic> tasks = {
       "house": widget.house,
@@ -650,9 +647,8 @@ class _OtpTestingState extends State<OtpTesting> {
   }
 
   _uploadDataToFirebase_delivery() {
-    DocumentReference databaseRef = Firestore.instance
-        .collection("/society/0aklfheb/delivery")
-        .document();
+    DocumentReference databaseRef =
+        Firestore.instance.collection("/society/0aklfheb/delivery").document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
@@ -660,7 +656,7 @@ class _OtpTestingState extends State<OtpTesting> {
       "flat": widget.house,
       "visitTime": time.toString(),
       "organization": widget.purpose,
-      "recepient": widget.ownName,      
+      "recepient": widget.ownName,
       "otp": otp,
     };
     databaseRef.setData(tasks).whenComplete(() {
@@ -669,9 +665,8 @@ class _OtpTestingState extends State<OtpTesting> {
   }
 
   _uploadDataToFirebase_maid() {
-    DocumentReference databaseRef = Firestore.instance
-        .collection("/society/0aklfheb/maids")
-        .document();
+    DocumentReference databaseRef =
+        Firestore.instance.collection("/society/0aklfheb/maids").document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
@@ -685,9 +680,8 @@ class _OtpTestingState extends State<OtpTesting> {
   }
 
   _uploadDataToFirebase_driver() {
-    DocumentReference databaseRef = Firestore.instance
-        .collection("/society/0aklfheb/driver")
-        .document();
+    DocumentReference databaseRef =
+        Firestore.instance.collection("/society/0aklfheb/driver").document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,

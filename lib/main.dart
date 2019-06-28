@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'HOMANTRA',
       theme: ThemeData(fontFamily: 'Raleway', primaryColor: Color(0xFF50CDFF)),
-      home: Login(),
-      initialRoute: isLoggedIn ? '.' : '/user',
+      home: MaidRec(),
+      // initialRoute: '.',
       routes: {
         '.' : (context) => Login(),
         '/newvisitor': (context) => NewVisitorPage(),
