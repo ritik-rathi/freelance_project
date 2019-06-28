@@ -9,25 +9,6 @@ String name, phone, flat, time, oName, uid;
 int numFlats = 0;
 
 Map<int, dynamic> finalMap = {};
-Map<String, dynamic> partMap = {};
-Map<int, TextEditingController> flatControllers = {};
-Map<int, TextEditingController> timeControllers = {};
-Map<int, TextEditingController> _getMap() {
-  for (var i = 0; i < numFlats; i++) {
-    var test = new TextEditingController();
-    flatControllers.addAll({i: test});
-  }
-  // print(controllers);
-  return flatControllers;
-}
-
-Map<int, TextEditingController> _getTimeMap() {
-  for (var i = 0; i < numFlats; i++) {
-    timeControllers.addAll({i: new TextEditingController()});
-  }
-  // print(controllers);
-  return timeControllers;
-}
 
 double _getVariableHeight() {
   switch (numFlats) {
@@ -87,11 +68,19 @@ class MaidRec extends StatefulWidget {
 class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
   File _image;
   TabController _controller;
+  var flatControllers = <TextEditingController>[];
+  var timeControllers = <TextEditingController>[];
 
   void initState() {
     super.initState();
-    _getMap();
-    _getTimeMap();
+    for (int i = 0; i < 7; i++) {
+      flatControllers.add(new TextEditingController());
+    }
+    // print(flatControllers.length);
+    for (int i = 0; i < 7; i++) {
+      timeControllers.add(new TextEditingController());
+    }
+    // print(timeControllers.length);
     _controller = TabController(vsync: this, initialIndex: 0, length: 2);
   }
 
@@ -391,13 +380,10 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                                       TextField(
                                         controller: flatControllers[index],
                                         onChanged: (value) {
-                                          flat = value;
-                                          print(flat);
-                                          setState(() {
-                                            partMap.addAll({"flat": flat});
-                                            finalMap.addAll({index: partMap});
-                                            flat = '';
-                                          });
+                                          print("$index" +
+                                              flatControllers[index].text);
+                                          finalMap[index]["flat"] =
+                                              flatControllers[index].text;
                                         },
                                         decoration: InputDecoration(
                                             hintText: 'Flat Number',
@@ -424,13 +410,11 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                                       ),
                                       TextField(
                                         controller: timeControllers[index],
-                                        onSubmitted: (value) {
-                                          time = value;
-                                          setState(() {
-                                            partMap.addAll({"time": time});
-                                            finalMap.addAll({index: partMap});
-                                            time = '';
-                                          });
+                                        onChanged: (value) {
+                                          print(value);
+                                          print(timeControllers[index].text);
+                                          finalMap[index]["time"] =
+                                              timeControllers[index].text;
                                         },
                                         decoration: InputDecoration(
                                             hintText: '24hour format',
@@ -476,16 +460,17 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                       );
                     });
                 print(finalMap);
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => OtpTesting(
-                //               phoneNo: phone,
-                //               name: name,
-                //               flatdetails: _getMap(),
-                //               uid: uid,
-                //               image: _image,
-                //             )));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtpTesting(
+                              firebaseMode: 3,
+                              phoneNo: phone,
+                              name: name,
+                              flatdetails: finalMap,
+                              uid: uid,
+                              image: _image,
+                            )));
                 // Navigator.pop(context);
                 // _uploadDataToFirebase();
               },
@@ -626,6 +611,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                     context,
                     MaterialPageRoute(
                         builder: (context) => OtpTesting(
+                              firebaseMode: 2,
                               phoneNo: phone,
                               name: name,
                               ownName: oName,
