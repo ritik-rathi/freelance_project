@@ -4,29 +4,31 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:freelance/login.dart';
 import 'package:freelance/main.dart';
+import 'package:freelance/soc_ID.dart';
 
 Color color = Color(0xFF50CDFF);
-var query = Firestore.instance.collection('/society/0aklfheb/users');
-var name, email, phone, flat, block, profile;
+var query = Firestore.instance.collection('/society/$socID/users');
+var name, email, phone, block, profile;
+int flat;
 
-Future<void> credential() async {
-  profile = await query.where('Email', isEqualTo: uid).snapshots().first;
+// Future<void> credential() async {
+//   profile = await query.where('Email', isEqualTo: uid).snapshots().first;
 
-  name = profile.documents[0]['user-1'];
-  print('aaaaaaaaaa........$name');
+//   name = profile.documents[0]['user-1'];
+//   print('aaaaaaaaaa........$name');
 
-  email = profile.documents[0]['Email'].toString();
-  print('aaaaaaaaaa........$email');
+//   email = profile.documents[0]['Email'].toString();
+//   print('aaaaaaaaaa........$email');
 
-  phone = profile.documents[0]['Phone - 1'];
-  print('aaaaaaaaaa........$phone');
+//   phone = profile.documents[0]['Phone - 1'];
+//   print('aaaaaaaaaa........$phone');
 
-  flat = profile.documents[0]['Flat'].toString();
-  print('aaaaaaaaaa........$flat');
+//   flat = profile.documents[0]['Flat'].toString();
+//   print('aaaaaaaaaa........$flat');
 
-  block = profile.documents[0]['Block'].toString();
-  print('aaaaaaaaaa........$block');
-}
+//   block = profile.documents[0]['Block'].toString();
+//   print('aaaaaaaaaa........$block');
+// }
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -44,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: StreamBuilder(
           stream: query.where('Email', isEqualTo: uid).snapshots(),
           builder: (context, snapshot) {
+            flat = snapshot.data.documents[0]['Flat'];
             if (!snapshot.hasData)
               return CircularProgressIndicator();
             else {
