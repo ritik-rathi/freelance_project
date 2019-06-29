@@ -12,7 +12,6 @@ import 'package:freelance/splashscreen.dart';
 import 'package:freelance/user_screens/profile.dart';
 import 'package:freelance/user_screens/visitor_log.dart';
 
-
 bool isLoggedIn = false;
 
 void main() {
@@ -27,10 +26,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'HOMANTRA',
       theme: ThemeData(fontFamily: 'Poppins', primaryColor: Color(0xFF50CDFF)),
-      home: MainScreen(),
-      // initialRoute: '.',
+      home: Login(),
+      initialRoute: '.',
       routes: {
-        '.' : (context) => Login(),
+        '.': (context) => Access(),
+        '/login': (context) => Login(),
         '/newvisitor': (context) => NewVisitorPage(),
         '/user': (context) => Profile(),
         '/guard': (context) => MainScreen(),

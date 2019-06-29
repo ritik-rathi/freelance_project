@@ -29,7 +29,7 @@ class Access extends StatelessWidget {
             int length = snapshot.documents.length;
             for (int i = 0; i < length; i++) {
               if (ids[i] == socID) {
-                Navigator.pushNamed(context, '.');
+                Navigator.pushNamed(context, '/login');
                 print(ids[i]);
                 break;
               } else {
@@ -38,6 +38,11 @@ class Access extends StatelessWidget {
                     builder: (context) {
                       return AlertDialog(
                         title: Text('Enter valid society ID'),
+                        actions: <Widget>[
+                          GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Icon(Icons.check))
+                        ],
                       );
                     });
               }

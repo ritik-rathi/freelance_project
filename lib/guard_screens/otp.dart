@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:freelance/soc_ID.dart';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,7 +22,7 @@ class OtpTesting extends StatefulWidget {
   final String purpose; // only visitor
   final String ownName; // all
   final File image; // all
-  final Map flatdetails; // only maid
+  final List flatdetails; // only maid
   final String uid; // only maid and driver
   final String org; //only delviery
 
@@ -105,7 +106,8 @@ class _OtpTestingState extends State<OtpTesting> {
   @override
   void initState() {
     super.initState();
-     sendOTP();
+    print(otp);
+    //  sendOTP();
     currController = controller1;
   }
 
@@ -256,8 +258,19 @@ class _OtpTestingState extends State<OtpTesting> {
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text("Enter OTP"),
-        backgroundColor: Colors.red,
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/guard');
+            },
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            )),
+        title: Text(
+          "Enter OTP",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xff1A2980),
       ),
       backgroundColor: Color(0xFFeaeaea),
       body: Container(
@@ -301,9 +314,9 @@ class _OtpTestingState extends State<OtpTesting> {
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: Image(
-                      image: AssetImage('Assets/images/otp-icon.png'),
-                      height: 120.0,
-                      width: 120.0,
+                      image: AssetImage('assets/images/logo.jpeg'),
+                      height: 150.0,
+                      width: 300.0,
                     ),
                   )
                 ],
@@ -495,13 +508,18 @@ class _OtpTestingState extends State<OtpTesting> {
                                 textAlign: TextAlign.center),
                           ),
                           MaterialButton(
-                              color: Colors.red,
+                              color: Color(0xff1A2980),
                               onPressed: () {
                                 matchOtp(otp);
                                 print(entered);
                                 entered = '';
                               },
-                              child: Text('Verify')),
+                              child: Text(
+                                'Verify',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              )),
                         ],
                       ),
                     ),
@@ -632,7 +650,7 @@ class _OtpTestingState extends State<OtpTesting> {
   // Upload to visitor collection
   _uploadDataToFirebase_visitor() {
     DocumentReference databaseRef =
-        Firestore.instance.collection("/society/0aklfheb/visitors").document();
+        Firestore.instance.collection("/society/$socID/visitors").document();
 
     Map<String, dynamic> tasks = {
       "block": widget.block,
@@ -645,14 +663,14 @@ class _OtpTestingState extends State<OtpTesting> {
       "owner": widget.ownName
     };
     databaseRef.setData(tasks).whenComplete(() {
-      print('User created!');
+      print('Visitor created!');
     });
   }
 
   // Delivery collection
   _uploadDataToFirebase_delivery() {
     DocumentReference databaseRef =
-        Firestore.instance.collection("/society/0aklfheb/delivery").document();
+        Firestore.instance.collection("/society/$socID/delivery").document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
@@ -665,14 +683,14 @@ class _OtpTestingState extends State<OtpTesting> {
       "otp": otp,
     };
     databaseRef.setData(tasks).whenComplete(() {
-      print('User created!');
+      print('Delivery created!');
     });
   }
 
   // maids collection
   _uploadDataToFirebase_maid() {
     DocumentReference databaseRef =
-        Firestore.instance.collection("/society/0aklfheb/maids").document();
+        Firestore.instance.collection("/society/$socID/maids").document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
@@ -681,14 +699,14 @@ class _OtpTestingState extends State<OtpTesting> {
       "uid": widget.uid
     };
     databaseRef.setData(tasks).whenComplete(() {
-      print('User created!');
+      print('Maid created!');
     });
   }
 
   // driver collection
   _uploadDataToFirebase_driver() {
     DocumentReference databaseRef =
-        Firestore.instance.collection("/society/0aklfheb/driver").document();
+        Firestore.instance.collection("/society/$socID/driver").document();
 
     Map<String, dynamic> tasks = {
       "name": widget.name,
@@ -697,7 +715,7 @@ class _OtpTestingState extends State<OtpTesting> {
       "uid": widget.uid
     };
     databaseRef.setData(tasks).whenComplete(() {
-      print('User created!');
+      print('Driver created!');
     });
   }
 

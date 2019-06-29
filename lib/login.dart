@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-
+import 'dart:math' as math;
 import 'package:freelance/soc_ID.dart';
 
 //Implement society id check
@@ -105,6 +105,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   flex: 2,
                   // below is a check that finds out which tab is active and sets the color accordingly
                   child: PageView(
+                    controller: _pageController,
                     onPageChanged: (i) {
                       if (i == 0) {
                         setState(() {
@@ -150,7 +151,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    //login();
     tid = 0;
     tpwd = 0;
     fadeAnimationController =
@@ -164,7 +164,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       DeviceOrientation.portraitDown,
     ]);
 
-    _pageController = PageController();
+    _pageController = new PageController(initialPage: 0);
   }
 
   Widget _buildMenuBar(BuildContext context) {
@@ -172,11 +172,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       width: 300.0,
       height: 50.0,
       decoration: BoxDecoration(
-        color: Color(0x552B2B2B),
+        color: Color(0x552B2B2B).withAlpha(50),
         borderRadius: BorderRadius.all(Radius.circular(25.0)),
       ),
       child: CustomPaint(
-        // painter: TabIndicationPainter(pageController: _pageController),
+        painter: TabIndicationPainter(pageController: _pageController),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -186,7 +186,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 highlightColor: Colors.transparent,
                 onPressed: _onSignInButtonPress,
                 child: Text(
-                  "User",
+                  "Resident",
                   style: TextStyle(
                       color: left,
                       fontSize: 16.0,
@@ -194,14 +194,14 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            //Container(height: 33.0, width: 1.0, color: Colors.white),
+            Container(height: 33.0, width: 1.0, color: Colors.white),
             Expanded(
               child: FlatButton(
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onPressed: _onSignUpButtonPress,
                 child: Text(
-                  "Society",
+                  "Guard",
                   style: TextStyle(
                       color: right,
                       fontSize: 16.0,
@@ -242,15 +242,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                           child: TextField(
                             focusNode: myFocusNodeEmailLogin,
-                            // validator: (input) {
-                            //   if (input.length < 8)
-                            //     return "Make sure your password consists of atleast 8 letters";
-                            // },
                             controller: emailCon,
                             onChanged: (input) {
                               uid = input;
                             },
-                            // keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.emailAddress,
                             style: TextStyle(
                                 fontFamily: "WorkSansSemiBold",
                                 fontSize: 16.0,
@@ -269,21 +265,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
-
-                        // Container(
-                        //   width: 250.0,
-                        //   height: 1.0,
-                        //   color: Colors.grey[400],
-                        // ),
                         Padding(
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                           child: TextField(
                             focusNode: myFocusNodePasswordLogin,
-                            // validator: (input) {
-                            //   if (input.length < 4)
-                            //     return "Make sure your password consists of atleast 8 letters";
-                            // },
                             onChanged: (input) {
                               upwd = input;
                             },
@@ -391,11 +377,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     //key: _formkey,
                     child: Column(
                       children: <Widget>[
-                        // Container(
-                        //   width: 250.0,
-                        //   height: 1.0,
-                        //   color: Colors.grey[400],
-                        // ),
+                        Container(
+                          width: 250.0,
+                          height: 1.0,
+                          color: Colors.grey[400],
+                        ),
                         Padding(
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
@@ -427,8 +413,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               suffixIcon: GestureDetector(
                                 onTap: _toggleLogin,
                                 child: Icon(
-                                  Icons.check_box,
-                                  size: 15.0,
+                                  Icons.remove_red_eye,
+                                  size: 25.0,
                                   color: Colors.black,
                                 ),
                               ),
@@ -450,7 +436,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 child: MaterialButton(
                     highlightColor: Colors.transparent,
                     splashColor: Color(0xFF50CDFF),
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 42.0),
@@ -464,9 +449,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     ),
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/splash');
-                      // login();
-                      // Navigator.pushNamed(context, '/home');
-                    } // showInSnackBar("Login button pressed")),
+                    } 
                     ),
               ),
             ],
@@ -482,7 +465,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   void _onSignUpButtonPress() {
-    _pageController?.animateToPage(1,
+    _pageController.animateToPage(1,
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
   }
 
@@ -503,4 +486,54 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
     });
   }
+}
+
+class TabIndicationPainter extends CustomPainter {
+  Paint painter;
+  final double dxTarget;
+  final double dxEntry;
+  final double radius;
+  final double dy;
+
+  final PageController pageController;
+
+  TabIndicationPainter(
+      {this.dxTarget = 125.0,
+      this.dxEntry = 25.0,
+      this.radius = 21.0,
+      this.dy = 25.0,
+      this.pageController})
+      : super(repaint: pageController) {
+    painter = new Paint()
+      ..color = Color(0xff1A2980)
+      ..style = PaintingStyle.fill;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final pos = pageController.position;
+    double fullExtent =
+        (pos.maxScrollExtent - pos.minScrollExtent + pos.viewportDimension);
+
+    double pageOffset = pos.extentBefore / fullExtent;
+
+    bool left2right = dxEntry < dxTarget;
+    Offset entry = new Offset(left2right ? dxEntry : dxTarget, dy);
+    Offset target = new Offset(left2right ? dxTarget : dxEntry, dy);
+
+    Path path = new Path();
+    path.addArc(new Rect.fromCircle(center: entry, radius: radius),
+        0.5 * math.pi, 1 * math.pi);
+    path.addRect(
+        new Rect.fromLTRB(entry.dx, dy - radius, target.dx, dy + radius));
+    path.addArc(new Rect.fromCircle(center: target, radius: radius),
+        1.5 * math.pi, 1 * math.pi);
+
+    canvas.translate(size.width * pageOffset, 0.0);
+    canvas.drawShadow(path, Color(0xFF50CDFF), 3.0, false);
+    canvas.drawPath(path, painter);
+  }
+
+  @override
+  bool shouldRepaint(TabIndicationPainter oldDelegate) => true;
 }

@@ -8,15 +8,15 @@ import 'package:random_string/random_string.dart';
 String name = "", phone = "", oName = "", uid;
 int numFlats = 0;
 
-Map<int, dynamic> finalMap = {
-  0: {"flat": "", "time": ""},
-  1: {"flat": "", "time": ""},
-  2: {"flat": "", "time": ""},
-  3: {"flat": "", "time": ""},
-  4: {"flat": "", "time": ""},
-  5: {"flat": "", "time": ""},
-  6: {"flat": "", "time": ""}
-};
+List<dynamic> finalMap = [
+  {"flat": "", "time": ""},
+  {"flat": "", "time": ""},
+  {"flat": "", "time": ""},
+  {"flat": "", "time": ""},
+  {"flat": "", "time": ""},
+  {"flat": "", "time": ""},
+  {"flat": "", "time": ""}
+];
 
 double _getVariableHeight() {
   switch (numFlats) {
@@ -284,7 +284,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 TextField(
-                  // autofocus: true,
+                  keyboardType: TextInputType.number,
                   onChanged: (value) {
                     phone = value;
                   },
@@ -314,6 +314,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 TextField(
+                  keyboardType: TextInputType.number,
                   onChanged: (value) {
                     setState(() {
                       numFlats = int.parse(value);
@@ -359,7 +360,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                     ),
                   )
                 : Container(
-                    height: _getVariableHeight() - 600,
+                    height: numFlats == 1 ? 100.0 : _getVariableHeight() - 600,
                     width: double.infinity,
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -453,40 +454,6 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
               ),
               color: Colors.blue,
               onPressed: () {
-                uid = randomAlphaNumeric(6);
-                print(uid);
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        actions: <Widget>[
-                          GestureDetector(
-                            child: Icon(
-                              Icons.check,
-                              color: Color(0xff1A2980),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => OtpTesting(
-                                            phoneNo: phone,
-                                            name: name,
-                                            flatdetails: finalMap,
-                                            uid: uid,
-                                            image: _image,
-                                            firebaseMode: 3,
-                                          )));
-                            },
-                          )
-                        ],
-                        title: Center(
-                          child: Text('Unique ID is: $uid',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20)),
-                        ),
-                      );
-                    });
                 for (int i = 0; i < 7; i++) {
                   flatControllers[i].clear();
                   timeControllers[i].clear();
@@ -497,6 +464,58 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   }
                 }
                 print(finalMap);
+                uid = randomAlphaNumeric(6);
+                print(uid);
+                if (name != "" &&
+                    phone != "" &&
+                    phone.length == 10 &&
+                    numFlats != 0 &&
+                    finalMap[0]["flat"] != "" &&
+                    finalMap[0]["time"] != "") {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          actions: <Widget>[
+                            GestureDetector(
+                              child: Icon(
+                                Icons.check,
+                                color: Color(0xff1A2980),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => OtpTesting(
+                                              phoneNo: phone,
+                                              name: name,
+                                              flatdetails: finalMap,
+                                              uid: uid,
+                                              image: _image,
+                                              firebaseMode: 3,
+                                            )));
+                                // finalMap.clear();
+                              },
+                            )
+                          ],
+                          title: Center(
+                            child: Text('Unique ID is: $uid',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20)),
+                          ),
+                        );
+                      });
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Center(
+                            child: Text('Please enter valid details'),
+                          ),
+                        );
+                      });
+                }
               },
             ),
           )
@@ -561,6 +580,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 TextField(
+                  keyboardType: TextInputType.number,
                   onChanged: (value) {
                     phone = value;
                   },
@@ -659,7 +679,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                       builder: (context) {
                         return AlertDialog(
                           title: Center(
-                            child: Text('Please enter details'),
+                            child: Text('Please enter valid details'),
                           ),
                         );
                       });
