@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'HOMANTRA',
-      theme: ThemeData(fontFamily: 'Raleway', primaryColor: Color(0xFF50CDFF)),
-      home: MaidRec(),
+      theme: ThemeData(fontFamily: 'Poppins', primaryColor: Color(0xFF50CDFF)),
+      home: MainScreen(),
       // initialRoute: '.',
       routes: {
         '.' : (context) => Login(),

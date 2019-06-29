@@ -19,7 +19,7 @@ class MainScreen extends StatelessWidget {
         child: GridView.count(
             // crossAxisSpacing: 5,
             // mainAxisSpacing: 5,
-            childAspectRatio: 0.53,
+            childAspectRatio: 0.6,
             crossAxisCount: 2,
             children: [
               GestureDetector(

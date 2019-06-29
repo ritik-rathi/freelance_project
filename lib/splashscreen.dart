@@ -18,7 +18,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: Color(0xFF50CDFF),
+      decoration: BoxDecoration(
+          gradient: new LinearGradient(
+              begin: const FractionalOffset(0.0, 0.0),
+              end: const FractionalOffset(1.0, 1.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+              colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
       height: MediaQuery.of(context).size.height,
       child: Center(
         child: Image.asset(

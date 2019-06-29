@@ -16,7 +16,8 @@ class OtpTesting extends StatefulWidget {
   final String phoneNo; // used in all
   final String name; // used in all
   final String house; //used in all
-  final bool isGuest; //useless
+  final String block; //used in delivery and visitor
+  // final bool isGuest; //useless
   final String purpose; // only visitor
   final String ownName; // all
   final File image; // all
@@ -31,9 +32,10 @@ class OtpTesting extends StatefulWidget {
       {Key key,
       this.org,
       this.phoneNo,
+      this.block,
       this.house,
       this.name,
-      this.isGuest,
+      // this.isGuest,
       this.purpose,
       this.ownName,
       @required this.firebaseMode,
@@ -59,7 +61,7 @@ class _OtpTestingState extends State<OtpTesting> {
   Function _getFirebaseFunc(int index) {
     switch (index) {
       case (0):
-        return _uploadDataToFirebase();
+        return _uploadDataToFirebase_visitor();
         break;
       case (1):
         return _uploadDataToFirebase_delivery();
@@ -71,7 +73,7 @@ class _OtpTestingState extends State<OtpTesting> {
         return _uploadDataToFirebase_maid();
         break;
       default:
-        return _uploadDataToFirebase();
+        return _uploadDataToFirebase_visitor();
     }
   }
 
@@ -627,15 +629,16 @@ class _OtpTestingState extends State<OtpTesting> {
     }
   }
 
-  _uploadDataToFirebase() {
+  // Upload to visitor collection
+  _uploadDataToFirebase_visitor() {
     DocumentReference databaseRef =
         Firestore.instance.collection("/society/0aklfheb/visitors").document();
 
     Map<String, dynamic> tasks = {
+      "block": widget.block,
       "house": widget.house,
       "visitTime": time.toString(),
       "purpose": widget.purpose,
-      "isGuset": widget.isGuest,
       "name": widget.name,
       "otp": otp,
       "mobile": widget.phoneNo,
@@ -646,6 +649,7 @@ class _OtpTestingState extends State<OtpTesting> {
     });
   }
 
+  // Delivery collection
   _uploadDataToFirebase_delivery() {
     DocumentReference databaseRef =
         Firestore.instance.collection("/society/0aklfheb/delivery").document();
@@ -653,6 +657,7 @@ class _OtpTestingState extends State<OtpTesting> {
     Map<String, dynamic> tasks = {
       "name": widget.name,
       "mobile": widget.phoneNo,
+      "block": widget.block,
       "flat": widget.house,
       "visitTime": time.toString(),
       "organization": widget.purpose,
@@ -664,6 +669,7 @@ class _OtpTestingState extends State<OtpTesting> {
     });
   }
 
+  // maids collection
   _uploadDataToFirebase_maid() {
     DocumentReference databaseRef =
         Firestore.instance.collection("/society/0aklfheb/maids").document();
@@ -679,6 +685,7 @@ class _OtpTestingState extends State<OtpTesting> {
     });
   }
 
+  // driver collection
   _uploadDataToFirebase_driver() {
     DocumentReference databaseRef =
         Firestore.instance.collection("/society/0aklfheb/driver").document();
@@ -694,6 +701,7 @@ class _OtpTestingState extends State<OtpTesting> {
     });
   }
 
+  //firebase image function
   Future<String> _uploadImageToFB(int otp) async {
     StorageReference ref = FirebaseStorage.instance.ref().child(otp.toString());
     StorageUploadTask uploadTask = ref.putFile(widget.image);

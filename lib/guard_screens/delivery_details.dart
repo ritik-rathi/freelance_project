@@ -5,7 +5,7 @@ import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as Im;
 
-String dName, dPhone, dOrg, rFlat, rName;
+String dName = "", dPhone = "", dOrg = "", block = "", rFlat = "", rName = "";
 String dTime = TimeOfDay.now().toString();
 
 class DeliveryPage extends StatefulWidget {
@@ -128,7 +128,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           dName = value;
                         },
@@ -158,12 +158,42 @@ class _DeliveryPageState extends State<DeliveryPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           dPhone = value;
                         },
                         decoration: InputDecoration(
                             hintText: 'Phone Number',
+                            hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.0)),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Block',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                      TextField(
+                        autofocus: false,
+                        onChanged: (value) {
+                          block = value;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Block',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -188,7 +218,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           rFlat = value;
                         },
@@ -218,7 +248,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           rName = value;
                         },
@@ -248,7 +278,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                         ),
                       ),
                       TextField(
-                        autofocus: true,
+                        autofocus: false,
                         onChanged: (value) {
                           dOrg = value;
                         },
@@ -274,17 +304,36 @@ class _DeliveryPageState extends State<DeliveryPage> {
                     ),
                     color: Colors.blue,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OtpTesting(
-                                    firebaseMode: 1,
-                                    name: dName,
-                                    phoneNo: dPhone,
-                                    org: dOrg,
-                                    ownName: rName,
-                                    house: rFlat,
-                                  )));
+                      if (block != "" &&
+                          dName != "" &&
+                          dPhone != "" &&
+                          dPhone.length == 10 &&
+                          dOrg != "" &&
+                          rName != "" &&
+                          rFlat != "") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OtpTesting(
+                                      firebaseMode: 1,
+                                      block: block,
+                                      name: dName,
+                                      phoneNo: dPhone,
+                                      org: dOrg,
+                                      ownName: rName,
+                                      house: rFlat,
+                                    )));
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Center(
+                                  child: Text('Please enter valid details'),
+                                ),
+                              );
+                            });
+                      }
                     },
                   ),
                 )

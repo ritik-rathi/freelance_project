@@ -5,7 +5,7 @@ import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 
-String name, phone, flat, time, oName, uid;
+String name = "", phone = "", oName = "", uid;
 int numFlats = 0;
 
 Map<int, dynamic> finalMap = {
@@ -173,7 +173,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
         children: <Widget>[
           Container(
             width: double.infinity,
-            height: _getVariableHeight(),
+            height: _getVariableHeight() + 50,
             child: Column(
               children: <Widget>[
                 Container(
@@ -199,7 +199,7 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                 ),
                 Container(
                   width: double.maxFinite,
-                  height: _getVariableHeight() - 70,
+                  height: _getVariableHeight() - 20,
                   child: TabBarView(
                     controller: _controller,
                     children: <Widget>[maid(), driver()],
@@ -459,6 +459,27 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
+                        actions: <Widget>[
+                          GestureDetector(
+                            child: Icon(
+                              Icons.check,
+                              color: Color(0xff1A2980),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => OtpTesting(
+                                            phoneNo: phone,
+                                            name: name,
+                                            flatdetails: finalMap,
+                                            uid: uid,
+                                            image: _image,
+                                            firebaseMode: 3,
+                                          )));
+                            },
+                          )
+                        ],
                         title: Center(
                           child: Text('Unique ID is: $uid',
                               style: TextStyle(
@@ -476,19 +497,6 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   }
                 }
                 print(finalMap);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OtpTesting(
-                              phoneNo: phone,
-                              name: name,
-                              flatdetails: finalMap,
-                              uid: uid,
-                              image: _image,
-                              firebaseMode: 3,
-                            )));
-                // Navigator.pop(context);
-                // _uploadDataToFirebase();
               },
             ),
           )
@@ -553,11 +561,9 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 TextField(
-                  // autofocus: true,
                   onChanged: (value) {
                     phone = value;
                   },
-                  // controller: _taskTimeController,
                   decoration: InputDecoration(
                       hintText: 'Driver\'s Phone Number',
                       hintStyle: TextStyle(
@@ -611,31 +617,53 @@ class _MaidRecState extends State<MaidRec> with SingleTickerProviderStateMixin {
               color: Colors.blue,
               onPressed: () {
                 uid = randomAlphaNumeric(6);
-                print(uid);
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Center(
-                          child: Text('Unique ID is: $uid',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20)),
-                        ),
-                      );
-                    });
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OtpTesting(
-                              firebaseMode: 2,
-                              phoneNo: phone,
-                              name: name,
-                              ownName: oName,
-                              uid: uid,
-                              image: _image,
-                            )));
-                // Navigator.pop(context);
-                // _uploadDataToFirebase();
+                if (name != "" &&
+                    phone != "" &&
+                    phone.length == 10 &&
+                    oName != "") {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          actions: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => OtpTesting(
+                                              firebaseMode: 2,
+                                              phoneNo: phone,
+                                              name: name,
+                                              ownName: oName,
+                                              uid: uid,
+                                              image: _image,
+                                            )));
+                              },
+                              child: Icon(
+                                Icons.check,
+                                color: Color(0xff1A2980),
+                              ),
+                            )
+                          ],
+                          title: Center(
+                            child: Text('Unique ID is: $uid',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20)),
+                          ),
+                        );
+                      });
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Center(
+                            child: Text('Please enter details'),
+                          ),
+                        );
+                      });
+                }
               },
             ),
           )

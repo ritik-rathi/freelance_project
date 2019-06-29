@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance/guard_screens/otp.dart';
 import 'package:image_picker/image_picker.dart';
 
-String vName, vPhone, vPurpose, vFlat, oName;
+String vName, vPhone, vPurpose, block, vFlat, oName;
 String vTime = TimeOfDay.now().toString();
 
 class NewVisitorPage extends StatefulWidget {
@@ -59,6 +59,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                     height: 256.0,
                     decoration: BoxDecoration(
                         color: Colors.black,
+                        shape: BoxShape.circle,
                         border: Border.all(width: 2.0, color: Colors.white)),
                     child: _image == null
                         ? Center(
@@ -121,11 +122,11 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
+                        keyboardType: TextInputType.text,
                         autofocus: false,
                         onChanged: (value) {
                           vName = value;
                         },
-                        // controller: _taskTitleController,
                         decoration: InputDecoration(
                             hintText: 'Visitor\'s Name',
                             hintStyle: TextStyle(
@@ -152,6 +153,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
+                        keyboardType: TextInputType.text,
                         autofocus: false,
                         onChanged: (value) {
                           oName = value;
@@ -183,13 +185,44 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
+                        keyboardType: TextInputType.number,
                         autofocus: false,
                         onChanged: (value) {
                           vPhone = value;
                         },
-                        // controller: _taskTimeController,
                         decoration: InputDecoration(
                             hintText: 'Visitor\'s Phone Number',
+                            hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.0)),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Block',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.text,
+                        autofocus: false,
+                        onChanged: (value) {
+                          block = value;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Block',
                             hintStyle: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -214,6 +247,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
+                        keyboardType: TextInputType.text,
                         autofocus: false,
                         onChanged: (value) {
                           vFlat = value;
@@ -245,6 +279,7 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                         ),
                       ),
                       TextField(
+                        keyboardType: TextInputType.text,
                         autofocus: false,
                         onChanged: (value) {
                           vPurpose = value;
@@ -284,8 +319,8 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                                       phoneNo: vPhone,
                                       name: vName,
                                       house: vFlat,
+                                      block: block,
                                       purpose: vPurpose,
-                                      isGuest: true,
                                       ownName: oName,
                                       image: _image,
                                       firebaseMode: 0,

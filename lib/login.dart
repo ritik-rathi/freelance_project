@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-<<<<<<< HEAD
-import 'package:flutter/widgets.dart' as prefix0;
-import 'package:freelance/main.dart';
-=======
->>>>>>> 4286b73af4931abf0c1527262297d8d52afcfce2
 import 'dart:async';
 
 //Implement society id check
@@ -307,12 +302,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         Padding(
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextField(
-                            focusNode: myFocusNodeEmailLogin,
-                            // validator: (input) {
-                            //   if (input.length < 8)
-                            //     return "Make sure your password consists of atleast 8 letters";
-                            // },
+                          child: TextField(                            
                             onChanged: (input) {
                               flat = input;
                             },
@@ -391,24 +381,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   color: Color(0xFF50CDFF),
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   border: Border.all(color: Colors.white, width: 3),
-                  // boxShadow: <BoxShadow>[
-                  //   BoxShadow(
-                  //     color: Color(0xffd8fbff),
-                  //     offset: Offset(1.0, 6.0),
-                  //     blurRadius: 20.0,
-                  //   ),
-                  //   BoxShadow(
-                  //     color: Color(0xFF50CDFF),
-                  //     offset: Offset(1.0, 6.0),
-                  //     blurRadius: 20.0,
-                  //   ),
-                  // ],
-                  // gradient: new LinearGradient(
-                  //     colors: [Color(0xFF50CDFF), Color(0xffd8fbff)],
-                  //     begin: const FractionalOffset(0.2, 0.2),
-                  //     end: const FractionalOffset(1.0, 1.0),
-                  //     stops: [0.0, 1.0],
-                  //     tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
                     highlightColor: Colors.transparent,
@@ -436,17 +408,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title:
-                                      prefix0.Text('Enter valid credentials'),
+                                  title: Text('Enter valid credentials'),
                                 );
                               });
                         }
                       });
                       emailCon.clear();
                       idCon.clear();
-                      setState(() {
-                        isLoggedIn = true;
-                      });
                     }),
               ),
             ],
