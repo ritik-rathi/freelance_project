@@ -103,7 +103,7 @@ class _OtpTestingState extends State<OtpTesting> {
   @override
   void initState() {
     super.initState();
-    // sendOTP();
+     sendOTP();
     currController = controller1;
   }
 

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-<<<<<<< HEAD
 import 'package:flutter/widgets.dart' as prefix0;
 import 'package:freelance/main.dart';
-=======
->>>>>>> 4286b73af4931abf0c1527262297d8d52afcfce2
 import 'dart:async';
+
+import 'package:freelance/soc_ID.dart';
 
 //Implement society id check
 
 bool email = false, password = false;
-String uid, sid, flat, upwd, spwd;
+String uid, upwd, spwd;
 var tid, tpwd;
-var query = Firestore.instance.collection('/society/0aklfheb/users');
+var query = Firestore.instance.collection('/society/$socID/users');
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
@@ -235,7 +234,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 ),
                 child: Container(
                   width: 300.0,
-                  height: 350.0,
+                  height: 200.0,
                   child: Form(
                     key: _formkey,
                     child: Column(
@@ -272,69 +271,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextField(
-                            focusNode: myFocusNodeEmailLogin,
-                            // validator: (input) {
-                            //   if (input.length < 8)
-                            //     return "Make sure your password consists of atleast 8 letters";
-                            // },
-                            onChanged: (input) {
-                              sid = input;
-                            },
 
-                            // keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.event_note,
-                                color: Colors.black,
-                                size: 22.0,
-                              ),
-                              hintText: "Society ID",
-                              hintStyle: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 17.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextField(
-                            focusNode: myFocusNodeEmailLogin,
-                            // validator: (input) {
-                            //   if (input.length < 8)
-                            //     return "Make sure your password consists of atleast 8 letters";
-                            // },
-                            onChanged: (input) {
-                              flat = input;
-                            },
-                            // keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.event_note,
-                                color: Colors.black,
-                                size: 22.0,
-                              ),
-                              hintText: "Flat Number",
-                              hintStyle: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 17.0),
-                            ),
-                          ),
-                        ),
                         // Container(
                         //   width: 250.0,
                         //   height: 1.0,
@@ -372,8 +309,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               suffixIcon: GestureDetector(
                                 onTap: _toggleLogin,
                                 child: Icon(
-                                  Icons.check_box,
-                                  size: 15.0,
+                                  Icons.remove_red_eye,
+                                  size: 25.0,
                                   color: Colors.black,
                                 ),
                               ),
@@ -386,7 +323,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 325.0),
+                margin: EdgeInsets.only(top: 175.0),
                 decoration: new BoxDecoration(
                   color: Color(0xFF50CDFF),
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -478,37 +415,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     //key: _formkey,
                     child: Column(
                       children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                          child: TextFormField(
-                            focusNode: myFocusNodeEmailLogin,
-                            validator: (input) {
-                              if (input.length < 8)
-                                return "Make sure your password consists of atleast 8 letters";
-                            },
-                            onFieldSubmitted: (input) {
-                              sid = input;
-                            },
-                            // keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              icon: Icon(
-                                Icons.event_note,
-                                color: Colors.black,
-                                size: 22.0,
-                              ),
-                              hintText: "Username",
-                              hintStyle: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 17.0),
-                            ),
-                          ),
-                        ),
                         // Container(
                         //   width: 250.0,
                         //   height: 1.0,
