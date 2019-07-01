@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance/user_screens/maid_sched.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../soc_ID.dart';
+
+var _keys = <GlobalKey>[];
 
 class MaidScreen extends StatelessWidget {
   final Color highlightColor = Color(0xffedff2d);
@@ -15,7 +21,7 @@ class MaidScreen extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-              begin: Alignment.topCenter, 
+              begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [Color(0xFF50CDFF), Color(0xff1A2980)],
             )),
@@ -35,10 +41,12 @@ class MaidScreen extends StatelessWidget {
           Expanded(
             child: StreamBuilder(
                 stream: Firestore.instance
-                    .collection(
-                        "societies/I6Y2LcU6vzD7ypacQ501/regularVisitors")
+                    .collection("/society/$socID/maids")
                     .snapshots(),
                 builder: (context, snapshot) {
+                  for(int  i =0; i<snapshot.data.documents.length; i++){
+                    _keys.add(new GlobalKey());
+                  }
                   if (!snapshot.hasData) {
                     return CircularProgressIndicator();
                   }
@@ -48,10 +56,18 @@ class MaidScreen extends StatelessWidget {
                         DocumentSnapshot ds = snapshot.data.documents[index];
                         var name = ds["name"];
                         var mobile = ds["mobile"];
-                        var houses = ds["houses"][0]["house"];
+                        //var houses = ds["houses"][0]["house"];
                         return GestureDetector(
+                          key: _keys[index],
                           onTap: () {
-                            Navigator.pushNamed(context, '/maidSched');
+                            Key key = _keys[index];
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MaidSched(
+                                          name: name,
+                                          key: key,
+                                        )));
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(

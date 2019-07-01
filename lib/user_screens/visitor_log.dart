@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 String url;
 
 Future image(int otp) async {
-  final ref = FirebaseStorage.instance.ref().child('366444.png');
+  final ref = FirebaseStorage.instance.ref().child('$otp');
 // no need of the file extension, the name will do fine.
   url = await ref.getDownloadURL();
   if(url != null){
