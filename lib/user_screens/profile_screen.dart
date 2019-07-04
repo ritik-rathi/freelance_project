@@ -5,11 +5,12 @@ import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:freelance/login.dart';
 import 'package:freelance/main.dart';
 import 'package:freelance/soc_ID.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Color color = Color(0xFF50CDFF);
 var query = Firestore.instance.collection('/society/$socID/users');
 var name, email, phone, block, profile;
-int flat;
+String flat;
 
 // Future<void> credential() async {
 //   profile = await query.where('Email', isEqualTo: uid).snapshots().first;
@@ -37,7 +38,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +46,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: StreamBuilder(
           stream: query.where('Email', isEqualTo: uid).snapshots(),
           builder: (context, snapshot) {
-            flat = snapshot.data.documents[0]['Flat'];
-            if (!snapshot.hasData)
-              return CircularProgressIndicator();
-            else {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              flat = snapshot.data.documents[0]['Flat'].toString();
               return Column(
                   //mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -366,7 +366,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Center(
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(context, '/user');
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0)),
                           color: Color(0xff1A2980),
@@ -402,9 +404,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Center(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '.');
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Login()));
                         setState(() {
-                         isLoggedIn = false; 
+                          isLoggedIn = false;
                         });
                       },
                       child: Text('Logout',

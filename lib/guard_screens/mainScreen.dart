@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../login.dart';
+
 class MainScreen extends StatelessWidget {
   final String user;
 
@@ -11,6 +13,16 @@ class MainScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Guard portal'),
         backgroundColor: Colors.white,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+              size: 30.0,
+              color: Colors.black,
+            ),
+            onPressed: () => dialog(context),
+          )
+        ],
       ),
       backgroundColor: Colors.transparent,
       body: Container(
@@ -34,7 +46,7 @@ class MainScreen extends StatelessWidget {
                         size: 50,
                       ))),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.pushNamed(context, '/frequent');
                 },
                 child: _optionCard(
@@ -112,5 +124,34 @@ class MainScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<bool> dialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                height: 85,
+                width: 120,
+                child: Card(
+                  color: Colors.white,
+                  elevation: 2,
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Login()));
+                      },
+                      child: Text('Logout',
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Color(0xff1A2980),
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  ),
+                ),
+              ),
+            ));
   }
 }

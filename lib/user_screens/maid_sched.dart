@@ -68,7 +68,7 @@ class _MaidSchedState extends State<MaidSched> {
                                     color: Colors.white,
                                   ),
                                   Text(
-                                      snapshot.data.documents[index]['flatTime']
+                                      snapshot.data.documents['flatTime'][index]
                                           ['flat'],
                                       style: TextStyle(
                                           fontSize: 25,

@@ -29,7 +29,7 @@ class Access extends StatelessWidget {
             int length = snapshot.documents.length;
             for (int i = 0; i < length; i++) {
               if (ids[i] == socID) {
-                Navigator.pushNamed(context, '/login');
+                Navigator.pushReplacementNamed(context, '/login');
                 print(ids[i]);
                 break;
               } else {

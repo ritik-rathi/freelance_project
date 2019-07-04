@@ -118,8 +118,8 @@ class VisitorLog extends StatelessWidget {
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 letterSpacing: 1.5,
-                                                backgroundColor:
-                                                    Color(0xffedff2d),
+                                                // backgroundColor:
+                                                //     Color(0xffedff2d),
                                                 fontSize: 25.0,
                                                 fontWeight: FontWeight.w800),
                                           ),
@@ -134,8 +134,8 @@ class VisitorLog extends StatelessWidget {
                                               style: TextStyle(
                                                   letterSpacing: 1.5,
                                                   color: Colors.black,
-                                                  backgroundColor:
-                                                      Color(0xffedff2d),
+                                                  // backgroundColor:
+                                                  //     Color(0xffedff2d),
                                                   fontSize: 25.0,
                                                   fontWeight: FontWeight.w800))
                                         ]),

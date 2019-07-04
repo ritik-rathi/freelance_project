@@ -620,7 +620,9 @@ class _OtpTestingState extends State<OtpTesting> {
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/guard');
                       _getFirebaseFunc(widget.firebaseMode);
+                      print('gonna get uploaded now.');
                       _uploadImageToFB(otp);
+                      print('Ab uplaod ho jaani chahiye.');
                     })
               ],
             );
@@ -723,6 +725,7 @@ class _OtpTestingState extends State<OtpTesting> {
   Future<String> _uploadImageToFB(int otp) async {
     StorageReference ref = FirebaseStorage.instance.ref().child(otp.toString());
     StorageUploadTask uploadTask = ref.putFile(widget.image);
+    print('Image must be uploaded.');
     return await (await uploadTask.onComplete).ref.getDownloadURL();
   }
 }

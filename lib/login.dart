@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freelance/main.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:freelance/soc_ID.dart';
@@ -10,25 +11,34 @@ import 'package:freelance/soc_ID.dart';
 bool email = false, password = false;
 String uid, upwd, spwd;
 var tid, tpwd;
-var query = Firestore.instance.collection('/society/$socID/users');
+var query1 = Firestore.instance.collection('/society/$socID/users');
+var query2 = Firestore.instance.collection('/society');
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> with TickerProviderStateMixin {
-  int l1 = 0, l2 = 0, l3 = 0;
+  int l1 = 0, l2 = 0, l3 = 0, l4 = 0, l5 = 0;
   Future<int> emailID(String id, String pwd) async {
-    var c = await query.where('Email', isEqualTo: id).snapshots().first;
+    var c = await query1.where('Email', isEqualTo: id).snapshots().first;
     l1 = c.documents.length;
     print(l1);
 
-    var d = await query.where('Password', isEqualTo: pwd).snapshots().first;
+    var d = await query1.where('Password', isEqualTo: pwd).snapshots().first;
     l2 = d.documents.length;
     print(l2);
 
     if (l1 == 1 && l2 == 1) l3 = 1;
     return l3;
+  }
+
+  Future<int> guardPass(String pwd) async {
+    var c = await query2.where('password', isEqualTo: pwd).snapshots().first;
+    l5 = c.documents.length;
+
+    if (l5 == 1) l4 = 1;
+    return l4;
   }
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
@@ -40,6 +50,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
   TextEditingController emailCon = new TextEditingController();
   TextEditingController idCon = new TextEditingController();
+  TextEditingController guard = new TextEditingController();
 
   bool _obscureTextLogin = true;
   bool _obscureTextSignup = true;
@@ -334,6 +345,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         if (l3 == 1) {
                           print('object');
                           Navigator.pushReplacementNamed(context, '/user');
+                          setState(() {
+                           isLoggedIn = true; 
+                          });
                         } else {
                           showDialog(
                               context: context,
@@ -372,7 +386,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 ),
                 child: Container(
                   width: 300.0,
-                  height: 190.0,
+                  height: 100.0,
                   child: Form(
                     //key: _formkey,
                     child: Column(
@@ -386,6 +400,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           padding: EdgeInsets.only(
                               top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                           child: TextFormField(
+                            controller: guard,
                             focusNode: myFocusNodePasswordLogin,
                             validator: (input) {
                               if (input.length < 4)
@@ -427,7 +442,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 170.0),
+                margin: EdgeInsets.only(top: 80.0),
                 decoration: new BoxDecoration(
                   color: Color(0xFF50CDFF),
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -448,9 +463,23 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/splash');
-                    } 
-                    ),
+                      print('testing ');
+                      guardPass(guard.text).then((l4) {
+                        if (l4 == 1) {
+                          print('object');
+                          Navigator.pushReplacementNamed(context, '/splash');
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Enter valid credentials'),
+                                );
+                              });
+                        }
+                      });
+                      guard.clear();
+                    }),
               ),
             ],
           ),
