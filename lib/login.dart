@@ -5,6 +5,8 @@ import 'package:freelance/main.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:freelance/soc_ID.dart';
+import 'package:freelance/user_screens/profile_screen.dart' as prefix0;
+import 'package:freelance/user_screens/profile_screen.dart';
 
 //Implement society id check
 
@@ -346,15 +348,28 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           print('object');
                           Navigator.pushReplacementNamed(context, '/user');
                           setState(() {
-                           isLoggedIn = true; 
+                            isLoggedIn = true;
                           });
                         } else {
                           showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: Text('Enter valid credentials'),
-                                );
+                                    title: Column(
+                                  children: <Widget>[
+                                    Text('Enter valid credentials'),
+                                    Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        color: color,
+                                        child: Text('Ok'),
+                                      ),
+                                    )
+                                  ],
+                                ));
                               });
                         }
                       });
@@ -473,8 +488,21 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: Text('Enter valid credentials'),
-                                );
+                                    title: Column(
+                                  children: <Widget>[
+                                    Text('Enter valid credentials'),
+                                    Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        color: color,
+                                        child: Text('Ok'),
+                                      ),
+                                    )
+                                  ],
+                                ));
                               });
                         }
                       });

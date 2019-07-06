@@ -77,6 +77,7 @@ class VisitorLog extends StatelessWidget {
                     image(ds['otp']);
 
                     String vName = ds["name"];
+                    String purpose = ds['purpose'];
                     // while (vName[i] != "i") {
                     //   i++;
                     //   c++;
@@ -91,7 +92,7 @@ class VisitorLog extends StatelessWidget {
                           vertical: 10.0, horizontal: 20.0),
                       child: (vName != null && time != null)
                           ? Card(
-                              color: Colors.pink[50],
+                              color: Colors.white,
                               elevation: 5.0,
                               child: Container(
                                 width: double.infinity,
@@ -114,30 +115,62 @@ class VisitorLog extends StatelessWidget {
                                       RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
-                                            text: name[0],
+                                            text: 'Name: ',
                                             style: TextStyle(
                                                 color: Colors.black,
-                                                letterSpacing: 1.5,
+                                                //letterSpacing: 1.5,
+                                                // backgroundColor:
+                                                //     Color(0xffedff2d),
+                                                fontSize: 20.0,
+                                                //fontWeight: FontWeight.w800
+                                                ),
+                                          ),
+                                          TextSpan(
+                                            text: '${name[0]}',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                //letterSpacing: 1.5,
                                                 // backgroundColor:
                                                 //     Color(0xffedff2d),
                                                 fontSize: 25.0,
-                                                fontWeight: FontWeight.w800),
+                                                fontWeight: FontWeight.w500),
                                           ),
                                           TextSpan(
-                                              text: ' \nvisited you at',
+                                              text: '\nTime: ',
                                               style: TextStyle(
+                                                  //letterSpacing: 1.5,
                                                   color: Colors.black,
+                                                  // backgroundColor:
+                                                  //     Color(0xffedff2d),
                                                   fontSize: 20.0,
-                                                  fontWeight: FontWeight.w500)),
+                                                  )),
                                           TextSpan(
-                                              text: '\n$time',
+                                              text: '$time',
                                               style: TextStyle(
-                                                  letterSpacing: 1.5,
+                                                  //letterSpacing: 1.5,
                                                   color: Colors.black,
                                                   // backgroundColor:
                                                   //     Color(0xffedff2d),
                                                   fontSize: 25.0,
-                                                  fontWeight: FontWeight.w800))
+                                                  fontWeight: FontWeight.w500)),
+                                          TextSpan(
+                                              text: '\nPurpose: ',
+                                              style: TextStyle(
+                                                  //letterSpacing: 1.5,
+                                                  color: Colors.black,
+                                                  // backgroundColor:
+                                                  //     Color(0xffedff2d),
+                                                  fontSize: 20.0,
+                                                  )),
+                                          TextSpan(
+                                              text: '$purpose',
+                                              style: TextStyle(
+                                                  //letterSpacing: 1.5,
+                                                  color: Colors.black,
+                                                  // backgroundColor:
+                                                  //     Color(0xffedff2d),
+                                                  fontSize: 25.0,
+                                                  fontWeight: FontWeight.w500))
                                         ]),
                                       )
                                     ],

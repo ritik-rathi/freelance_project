@@ -203,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Council member',
+                          Text('Gender',
                               style: TextStyle(fontSize: 25, color: color))
                         ],
                       ),

@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     return Scaffold(
         bottomNavigationBar: NavBar(
           bgColor: Color(0xff0d2956),
-          names: ['Home', 'Visitors', 'Maids'],
+          names: ['Home', 'Visitors', 'Reg. visitors'],
           icons: [Icons.home, Icons.transit_enterexit, Icons.person],
           touchCallback: (int index) {
             controller.reset();

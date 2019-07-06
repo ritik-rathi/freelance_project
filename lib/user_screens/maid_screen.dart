@@ -28,7 +28,7 @@ class MaidScreen extends StatelessWidget {
             child: Column(children: [
               SizedBox(height: 110),
               Text(
-                'Maids',
+                'Frequent visitors',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     letterSpacing: 2.5,
@@ -173,8 +173,8 @@ class MaidScreen extends StatelessWidget {
                                               top: 8.0, left: 8.0),
                                           child: Container(
                                             alignment: Alignment.topLeft,
-                                            width: 90.0,
-                                            height: 90.0,
+                                            width: 75.0,
+                                            height: 75.0,
                                             decoration: BoxDecoration(
                                                 color: color,
                                                 shape: BoxShape.rectangle,

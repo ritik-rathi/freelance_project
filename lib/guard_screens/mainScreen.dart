@@ -11,6 +11,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Guard portal'),
         backgroundColor: Colors.white,
         actions: <Widget>[
