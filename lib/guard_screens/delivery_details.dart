@@ -36,6 +36,17 @@ class _DeliveryPageState extends State<DeliveryPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
+              padding: EdgeInsets.all(8),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  iconSize: 30,
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+            ),
+            Padding(
               padding:
                   const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
               child: GestureDetector(

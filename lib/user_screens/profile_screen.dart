@@ -390,6 +390,137 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
+  Future addUser() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset: false,
+            body: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(width: 2.0, color: Color(0xff1A2980))),
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                height: 400.0,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          'Add user',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30.0,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Name',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextField(
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Name',
+                            hintStyle: TextStyle(
+                                color: Colors.grey[900],
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.2),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'Phone number',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Phone Number',
+                            hintStyle: TextStyle(
+                                color: Colors.grey[900],
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.2),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'Gender',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Gender',
+                            hintStyle: TextStyle(
+                                color: Colors.grey[900],
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.2),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Center(
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0)),
+                          color: Color(0xff1A2980),
+                          child: Text(
+                            'Upload',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   Future<bool> dialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -401,8 +532,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Card(
                   color: Colors.white,
                   elevation: 2,
-                  child: Center(
-                    child: GestureDetector(
+                  child: Column(children: [
+                    GestureDetector(
                       onTap: () {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => Login()));
@@ -412,11 +543,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       child: Text('Logout',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: 20,
                               color: Color(0xff1A2980),
                               fontWeight: FontWeight.w400)),
                     ),
-                  ),
+                    Divider(),
+                    GestureDetector(
+                      onTap: () {
+                        addUser();
+                        setState(() {
+                          isLoggedIn = false;
+                        });
+                      },
+                      child: Text('Add user',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Color(0xff1A2980),
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  ]),
                 ),
               ),
             ));

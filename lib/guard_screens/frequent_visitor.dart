@@ -27,7 +27,21 @@ class _FrequentState extends State<Frequent>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[prefix1.SizedBox(height: 100), _buildAddCard()],
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(8),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  iconSize: 30,
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+            ),
+            prefix1.SizedBox(height: 100),
+            _buildAddCard()
+          ],
         ),
       ),
     );

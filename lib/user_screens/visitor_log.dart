@@ -75,7 +75,9 @@ class VisitorLog extends StatelessWidget {
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.documents[index];
                     image(ds['otp']);
-
+                    String phone = ds["mobile"];
+                    if(phone != null) phone = phone;
+                    else phone = 'NA';
                     String vName = ds["name"];
                     String purpose = ds['purpose'];
                     // while (vName[i] != "i") {
@@ -132,7 +134,7 @@ class VisitorLog extends StatelessWidget {
                                                 //letterSpacing: 1.5,
                                                 // backgroundColor:
                                                 //     Color(0xffedff2d),
-                                                fontSize: 25.0,
+                                                fontSize: 20.0,
                                                 fontWeight: FontWeight.w500),
                                           ),
                                           TextSpan(
@@ -151,7 +153,7 @@ class VisitorLog extends StatelessWidget {
                                                   color: Colors.black,
                                                   // backgroundColor:
                                                   //     Color(0xffedff2d),
-                                                  fontSize: 25.0,
+                                                  fontSize: 20.0,
                                                   fontWeight: FontWeight.w500)),
                                           TextSpan(
                                               text: '\nPurpose: ',
@@ -169,7 +171,25 @@ class VisitorLog extends StatelessWidget {
                                                   color: Colors.black,
                                                   // backgroundColor:
                                                   //     Color(0xffedff2d),
-                                                  fontSize: 25.0,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.w500)),
+                                          TextSpan(
+                                              text: '\nPhone: ',
+                                              style: TextStyle(
+                                                  //letterSpacing: 1.5,
+                                                  color: Colors.black,
+                                                  // backgroundColor:
+                                                  //     Color(0xffedff2d),
+                                                  fontSize: 20.0,
+                                                  )),
+                                          TextSpan(
+                                              text: '$phone',
+                                              style: TextStyle(
+                                                  //letterSpacing: 1.5,
+                                                  color: Colors.black,
+                                                  // backgroundColor:
+                                                  //     Color(0xffedff2d),
+                                                  fontSize: 20.0,
                                                   fontWeight: FontWeight.w500))
                                         ]),
                                       )
