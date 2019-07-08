@@ -11,6 +11,8 @@ Color color = Color(0xFF50CDFF);
 var query = Firestore.instance.collection('/society/$socID/users');
 var name, email, phone, block, profile;
 String flat;
+var callGuard;
+
 
 // Future<void> credential() async {
 //   profile = await query.where('Email', isEqualTo: uid).snapshots().first;
@@ -31,6 +33,14 @@ String flat;
 //   print('aaaaaaaaaa........$block');
 // }
 
+guardPhone() {
+  var query = Firestore.instance.document('society/$socID');
+
+  query.get().then((document) {
+    callGuard = document['guard phone'].toString();
+  });
+}
+
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -38,8 +48,16 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    guardPhone();
+    super.initState();
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
@@ -50,9 +68,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return Center(child: CircularProgressIndicator());
             } else {
               flat = snapshot.data.documents[0]['Flat'].toString();
-              return Column(
+              return ListView(
                   //mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       height: 250,
@@ -100,7 +118,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(color: Color(0xff1A2980))),
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  print('guard: $callGuard');
+                                  launch("tel:$callGuard");
+                                },
                                 icon: Icon(Icons.local_phone, size: 30),
                                 color: color,
                               ),
@@ -119,20 +140,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               )),
                           Positioned(
                             top: 75.0,
-                            left: 100,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey, width: 3)),
-                              // height: 160,
-                              // width: 160,
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: CircleAvatar(
-                                backgroundImage:
-                                    AssetImage('assets/images/logo.jpeg'),
-                                radius: 80,
-                              ),
+                            width: width,
+                            //left: 100,
+                           // right: 90,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border:
+                                          Border.all(color: Colors.grey, width: 3)),
+                                  // height: 160,
+                                  // width: 160,
+                                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('assets/images/logo.jpeg'),
+                                    radius: 80,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

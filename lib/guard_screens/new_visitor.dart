@@ -17,18 +17,16 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
 
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
-    Im.Image imageFile = Im.decodeImage(tempImage.readAsBytesSync());
-    File compressedImage = tempImage
-      ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
+
     setState(() {
-      _image = compressedImage;
+      _image = tempImage;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff6B77E0),
+      backgroundColor: Color(0xff1A2980),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -59,12 +59,12 @@ class MainScreen extends StatelessWidget {
                     )),
               ),
               GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, '/delivery'),
+                  onTap: () => Navigator.pushNamed(context, '/guardVisitor'),
                   child: _optionCard(
-                      'Delivery boy',
+                      'Visitor log',
                       Color(0xffd8fbff),
                       Icon(
-                        Icons.shopping_cart,
+                        Icons.people,
                         size: 50,
                       ))),
               GestureDetector(

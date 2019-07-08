@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 
 String smsCode;
 String verificationId;
@@ -79,14 +80,16 @@ class _OtpTestingState extends State<OtpTesting> {
   }
 
   void sendOTP() {
-    var apiKey =
-        "u89iYz/h3dU-3Ab3nrQBqIYMbe8KSzowDCSTslyGNM"; //from the acc that I am using
+    //var apiKey =
+    //"u89iYz/h3dU-3Ab3nrQBqIYMbe8KSzowDCSTslyGNM"; //from the acc that I am using
     var message = "Your OTP is $otp"; //vary otp using dart
-    var sender = "TXTLCL"; //default sender, can be changed
+    //var sender = "TXTLCL"; //default sender, can be changed
     var number = "91${widget.phoneNo}"; //coz test
 
     var url =
-        'https://api.textlocal.in/send/?+apiKey=$apiKey&message=$message&sender=$sender&numbers=$number';
+        //'https://api.textlocal.in/send/?+apiKey=$apiKey&message=$message&sender=$sender&numbers=$number';
+
+        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=NewReg&sendto=$number&message=$message';
 
     http.post(url).then((res) => print(res));
     print("Called");
@@ -666,6 +669,7 @@ class _OtpTestingState extends State<OtpTesting> {
     };
     databaseRef.setData(tasks).whenComplete(() {
       print('Visitor created!');
+      sendSms();
     });
   }
 
@@ -703,6 +707,17 @@ class _OtpTestingState extends State<OtpTesting> {
     databaseRef.setData(tasks).whenComplete(() {
       print('Maid created!');
     });
+  }
+
+  Future<void> sendSms() async {
+    String message = '${widget.name} is visiting you.';
+    var query1 = Firestore.instance.collection('/society/$socID/users');
+    var c =
+        await query1.where('Flat', isEqualTo: widget.house).snapshots().first;
+    var phone = c.documents[0]['Phone - 1'];
+    var url =
+        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=NewReg&sendto=$phone&message=$message';
+    http.post(url).then((res) => print(res));
   }
 
   // driver collection

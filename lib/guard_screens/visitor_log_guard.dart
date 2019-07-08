@@ -3,36 +3,30 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart' as prefix0;
-import 'package:flutter/widgets.dart';
 import 'package:freelance/login.dart';
 import 'package:freelance/soc_ID.dart';
-import 'profile_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
- image(int otp) async {
+String url;
+
+Future image(int otp) async {
   final ref = FirebaseStorage.instance.ref().child('$otp');
 // no need of the file extension, the name will do fine.
-  String url = await ref.getDownloadURL();
-  url = url + '.jpg';
+  url = await ref.getDownloadURL();
+  url = url + '.png';
   if (url != null) {
     print('This is your fucking url - $url');
   } else {
     print('No url present');
-
-    url =
-        'https://previews.123rf.com/images/urfandadashov/urfandadashov1805/urfandadashov180500070/100957966-photo-not-available-icon-isolated-on-white-background-vector-illustration.jpg';
   }
-
-  return url;
 }
 
-class VisitorLog extends StatefulWidget {
+class GuardvisitorLog extends StatefulWidget {
   @override
-  _VisitorLogState createState() => _VisitorLogState();
+  _GuardvisitorLogState createState() => _GuardvisitorLogState();
 }
 
-class _VisitorLogState extends State<VisitorLog> {
+class _GuardvisitorLogState extends State<GuardvisitorLog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +64,7 @@ class _VisitorLogState extends State<VisitorLog> {
   }
 
   Future detailDialog(List<String> detName, String detTime, String detPurpose,
-      String detPhone) {
+      String detPhone, String detFlat, String detBlock) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -88,7 +82,7 @@ class _VisitorLogState extends State<VisitorLog> {
                             Border.all(width: 4.0, color: Color(0xff1A2980))),
                     margin:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    height: 310.0,
+                    height: 350.0,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -151,6 +145,13 @@ class _VisitorLogState extends State<VisitorLog> {
                           SizedBox(
                             height: 10,
                           ),
+                          Text(
+                            'Flat - $detBlock $detFlat',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w700),
+                          ),
                           Align(
                             alignment: Alignment.bottomRight,
                             child: IconButton(
@@ -173,7 +174,6 @@ class _VisitorLogState extends State<VisitorLog> {
     return StreamBuilder(
         stream: Firestore.instance
             .collection("/society/$socID/visitors")
-            .where('house', isEqualTo: flat)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -184,7 +184,9 @@ class _VisitorLogState extends State<VisitorLog> {
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.documents[index];
-                    String imageUrl = image(ds['otp']);
+                    image(ds['otp']);
+                    Future.delayed(Duration(seconds: 5));
+                    print("qwertasdffgfg");
                     String phone = ds["mobile"];
                     if (phone != null)
                       phone = phone;
@@ -192,13 +194,12 @@ class _VisitorLogState extends State<VisitorLog> {
                       phone = 'NA';
                     String vName = ds["name"];
                     String purpose = ds['purpose'];
+                    String flat = ds['house'];
+                    String block = ds['block'];
                     // while (vName[i] != "i") {
                     //   i++;
                     //   c++;
                     // }
-                    print(
-                        'ye hai aapka url, kara lo print - $imageUrl');
-
                     List<String> name = vName.split(' ');
                     var time = ds["visitTime"].toString();
                     if (time != null) {
@@ -208,7 +209,8 @@ class _VisitorLogState extends State<VisitorLog> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
                       child: GestureDetector(
-                        onTap: () => detailDialog(name, time, purpose, phone),
+                        onTap: () => detailDialog(
+                            name, time, purpose, phone, flat, block),
                         child: (vName != null && time != null)
                             ? Card(
                                 color: Colors.white,
@@ -222,13 +224,12 @@ class _VisitorLogState extends State<VisitorLog> {
                                     child: Row(
                                       children: <Widget>[
                                         Container(
-                                            color: Colors.blue,
-                                            width: 90,
-                                            height: 100,
-                                            child: Image.network(
-                                              imageUrl,
-                                              fit: BoxFit.cover,
-                                            )),
+                                          color: Colors.blue,
+                                          width: 90,
+                                          height: 100,
+                                          child: Image.network('$url',
+                                              fit: BoxFit.cover),
+                                        ),
                                         SizedBox(
                                           width: 20.0,
                                         ),
@@ -237,23 +238,23 @@ class _VisitorLogState extends State<VisitorLog> {
                                             TextSpan(
                                               text: 'Name: ',
                                               style: TextStyle(
-                                                color: Colors.black,
-                                                //letterSpacing: 1.5,
-                                                // backgroundColor:
-                                                //     Color(0xffedff2d),
-                                                fontSize: 25.0,
-                                                //fontWeight: FontWeight.w800
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: '${name[0]}',
-                                              style: TextStyle(
                                                   color: Colors.black,
                                                   //letterSpacing: 1.5,
                                                   // backgroundColor:
                                                   //     Color(0xffedff2d),
                                                   fontSize: 25.0,
                                                   fontWeight: FontWeight.w500),
+                                            ),
+                                            TextSpan(
+                                              text: '${name[0]}',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                //letterSpacing: 1.5,
+                                                // backgroundColor:
+                                                //     Color(0xffedff2d),
+                                                fontSize: 25,
+                                                //fontWeight: FontWeight.w500
+                                              ),
                                             ),
                                           ]),
                                         )
