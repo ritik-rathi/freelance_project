@@ -8,20 +8,23 @@ import 'package:freelance/login.dart';
 import 'package:freelance/soc_ID.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-var url;
+String url;
 
-image(int otp) async {
+Future<String> image(int otp) async {
   final ref = FirebaseStorage.instance.ref().child('$otp');
 // no need of the file extension, the name will do fine.
-  url = await ref.getDownloadURL() as String;
+  await ref.getDownloadURL().then((value) {
+    url = value;
+  });
   // url = url + '.png';
 
   if (url != null) {
     print('This is your fucking url - $url');
+    return url;
   } else {
     print('No url present');
+    return null;
   }
-  return url;
 }
 
 class GuardvisitorLog extends StatefulWidget {
@@ -230,8 +233,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                           width: 90,
                                           height: 100,
                                           child: Image.network(
-                                              Uri.parse(image(ds['otp']))
-                                                  .toString(),
+                                              Uri.parse(url).toString(),
                                               fit: BoxFit.cover),
                                         ),
                                         SizedBox(
