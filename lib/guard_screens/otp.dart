@@ -706,6 +706,7 @@ class _OtpTestingState extends State<OtpTesting> {
     };
     databaseRef.setData(tasks).whenComplete(() {
       print('Maid created!');
+      sendSms();
     });
   }
 
@@ -733,6 +734,7 @@ class _OtpTestingState extends State<OtpTesting> {
     };
     databaseRef.setData(tasks).whenComplete(() {
       print('Driver created!');
+      sendSms();
     });
   }
 

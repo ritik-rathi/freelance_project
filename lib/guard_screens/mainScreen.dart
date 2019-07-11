@@ -69,7 +69,7 @@ class MainScreen extends StatelessWidget {
                       ))),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/maidrec');
+                  Navigator.pushNamed(context, '/today');
                 },
                 child: _optionCard(
                     'New Maid/Driver',
