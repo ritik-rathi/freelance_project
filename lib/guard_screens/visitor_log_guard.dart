@@ -3,22 +3,25 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:freelance/guard_screens/otp.dart';
 import 'package:freelance/login.dart';
 import 'package:freelance/soc_ID.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-String url;
+var url;
 
-Future image(int otp) async {
+image(int otp) async {
   final ref = FirebaseStorage.instance.ref().child('$otp');
 // no need of the file extension, the name will do fine.
-  url = await ref.getDownloadURL();
-  url = url + '.png';
+  url = await ref.getDownloadURL() as String;
+  // url = url + '.png';
+
   if (url != null) {
     print('This is your fucking url - $url');
   } else {
     print('No url present');
   }
+  return url;
 }
 
 class GuardvisitorLog extends StatefulWidget {
@@ -184,7 +187,6 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.documents[index];
-                    image(ds['otp']);
                     Future.delayed(Duration(seconds: 5));
                     print("qwertasdffgfg");
                     String phone = ds["mobile"];
@@ -227,7 +229,9 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                           color: Colors.blue,
                                           width: 90,
                                           height: 100,
-                                          child: Image.network('$url',
+                                          child: Image.network(
+                                              Uri.parse(image(ds['otp']))
+                                                  .toString(),
                                               fit: BoxFit.cover),
                                         ),
                                         SizedBox(
