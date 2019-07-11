@@ -191,6 +191,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.documents[index];
                     Future.delayed(Duration(seconds: 5));
+                    url = image(ds['otp']) as String;
                     print("qwertasdffgfg");
                     String phone = ds["mobile"];
                     if (phone != null)
@@ -233,7 +234,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                           width: 90,
                                           height: 100,
                                           child: Image.network(
-                                              Uri.parse(url).toString(),
+                                              url,
                                               fit: BoxFit.cover),
                                         ),
                                         SizedBox(
