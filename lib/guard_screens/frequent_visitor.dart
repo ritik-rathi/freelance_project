@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart' as prefix1;
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freelance/guard_screens/otp.dart';
+
+import '../soc_ID.dart';
 
 String dName, dPhone, dOrg, rFlat, rName;
-String dTime = TimeOfDay.now().toString();
+DateTime dTime = DateTime.now();
 
 class Frequent extends StatefulWidget {
   @override
@@ -69,294 +73,84 @@ class _FrequentState extends State<Frequent>
                 ]),
             width: double.infinity,
             height: 470,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  width: double.maxFinite,
-                  height: 60,
-                  child: TabBar(
-                    unselectedLabelColor: Colors.grey,
-                    unselectedLabelStyle: TextStyle(fontSize: 15),
-                    labelColor: Colors.black,
-                    labelStyle: prefix1.TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                    controller: _controller,
-                    tabs: <Widget>[
-                      Tab(
-                        child: Text('Maid'),
-                      ),
-                      Tab(
-                        child: Text('Driver'),
-                      ),
-                      Tab(
-                        child: prefix1.Text('Milkman'),
-                      ),
-                      Tab(child: prefix1.Text('Others'))
-                    ],
+            child: Container(
+              width: double.maxFinite,
+              height: 410,
+              child: Column(
+                children: <Widget>[
+                  //SizedBox(height: 70),
+                  Text(
+                    'Unique ID',
+                    style: TextStyle(
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.w100,
+                        color: Colors.black),
                   ),
-                ),
-                Container(
-                  width: double.maxFinite,
-                  height: 410,
-                  child: TabBarView(
-                    controller: _controller,
-                    children: <Widget>[maid(), driver(), milkman(), others()],
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 50.0, left: 20.0, right: 20.0),
+                    child: Column(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'ID',
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        ),
+                        TextField(
+                          autofocus: true,
+                          onChanged: (value) {
+                            dName = value;
+                          },
+                          decoration: InputDecoration(
+                              hintText: 'Enter ID',
+                              hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12.0)),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child: RaisedButton(
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.blue,
+                      onPressed: () {
+                        if (dName != null) {
+                          DocumentReference databaseRef = Firestore.instance
+                              .collection("/society/$socID/frequentVisitor")
+                              .document();
+
+                          Map<String, dynamic> tasks = {
+                            'uid': dName,
+                            'time': time
+                          };
+                          databaseRef.setData(tasks).whenComplete(() {
+                            print('Maid created!');
+                          });
+                        } else {}
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           SizedBox(
             height: 50.0,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget driver() {
-    return Container(
-      width: double.maxFinite,
-      child: Column(
-        children: <Widget>[
-          //SizedBox(height: 70),
-          Text(
-            'Unique ID',
-            style: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.w100,
-                color: Colors.black),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'ID',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    dName = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Enter ID',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: RaisedButton(
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              color: Colors.blue,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget maid() {
-    return Container(
-      width: double.maxFinite,
-      child: Column(
-        children: <Widget>[
-          Text(
-            'Unique ID',
-            style: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.w100,
-                color: Colors.black),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'ID',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    dName = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Enter ID',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: RaisedButton(
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              color: Colors.blue,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget milkman() {
-    return Container(
-      width: double.maxFinite,
-      child: Column(
-        children: <Widget>[
-          Text(
-            'Unique ID',
-            style: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.w100,
-                color: Colors.black),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'ID',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    dName = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Enter ID',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: RaisedButton(
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              color: Colors.blue,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget others() {
-    return Container(
-      width: double.maxFinite,
-      child: Column(
-        children: <Widget>[
-          Text(
-            'Unique ID',
-            style: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.w100,
-                color: Colors.black),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'ID',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  onChanged: (value) {
-                    dName = value;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Enter ID',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0)),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: RaisedButton(
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              color: Colors.blue,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
           )
         ],
       ),

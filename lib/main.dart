@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freelance/guard_screens/frequent_visitor.dart';
+import 'package:freelance/guard_screens/todayVisitor.dart';
 import 'package:freelance/guard_screens/visitor_log_guard.dart';
 import 'package:freelance/soc_ID.dart';
 import 'package:freelance/user_screens/maid_sched.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
         '/splash': (context) => SplashScreen(),
         '/maidSched': (context) => MaidSched(),
         '/frequent': (context) => Frequent(),
-        '/guardVisitor': (context) => GuardvisitorLog()
+        '/guardVisitor': (context) => GuardvisitorLog(),
+        '/today': (context) => TodayVisitor()
       },
     );
   }

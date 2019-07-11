@@ -1,38 +1,18 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart' as prefix0;
-import 'package:flutter/widgets.dart';
-import 'package:freelance/login.dart';
-import 'package:freelance/soc_ID.dart';
-import 'profile_screen.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import 'dart:ui';
 
- image(int otp) async {
-  final ref = FirebaseStorage.instance.ref().child('$otp');
-// no need of the file extension, the name will do fine.
-  String url = await ref.getDownloadURL();
-  url = url + '.jpg';
-  if (url != null) {
-    print('This is your fucking url - $url');
-  } else {
-    print('No url present');
+import '../soc_ID.dart';
 
-    url =
-        'https://previews.123rf.com/images/urfandadashov/urfandadashov1805/urfandadashov180500070/100957966-photo-not-available-icon-isolated-on-white-background-vector-illustration.jpg';
-  }
+DateTime today = DateTime.now();
 
-  return url;
-}
-
-class VisitorLog extends StatefulWidget {
+class TodayVisitor extends StatefulWidget {
   @override
-  _VisitorLogState createState() => _VisitorLogState();
+  _TodayVisitorState createState() => _TodayVisitorState();
 }
 
-class _VisitorLogState extends State<VisitorLog> {
+class _TodayVisitorState extends State<TodayVisitor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +50,7 @@ class _VisitorLogState extends State<VisitorLog> {
   }
 
   Future detailDialog(List<String> detName, String detTime, String detPurpose,
-      String detPhone) {
+      String detPhone, String detFlat, String detBlock) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -88,7 +68,7 @@ class _VisitorLogState extends State<VisitorLog> {
                             Border.all(width: 4.0, color: Color(0xff1A2980))),
                     margin:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    height: 310.0,
+                    height: 350.0,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -151,6 +131,13 @@ class _VisitorLogState extends State<VisitorLog> {
                           SizedBox(
                             height: 10,
                           ),
+                          Text(
+                            'Flat - $detBlock $detFlat',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w700),
+                          ),
                           Align(
                             alignment: Alignment.bottomRight,
                             child: IconButton(
@@ -173,7 +160,6 @@ class _VisitorLogState extends State<VisitorLog> {
     return StreamBuilder(
         stream: Firestore.instance
             .collection("/society/$socID/visitors")
-            .where('house', isEqualTo: flat)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -183,8 +169,13 @@ class _VisitorLogState extends State<VisitorLog> {
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data.documents[snapshot.data.documents.length - index];
-                    String imageUrl = image(ds['otp']);
+                    DocumentSnapshot ds = snapshot.data.documents[index];
+                    var time = ds["visitTime"];
+                    //image(ds['otp']);
+                    print("qwertasdffgfg");
+                    print('${today.toString().substring(0, 10)} &&&& ${time.substring(0, 10)}');
+                    var diff = DateTime.now().difference(time).toString();
+                    time = time.toString();
                     String phone = ds["mobile"];
                     if (phone != null)
                       phone = phone;
@@ -192,79 +183,82 @@ class _VisitorLogState extends State<VisitorLog> {
                       phone = 'NA';
                     String vName = ds["name"];
                     String purpose = ds['purpose'];
+                    String flat = ds['house'];
+                    String block = ds['block'];
                     // while (vName[i] != "i") {
                     //   i++;
                     //   c++;
                     // }
-                    print(
-                        'ye hai aapka url, kara lo print - $imageUrl');
-
                     List<String> name = vName.split(' ');
-                    var time = ds["visitTime"].toString();
+                    
                     if (time != null) {
                       time = time.substring(11, 16);
                     }
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
-                      child: GestureDetector(
-                        onTap: () => detailDialog(name, time, purpose, phone),
-                        child: (vName != null && time != null)
-                            ? Card(
-                                color: Colors.white,
-                                elevation: 5.0,
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 160.0,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 10.0),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Container(
+                    print('${today.toString().substring(0, 10)} &&&& ${time.substring(0, 10)}');
+                    if (diff == null) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: GestureDetector(
+                          onTap: () => detailDialog(
+                              name, time, purpose, phone, flat, block),
+                          child: (vName != null && time != null)
+                              ? Card(
+                                  color: Colors.white,
+                                  elevation: 5.0,
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 160.0,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 10.0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Container(
                                             color: Colors.blue,
                                             width: 90,
                                             height: 100,
-                                            child: Image.network(
-                                              imageUrl,
-                                              fit: BoxFit.cover,
-                                            )),
-                                        SizedBox(
-                                          width: 20.0,
-                                        ),
-                                        RichText(
-                                          text: TextSpan(children: [
-                                            TextSpan(
-                                              text: 'Name: ',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                //letterSpacing: 1.5,
-                                                // backgroundColor:
-                                                //     Color(0xffedff2d),
-                                                fontSize: 25.0,
-                                                //fontWeight: FontWeight.w800
+                                            child: Image.network('',
+                                                fit: BoxFit.cover),
+                                          ),
+                                          SizedBox(
+                                            width: 20.0,
+                                          ),
+                                          RichText(
+                                            text: TextSpan(children: [
+                                              TextSpan(
+                                                text: 'Name: ',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    //letterSpacing: 1.5,
+                                                    // backgroundColor:
+                                                    //     Color(0xffedff2d),
+                                                    fontSize: 25.0,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
-                                            ),
-                                            TextSpan(
-                                              text: '${name[0]}',
-                                              style: TextStyle(
+                                              TextSpan(
+                                                text: '${name[0]}',
+                                                style: TextStyle(
                                                   color: Colors.black,
                                                   //letterSpacing: 1.5,
                                                   // backgroundColor:
                                                   //     Color(0xffedff2d),
-                                                  fontSize: 25.0,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ]),
-                                        )
-                                      ],
+                                                  fontSize: 25,
+                                                  //fontWeight: FontWeight.w500
+                                                ),
+                                              ),
+                                            ]),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            : null,
-                      ),
-                    );
+                                )
+                              : null,
+                        ),
+                      );
+                    }
                   }),
             );
           }
