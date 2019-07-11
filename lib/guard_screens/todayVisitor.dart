@@ -1,3 +1,5 @@
+import 'dart:io' as prefix0;
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
@@ -30,7 +32,7 @@ class _TodayVisitorState extends State<TodayVisitor> {
             child: Column(children: [
               SizedBox(height: 110),
               Text(
-                'Your Visitors',
+                "Today's Visitors",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     letterSpacing: 2.5,
@@ -170,12 +172,19 @@ class _TodayVisitorState extends State<TodayVisitor> {
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.documents[index];
+                    var docID = ds.documentID;
                     var time = ds["visitTime"];
                     //image(ds['otp']);
-                    print("qwertasdffgfg");
-                    print('${today.toString().substring(0, 10)} &&&& ${time.substring(0, 10)}');
-                    var diff = DateTime.now().difference(time).toString();
-                    time = time.toString();
+                    bool exit = true;
+                    double height;
+
+                    if (ds['exitTime'] == null) exit = false;
+                    if (exit)
+                      height = 130;
+                    else
+                      height = 170;
+                    //var diff = DateTime.now().difference(time).toString();
+                    var time1 = time.toString();
                     String phone = ds["mobile"];
                     if (phone != null)
                       phone = phone;
@@ -190,66 +199,97 @@ class _TodayVisitorState extends State<TodayVisitor> {
                     //   c++;
                     // }
                     List<String> name = vName.split(' ');
-                    
-                    if (time != null) {
-                      time = time.substring(11, 16);
+                    var newTime;
+                    if (time1 != null) {
+                      newTime = time1.substring(11, 16);
                     }
-                    print('${today.toString().substring(0, 10)} &&&& ${time.substring(0, 10)}');
-                    if (diff == null) {
+
+                    // final date1 = DateTime(time);
+
+                    var tt = DateTime.parse(time);
+
+                    var dur = DateTime.now().difference(tt).inDays;
+                    print(dur);
+
+                    print(dur.runtimeType);
+                    if (dur != 0) {
+                      return Container();
+                    } else {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
                         child: GestureDetector(
                           onTap: () => detailDialog(
-                              name, time, purpose, phone, flat, block),
+                              name, newTime, purpose, phone, flat, block),
                           child: (vName != null && time != null)
                               ? Card(
                                   color: Colors.white,
                                   elevation: 5.0,
                                   child: Container(
                                     width: double.infinity,
-                                    height: 160.0,
+                                    height: height,
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 10.0, horizontal: 10.0),
-                                      child: Row(
+                                      child: Column(
                                         children: <Widget>[
-                                          Container(
-                                            color: Colors.blue,
-                                            width: 90,
-                                            height: 100,
-                                            child: Image.network('',
-                                                fit: BoxFit.cover),
-                                          ),
-                                          SizedBox(
-                                            width: 20.0,
-                                          ),
-                                          RichText(
-                                            text: TextSpan(children: [
-                                              TextSpan(
-                                                text: 'Name: ',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    //letterSpacing: 1.5,
-                                                    // backgroundColor:
-                                                    //     Color(0xffedff2d),
-                                                    fontSize: 25.0,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                color: Colors.blue,
+                                                width: 90,
+                                                height: 100,
+                                                child: Image.network('',
+                                                    fit: BoxFit.cover),
                                               ),
-                                              TextSpan(
-                                                text: '${name[0]}',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  //letterSpacing: 1.5,
-                                                  // backgroundColor:
-                                                  //     Color(0xffedff2d),
-                                                  fontSize: 25,
-                                                  //fontWeight: FontWeight.w500
-                                                ),
+                                              SizedBox(
+                                                width: 20.0,
                                               ),
-                                            ]),
-                                          )
+                                              RichText(
+                                                text: TextSpan(children: [
+                                                  TextSpan(
+                                                    text: 'Name: ',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        //letterSpacing: 1.5,
+                                                        // backgroundColor:
+                                                        //     Color(0xffedff2d),
+                                                        fontSize: 25.0,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  TextSpan(
+                                                    text: '${name[0]}',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      //letterSpacing: 1.5,
+                                                      // backgroundColor:
+                                                      //     Color(0xffedff2d),
+                                                      fontSize: 25,
+                                                      //fontWeight: FontWeight.w500
+                                                    ),
+                                                  ),
+                                                ]),
+                                              )
+                                            ],
+                                          ),
+                                          exit
+                                              ? Container(height: 0)
+                                              : Align(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child: MaterialButton(
+                                                    color: Colors.red,
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        exit = true;
+                                                        height = 160;
+                                                        exitTime(docID);
+                                                      });
+                                                    },
+                                                    child: Text('Exit'),
+                                                  ),
+                                                )
                                         ],
                                       ),
                                     ),
@@ -263,5 +303,14 @@ class _TodayVisitorState extends State<TodayVisitor> {
             );
           }
         });
+  }
+
+  exitTime(var docid) {
+    print('$docid');
+    Firestore.instance
+        .collection('/society/$socID/visitors')
+        .document('$docid')
+        .updateData({"exitTime": DateTime.now()});
+    print('Exited');
   }
 }

@@ -70,7 +70,7 @@ class _VisitorLogState extends State<VisitorLog> {
   }
 
   Future detailDialog(List<String> detName, String detTime, String detPurpose,
-      String detPhone) {
+      String detPhone, String detDate) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -88,7 +88,7 @@ class _VisitorLogState extends State<VisitorLog> {
                             Border.all(width: 4.0, color: Color(0xff1A2980))),
                     margin:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    height: 310.0,
+                    height: 350.0,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -149,6 +149,16 @@ class _VisitorLogState extends State<VisitorLog> {
                                 fontWeight: FontWeight.w700),
                           ),
                           SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            'Date - $detDate',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(
                             height: 10,
                           ),
                           Align(
@@ -183,8 +193,8 @@ class _VisitorLogState extends State<VisitorLog> {
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data.documents[snapshot.data.documents.length - index];
-                    String imageUrl = image(ds['otp']);
+                    DocumentSnapshot ds = snapshot.data.documents[snapshot.data.documents.length - 1 - index];
+                    //String imageUrl = image(ds['otp']);
                     String phone = ds["mobile"];
                     if (phone != null)
                       phone = phone;
@@ -196,19 +206,21 @@ class _VisitorLogState extends State<VisitorLog> {
                     //   i++;
                     //   c++;
                     // }
-                    print(
-                        'ye hai aapka url, kara lo print - $imageUrl');
+                    // print(
+                    //     'ye hai aapka url, kara lo print - $imageUrl');
 
                     List<String> name = vName.split(' ');
+                    var date, newTime;
                     var time = ds["visitTime"].toString();
                     if (time != null) {
-                      time = time.substring(11, 16);
+                      newTime = time.substring(11, 16);
+                      date = time.substring(0, 10);
                     }
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
                       child: GestureDetector(
-                        onTap: () => detailDialog(name, time, purpose, phone),
+                        onTap: () => detailDialog(name, newTime, purpose, phone, date),
                         child: (vName != null && time != null)
                             ? Card(
                                 color: Colors.white,
@@ -225,10 +237,11 @@ class _VisitorLogState extends State<VisitorLog> {
                                             color: Colors.blue,
                                             width: 90,
                                             height: 100,
-                                            child: Image.network(
-                                              imageUrl,
-                                              fit: BoxFit.cover,
-                                            )),
+                                            // child: Image.network(
+                                            //   imageUrl,
+                                            //   fit: BoxFit.cover,
+                                            // )
+                                            ),
                                         SizedBox(
                                           width: 20.0,
                                         ),

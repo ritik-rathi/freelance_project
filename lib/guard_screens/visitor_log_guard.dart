@@ -8,31 +8,37 @@ import 'package:freelance/login.dart';
 import 'package:freelance/soc_ID.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-String url;
-
-Future<String> image(int otp) async {
-  final ref = FirebaseStorage.instance.ref().child('$otp');
-// no need of the file extension, the name will do fine.
-  await ref.getDownloadURL().then((value) {
-    url = value;
-  });
-  // url = url + '.png';
-
-  if (url != null) {
-    print('This is your fucking url - $url');
-    return url;
-  } else {
-    print('No url present');
-    return null;
-  }
-}
-
 class GuardvisitorLog extends StatefulWidget {
   @override
   _GuardvisitorLogState createState() => _GuardvisitorLogState();
 }
 
 class _GuardvisitorLogState extends State<GuardvisitorLog> {
+  String url;
+  List pics=["https://picsum.photos/200/300"];
+  Future image(int otp) async {
+    final ref = FirebaseStorage.instance.ref().child('$otp');
+// no need of the file extension, the name will do fine.
+    await ref.getDownloadURL().then((value) {
+      
+      setState(() {
+        url = value.toString();
+        pics.add('hello');
+        url = url + '.png';
+      });
+    });
+    
+
+    if (url != null) {
+      print('This is your fucking url - $url');
+
+      return url;
+    } else {
+      print('No url present');
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,9 +195,9 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data.documents[index];
+                    DocumentSnapshot ds = snapshot.data.documents[snapshot.data.documents.length - 1 - index];
                     Future.delayed(Duration(seconds: 5));
-                    url = image(ds['otp']) as String;
+                    String url1 = image(ds['otp']).toString();
                     print("qwertasdffgfg");
                     String phone = ds["mobile"];
                     if (phone != null)
@@ -233,9 +239,10 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                           color: Colors.blue,
                                           width: 90,
                                           height: 100,
-                                          child: Image.network(
-                                              url,
-                                              fit: BoxFit.cover),
+                                          child: Image.network(url1,
+                                              fit: BoxFit.fill),
+
+                                          //child: Text(pics[index]),
                                         ),
                                         SizedBox(
                                           width: 20.0,

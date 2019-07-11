@@ -717,7 +717,7 @@ class _OtpTestingState extends State<OtpTesting> {
         await query1.where('Flat', isEqualTo: widget.house).snapshots().first;
     var phone = c.documents[0]['Phone - 1'];
     var url =
-        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=NewReg&sendto=$phone&message=$message';
+        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=HMANTR&sendto=$phone&message=$message';
     http.post(url).then((res) => print(res));
   }
 
