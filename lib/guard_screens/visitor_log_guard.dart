@@ -10,7 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 var url;
 
-Future image(int otp) async {
+image(int otp) async {
   final ref = FirebaseStorage.instance.ref().child('$otp');
 // no need of the file extension, the name will do fine.
   url = await ref.getDownloadURL() as String;
@@ -21,6 +21,7 @@ Future image(int otp) async {
   } else {
     print('No url present');
   }
+  return url;
 }
 
 class GuardvisitorLog extends StatefulWidget {
@@ -229,7 +230,8 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                           width: 90,
                                           height: 100,
                                           child: Image.network(
-                                              Uri.parse(url).toString(),
+                                              Uri.parse(image(ds['otp']))
+                                                  .toString(),
                                               fit: BoxFit.cover),
                                         ),
                                         SizedBox(
