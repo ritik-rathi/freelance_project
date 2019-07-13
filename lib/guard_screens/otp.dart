@@ -715,9 +715,14 @@ class _OtpTestingState extends State<OtpTesting> {
     var query1 = Firestore.instance.collection('/society/$socID/users');
     var c =
         await query1.where('Flat', isEqualTo: widget.house).snapshots().first;
-    var phone = c.documents[0]['Phone - 1'];
+    var phone1 = c.documents[0]['Phone - 1'];
+    var phone2;
+    if (c.documents[0]['Phone - 2'] != null)
+      phone2 = c.documents[0]['Phone-2'];
+    else
+      phone2 = '';
     var url =
-        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=HMANTR&sendto=$phone&message=$message';
+        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=HMANTR&sendto=$phone1,$phone2&message=$message';
     http.post(url).then((res) => print(res));
   }
 

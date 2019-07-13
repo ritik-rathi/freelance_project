@@ -10,7 +10,7 @@ import 'package:freelance/soc_ID.dart';
 import 'profile_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
- image(int otp) async {
+image(int otp) async {
   final ref = FirebaseStorage.instance.ref().child('$otp');
 // no need of the file extension, the name will do fine.
   String url = await ref.getDownloadURL();
@@ -70,7 +70,7 @@ class _VisitorLogState extends State<VisitorLog> {
   }
 
   Future detailDialog(List<String> detName, String detTime, String detPurpose,
-      String detPhone, String detDate) {
+      String detPhone, String detDate, String exit) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -88,7 +88,7 @@ class _VisitorLogState extends State<VisitorLog> {
                             Border.all(width: 4.0, color: Color(0xff1A2980))),
                     margin:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    height: 350.0,
+                    height: 380.0,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -159,7 +159,14 @@ class _VisitorLogState extends State<VisitorLog> {
                                 fontWeight: FontWeight.w700),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 10.0,
+                          ),
+                          Text(
+                            'Exit - $exit',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w700),
                           ),
                           Align(
                             alignment: Alignment.bottomRight,
@@ -193,9 +200,15 @@ class _VisitorLogState extends State<VisitorLog> {
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data.documents[snapshot.data.documents.length - 1 - index];
+                    DocumentSnapshot ds = snapshot.data
+                        .documents[snapshot.data.documents.length - 1 - index];
                     //String imageUrl = image(ds['otp']);
                     String phone = ds["mobile"];
+                    var timeExit;
+                    if (ds['exitTime'] != null)
+                      timeExit = ds['exitTime'].toString().substring(0, 10);
+                    else
+                      timeExit = '--';
                     if (phone != null)
                       phone = phone;
                     else
@@ -220,7 +233,8 @@ class _VisitorLogState extends State<VisitorLog> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
                       child: GestureDetector(
-                        onTap: () => detailDialog(name, newTime, purpose, phone, date),
+                        onTap: () => detailDialog(
+                            name, newTime, purpose, phone, date, timeExit),
                         child: (vName != null && time != null)
                             ? Card(
                                 color: Colors.white,
@@ -234,14 +248,14 @@ class _VisitorLogState extends State<VisitorLog> {
                                     child: Row(
                                       children: <Widget>[
                                         Container(
-                                            color: Colors.blue,
-                                            width: 90,
-                                            height: 100,
-                                            // child: Image.network(
-                                            //   imageUrl,
-                                            //   fit: BoxFit.cover,
-                                            // )
-                                            ),
+                                          color: Colors.blue,
+                                          width: 90,
+                                          height: 100,
+                                          // child: Image.network(
+                                          //   imageUrl,
+                                          //   fit: BoxFit.cover,
+                                          // )
+                                        ),
                                         SizedBox(
                                           width: 20.0,
                                         ),

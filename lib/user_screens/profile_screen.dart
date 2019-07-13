@@ -13,7 +13,6 @@ var name, email, phone, block, profile;
 String flat;
 var callGuard;
 
-
 // Future<void> credential() async {
 //   profile = await query.where('Email', isEqualTo: uid).snapshots().first;
 
@@ -136,13 +135,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   size: 30.0,
                                   color: Colors.white,
                                 ),
-                                onPressed: () => dialog(context),
+                                onPressed: () => dialog(context,
+                                    snapshot.data.documents[0].documentID),
                               )),
                           Positioned(
                             top: 75.0,
                             width: width,
                             //left: 100,
-                           // right: 90,
+                            // right: 90,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -150,11 +150,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Container(
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      border:
-                                          Border.all(color: Colors.grey, width: 3)),
+                                      border: Border.all(
+                                          color: Colors.grey, width: 3)),
                                   // height: 160,
                                   // width: 160,
-                                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
                                   child: CircleAvatar(
                                     backgroundImage:
                                         AssetImage('assets/images/logo.jpeg'),
@@ -419,10 +420,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  Future addUser() {
+  Future addUser(String id) {
     return showDialog(
         context: context,
         builder: (context) {
+          TextEditingController controller = new TextEditingController();
+          TextEditingController controller2 = new TextEditingController();
+          String name;
+          String phone;
           return Scaffold(
             backgroundColor: Colors.transparent,
             resizeToAvoidBottomInset: false,
@@ -466,6 +471,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
+                          onSubmitted: (value) {
+                            name = value;
+                          },
                           decoration: InputDecoration.collapsed(
                             hintText: 'Name',
                             hintStyle: TextStyle(
@@ -473,6 +481,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontWeight: FontWeight.w300,
                                 letterSpacing: 1.2),
                           ),
+                          controller: controller,
                         ),
                       ),
                       SizedBox(
@@ -488,14 +497,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
+                          onChanged: (value) {
+                            phone = value;
+                          },
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration.collapsed(
+                          decoration: InputDecoration(
                             hintText: 'Phone Number',
                             hintStyle: TextStyle(
                                 color: Colors.grey[900],
                                 fontWeight: FontWeight.w300,
                                 letterSpacing: 1.2),
                           ),
+                          controller: controller2,
                         ),
                       ),
                       SizedBox(
@@ -511,7 +524,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
-                          keyboardType: TextInputType.number,
                           decoration: InputDecoration.collapsed(
                             hintText: 'Gender',
                             hintStyle: TextStyle(
@@ -527,6 +539,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Center(
                         child: MaterialButton(
                           onPressed: () {
+                            Firestore.instance
+                                .collection('/society/$socID/users')
+                                .document('$id')
+                                .updateData(
+                                    {"Phone - 2": phone, 'user-2': controller.text});
+
                             Navigator.pop(context);
                           },
                           shape: RoundedRectangleBorder(
@@ -550,7 +568,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  Future<bool> dialog(BuildContext context) {
+  Future<bool> dialog(BuildContext context, String id) {
     return showDialog(
         context: context,
         builder: (context) => Align(
@@ -579,7 +597,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Divider(),
                     GestureDetector(
                       onTap: () {
-                        addUser();
+                        addUser(id);
                         setState(() {
                           isLoggedIn = false;
                         });

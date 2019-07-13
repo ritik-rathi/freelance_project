@@ -76,7 +76,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
   }
 
   Future detailDialog(List<String> detName, String detTime, String detPurpose,
-      String detPhone, String detFlat, String detBlock) {
+      String detPhone, String detFlat, String detBlock, String exit) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -94,7 +94,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                             Border.all(width: 4.0, color: Color(0xff1A2980))),
                     margin:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    height: 350.0,
+                    height: 380.0,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -164,6 +164,16 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.w700),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Exit - $exit',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w700),
+                          ),
                           Align(
                             alignment: Alignment.bottomRight,
                             child: IconButton(
@@ -199,6 +209,9 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                     Future.delayed(Duration(seconds: 5));
                     String url1 = image(ds['otp']).toString();
                     print("qwertasdffgfg");
+                    var timeExit;
+                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(0, 10);
+                    else timeExit = '--';
                     String phone = ds["mobile"];
                     if (phone != null)
                       phone = phone;
@@ -222,7 +235,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                           vertical: 10.0, horizontal: 20.0),
                       child: GestureDetector(
                         onTap: () => detailDialog(
-                            name, time, purpose, phone, flat, block),
+                            name, time, purpose, phone, flat, block, timeExit),
                         child: (vName != null && time != null)
                             ? Card(
                                 color: Colors.white,

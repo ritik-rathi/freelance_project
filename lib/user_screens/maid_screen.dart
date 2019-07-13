@@ -101,7 +101,29 @@ class MaidScreen extends StatelessWidget {
                                                 ),
                                               ),
                                               TextSpan(
-                                                text: '${name[0]}',
+                                                text: '$name',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    //letterSpacing: 1.5,
+                                                    // backgroundColor:
+                                                    //     Color(0xffedff2d),
+                                                    fontSize: 25.0,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              TextSpan(
+                                                text: '\nPhone: ',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  //letterSpacing: 1.5,
+                                                  // backgroundColor:
+                                                  //     Color(0xffedff2d),
+                                                  fontSize: 25.0,
+                                                  //fontWeight: FontWeight.w800
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: '$mobile',
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     //letterSpacing: 1.5,

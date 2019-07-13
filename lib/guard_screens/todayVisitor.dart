@@ -52,7 +52,7 @@ class _TodayVisitorState extends State<TodayVisitor> {
   }
 
   Future detailDialog(List<String> detName, String detTime, String detPurpose,
-      String detPhone, String detFlat, String detBlock) {
+      String detPhone, String detFlat, String detBlock, String exit) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -70,7 +70,7 @@ class _TodayVisitorState extends State<TodayVisitor> {
                             Border.all(width: 4.0, color: Color(0xff1A2980))),
                     margin:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    height: 350.0,
+                    height: 380.0,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -140,6 +140,16 @@ class _TodayVisitorState extends State<TodayVisitor> {
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.w700),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Exit - $exit',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w700),
+                          ),
                           Align(
                             alignment: Alignment.bottomRight,
                             child: IconButton(
@@ -174,6 +184,9 @@ class _TodayVisitorState extends State<TodayVisitor> {
                     DocumentSnapshot ds = snapshot.data.documents[index];
                     var docID = ds.documentID;
                     var time = ds["visitTime"];
+                    var timeExit;
+                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(0, 10);
+                    else timeExit = '--';
                     //image(ds['otp']);
                     bool exit = true;
                     double height;
@@ -220,7 +233,7 @@ class _TodayVisitorState extends State<TodayVisitor> {
                             vertical: 10.0, horizontal: 20.0),
                         child: GestureDetector(
                           onTap: () => detailDialog(
-                              name, newTime, purpose, phone, flat, block),
+                              name, newTime, purpose, phone, flat, block, timeExit),
                           child: (vName != null && time != null)
                               ? Card(
                                   color: Colors.white,
@@ -310,7 +323,7 @@ class _TodayVisitorState extends State<TodayVisitor> {
     Firestore.instance
         .collection('/society/$socID/visitors')
         .document('$docid')
-        .updateData({"exitTime": DateTime.now()});
+        .updateData({"exitTime": DateTime.now().toString()});
     print('Exited');
   }
 }
