@@ -6,11 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
 
 String smsCode;
 String verificationId;
-int otp = Random().nextInt(999999);
+int otp;
 String entered = '';
 DateTime time = DateTime.now();
 
@@ -109,6 +108,7 @@ class _OtpTestingState extends State<OtpTesting> {
   @override
   void initState() {
     super.initState();
+    otp = Random().nextInt(999999);
     print(otp);
     sendOTP();
     currController = controller1;
