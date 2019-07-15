@@ -210,7 +210,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                     String url1 = image(ds['otp']).toString();
                     print("qwertasdffgfg");
                     var timeExit;
-                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(0, 10);
+                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(11, 16);
                     else timeExit = '--';
                     String phone = ds["mobile"];
                     if (phone != null)

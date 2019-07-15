@@ -185,7 +185,7 @@ class _TodayVisitorState extends State<TodayVisitor> {
                     var docID = ds.documentID;
                     var time = ds["visitTime"];
                     var timeExit;
-                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(0, 10);
+                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(11, 16);
                     else timeExit = '--';
                     //image(ds['otp']);
                     bool exit = true;
