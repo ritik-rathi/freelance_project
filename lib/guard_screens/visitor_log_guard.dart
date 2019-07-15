@@ -184,10 +184,8 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                     DocumentSnapshot ds = snapshot.data
                         .documents[snapshot.data.documents.length - 1 - index];
                     var timeExit;
-                    if (ds['exitTime'] != null)
-                      timeExit = ds['exitTime'].toString().substring(0, 10);
-                    else
-                      timeExit = '--';
+                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(11, 16);
+                    else timeExit = '--';
                     String phone = ds["mobile"];
                     if (phone != null)
                       phone = phone;

@@ -32,7 +32,7 @@ class MainScreen extends StatelessWidget {
         child: GridView.count(
             // crossAxisSpacing: 5,
             // mainAxisSpacing: 5,
-            childAspectRatio: 0.6,
+            childAspectRatio: 0.5,
             crossAxisCount: 2,
             children: [
               GestureDetector(
@@ -72,7 +72,7 @@ class MainScreen extends StatelessWidget {
                   Navigator.pushNamed(context, '/today');
                 },
                 child: _optionCard(
-                    'New Maid/Driver',
+                    'Today\'s visitors',
                     Color(0xFF50CDFF),
                     Icon(
                       Icons.supervisor_account,

@@ -88,7 +88,7 @@ class _OtpTestingState extends State<OtpTesting> {
     var url =
         //'https://api.textlocal.in/send/?+apiKey=$apiKey&message=$message&sender=$sender&numbers=$number';
 
-        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=NewReg&sendto=$number&message=$message';
+        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=HMNTRA&sendto=$number&message=$message';
 
     http.post(url).then((res) => print(res));
     print("Called");
@@ -722,7 +722,7 @@ class _OtpTestingState extends State<OtpTesting> {
     else
       phone2 = '';
     var url =
-        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=HMANTR&sendto=$phone1,$phone2&message=$message';
+        'http://e108.in/api/swsendSingle.asp?username=t2hmantra&password=109198547&sender=HMNTRA&sendto=$phone1,$phone2&message=$message';
     http.post(url).then((res) => print(res));
   }
 

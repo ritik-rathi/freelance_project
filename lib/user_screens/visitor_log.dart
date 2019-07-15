@@ -191,7 +191,7 @@ class _VisitorLogState extends State<VisitorLog> {
                     String phone = ds["mobile"];
                     var timeExit;
                     if (ds['exitTime'] != null)
-                      timeExit = ds['exitTime'].toString().substring(0, 10);
+                      timeExit = ds['exitTime'].toString().substring(11, 16);
                     else
                       timeExit = '--';
                     if (phone != null)
