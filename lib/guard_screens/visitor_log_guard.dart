@@ -228,6 +228,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                                   if (!snapshot.hasData ||
                                                       snapshot.hasError) {
                                                     return CircularProgressIndicator(
+                                                      value: 50,
                                                       backgroundColor:
                                                           Colors.black,
                                                     );

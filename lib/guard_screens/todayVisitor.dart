@@ -254,6 +254,7 @@ class _TodayVisitorState extends State<TodayVisitor> {
                                                       if (snapshot.hasError ||
                                                           !snapshot.hasData) {
                                                         return CircularProgressIndicator(
+                                                          value: 50,
                                                           backgroundColor:
                                                               Colors.black,
                                                         );

@@ -15,7 +15,7 @@ class VisitorLog extends StatefulWidget {
 class _VisitorLogState extends State<VisitorLog> {
   var url;
 
-  image(int otp) async {
+  Future image(int otp) async {
     final ref = FirebaseStorage.instance.ref().child('$otp');
     url = await ref.getDownloadURL();
     return url;
@@ -233,8 +233,9 @@ class _VisitorLogState extends State<VisitorLog> {
                                                 future: image(ds['otp']),
                                                 builder: (context, snapshot) {
                                                   if (snapshot.hasError ||
-                                                      snapshot.hasData) {
+                                                      !snapshot.hasData) {
                                                     return CircularProgressIndicator(
+                                                      value: 50,
                                                       backgroundColor:
                                                           Colors.black,
                                                     );
