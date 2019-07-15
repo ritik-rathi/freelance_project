@@ -232,10 +232,18 @@ class _VisitorLogState extends State<VisitorLog> {
                                             child: FutureBuilder(
                                                 future: image(ds['otp']),
                                                 builder: (context, snapshot) {
-                                                  return Image.network(
-                                                    snapshot.data.toString(),
-                                                    fit: BoxFit.cover,
-                                                  );
+                                                  if (snapshot.hasError ||
+                                                      snapshot.hasData) {
+                                                    return CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                    );
+                                                  } else {
+                                                    return Image.network(
+                                                      snapshot.data.toString(),
+                                                      fit: BoxFit.cover,
+                                                    );
+                                                  }
                                                 })),
                                         SizedBox(
                                           width: 20.0,
@@ -246,15 +254,11 @@ class _VisitorLogState extends State<VisitorLog> {
                                               text: 'Name: ',
                                               style: TextStyle(
                                                 color: Colors.black,
-                                                //letterSpacing: 1.5,
-                                                // backgroundColor:
-                                                //     Color(0xffedff2d),
                                                 fontSize: 25.0,
-                                                //fontWeight: FontWeight.w800
                                               ),
                                             ),
                                             TextSpan(
-                                              text: '${ds['otp']}',
+                                              text: '${name[0]}',
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   //letterSpacing: 1.5,

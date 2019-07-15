@@ -221,17 +221,24 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                     child: Row(
                                       children: <Widget>[
                                         Container(
-                                          color: Colors.blue,
-                                          width: 90,
-                                          height: 100,
-                                          child: FutureBuilder(
-                                              future: image(ds['otp']),
-                                              builder: (context, snapshot) {
-                                                return Image.network(
-                                                    snapshot.data,
-                                                    fit: BoxFit.fill);
-                                              }),
-                                        ),
+                                            color: Colors.blue,
+                                            width: 90,
+                                            height: 100,
+                                            child: FutureBuilder(
+                                                future: image(ds['otp']),
+                                                builder: (context, snapshot) {
+                                                  if (!snapshot.hasData ||
+                                                      snapshot.hasError) {
+                                                    return CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                    );
+                                                  } else {
+                                                    return Image.network(
+                                                        snapshot.data,
+                                                        fit: BoxFit.fill);
+                                                  }
+                                                })),
                                         SizedBox(
                                           width: 20.0,
                                         ),

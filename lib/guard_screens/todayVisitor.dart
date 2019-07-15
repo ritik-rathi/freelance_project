@@ -1,8 +1,6 @@
-import 'dart:io' as prefix0;
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:io';
 import 'dart:ui';
 
 import '../soc_ID.dart';
@@ -15,6 +13,12 @@ class TodayVisitor extends StatefulWidget {
 }
 
 class _TodayVisitorState extends State<TodayVisitor> {
+  Future image(int otp) async {
+    final ref = FirebaseStorage.instance.ref().child('$otp');
+    var url = await ref.getDownloadURL();
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,9 +189,10 @@ class _TodayVisitorState extends State<TodayVisitor> {
                     var docID = ds.documentID;
                     var time = ds["visitTime"];
                     var timeExit;
-                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(0, 10);
-                    else timeExit = '--';
-                    //image(ds['otp']);
+                    if (ds['exitTime'] != null)
+                      timeExit = ds['exitTime'].toString().substring(0, 10);
+                    else
+                      timeExit = '--';
                     bool exit = true;
                     double height;
 
@@ -207,24 +212,14 @@ class _TodayVisitorState extends State<TodayVisitor> {
                     String purpose = ds['purpose'];
                     String flat = ds['house'];
                     String block = ds['block'];
-                    // while (vName[i] != "i") {
-                    //   i++;
-                    //   c++;
-                    // }
                     List<String> name = vName.split(' ');
                     var newTime;
                     if (time1 != null) {
                       newTime = time1.substring(11, 16);
                     }
-
-                    // final date1 = DateTime(time);
-
                     var tt = DateTime.parse(time);
 
                     var dur = DateTime.now().difference(tt).inDays;
-                    print(dur);
-
-                    print(dur.runtimeType);
                     if (dur != 0) {
                       return Container();
                     } else {
@@ -232,8 +227,8 @@ class _TodayVisitorState extends State<TodayVisitor> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
                         child: GestureDetector(
-                          onTap: () => detailDialog(
-                              name, newTime, purpose, phone, flat, block, timeExit),
+                          onTap: () => detailDialog(name, newTime, purpose,
+                              phone, flat, block, timeExit),
                           child: (vName != null && time != null)
                               ? Card(
                                   color: Colors.white,
@@ -252,8 +247,22 @@ class _TodayVisitorState extends State<TodayVisitor> {
                                                 color: Colors.blue,
                                                 width: 90,
                                                 height: 100,
-                                                child: Image.network('',
-                                                    fit: BoxFit.cover),
+                                                child: FutureBuilder(
+                                                    future: image(ds['otp']),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot.hasError ||
+                                                          !snapshot.hasData) {
+                                                        return CircularProgressIndicator(
+                                                          backgroundColor:
+                                                              Colors.black,
+                                                        );
+                                                      } else {
+                                                        return Image.network(
+                                                            snapshot.data,
+                                                            fit: BoxFit.cover);
+                                                      }
+                                                    }),
                                               ),
                                               SizedBox(
                                                 width: 20.0,
