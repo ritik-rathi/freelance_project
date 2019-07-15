@@ -2,9 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:freelance/guard_screens/otp.dart';
-import 'package:freelance/login.dart';
 import 'package:freelance/soc_ID.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -14,29 +11,10 @@ class GuardvisitorLog extends StatefulWidget {
 }
 
 class _GuardvisitorLogState extends State<GuardvisitorLog> {
-  String url;
-  List pics=["https://picsum.photos/200/300"];
   Future image(int otp) async {
     final ref = FirebaseStorage.instance.ref().child('$otp');
-// no need of the file extension, the name will do fine.
-    await ref.getDownloadURL().then((value) {
-      
-      setState(() {
-        url = value.toString();
-        pics.add('hello');
-        url = url + '.png';
-      });
-    });
-    
-
-    if (url != null) {
-      print('This is your fucking url - $url');
-
-      return url;
-    } else {
-      print('No url present');
-      return null;
-    }
+    var url = await ref.getDownloadURL();
+    return url;
   }
 
   @override
@@ -191,8 +169,6 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
   }
 
   Widget _buildList() {
-    int c = 0;
-    int i = 0;
     return StreamBuilder(
         stream: Firestore.instance
             .collection("/society/$socID/visitors")
@@ -205,13 +181,13 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data.documents[snapshot.data.documents.length - 1 - index];
-                    Future.delayed(Duration(seconds: 5));
-                    String url1 = image(ds['otp']).toString();
-                    print("qwertasdffgfg");
+                    DocumentSnapshot ds = snapshot.data
+                        .documents[snapshot.data.documents.length - 1 - index];
                     var timeExit;
-                    if(ds['exitTime'] != null) timeExit = ds['exitTime'].toString().substring(0, 10);
-                    else timeExit = '--';
+                    if (ds['exitTime'] != null)
+                      timeExit = ds['exitTime'].toString().substring(0, 10);
+                    else
+                      timeExit = '--';
                     String phone = ds["mobile"];
                     if (phone != null)
                       phone = phone;
@@ -221,10 +197,6 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                     String purpose = ds['purpose'];
                     String flat = ds['house'];
                     String block = ds['block'];
-                    // while (vName[i] != "i") {
-                    //   i++;
-                    //   c++;
-                    // }
                     List<String> name = vName.split(' ');
                     var time = ds["visitTime"].toString();
                     if (time != null) {
@@ -252,10 +224,13 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                           color: Colors.blue,
                                           width: 90,
                                           height: 100,
-                                          child: Image.network(url1,
-                                              fit: BoxFit.fill),
-
-                                          //child: Text(pics[index]),
+                                          child: FutureBuilder(
+                                              future: image(ds['otp']),
+                                              builder: (context, snapshot) {
+                                                return Image.network(
+                                                    snapshot.data,
+                                                    fit: BoxFit.fill);
+                                              }),
                                         ),
                                         SizedBox(
                                           width: 20.0,
@@ -266,9 +241,6 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                               text: 'Name: ',
                                               style: TextStyle(
                                                   color: Colors.black,
-                                                  //letterSpacing: 1.5,
-                                                  // backgroundColor:
-                                                  //     Color(0xffedff2d),
                                                   fontSize: 25.0,
                                                   fontWeight: FontWeight.w500),
                                             ),
@@ -276,11 +248,7 @@ class _GuardvisitorLogState extends State<GuardvisitorLog> {
                                               text: '${name[0]}',
                                               style: TextStyle(
                                                 color: Colors.black,
-                                                //letterSpacing: 1.5,
-                                                // backgroundColor:
-                                                //     Color(0xffedff2d),
                                                 fontSize: 25,
-                                                //fontWeight: FontWeight.w500
                                               ),
                                             ),
                                           ]),

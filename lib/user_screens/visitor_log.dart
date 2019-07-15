@@ -2,30 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/widgets.dart';
-import 'package:freelance/login.dart';
 import 'package:freelance/soc_ID.dart';
 import 'profile_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
-image(int otp) async {
-  final ref = FirebaseStorage.instance.ref().child('$otp');
-// no need of the file extension, the name will do fine.
-  String url = await ref.getDownloadURL();
-  url = url + '.jpg';
-  if (url != null) {
-    print('This is your fucking url - $url');
-  } else {
-    print('No url present');
-
-    url =
-        'https://previews.123rf.com/images/urfandadashov/urfandadashov1805/urfandadashov180500070/100957966-photo-not-available-icon-isolated-on-white-background-vector-illustration.jpg';
-  }
-
-  return url;
-}
 
 class VisitorLog extends StatefulWidget {
   @override
@@ -33,6 +13,14 @@ class VisitorLog extends StatefulWidget {
 }
 
 class _VisitorLogState extends State<VisitorLog> {
+  var url;
+
+  image(int otp) async {
+    final ref = FirebaseStorage.instance.ref().child('$otp');
+    url = await ref.getDownloadURL();
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,8 +173,6 @@ class _VisitorLogState extends State<VisitorLog> {
   }
 
   Widget _buildList() {
-    int c = 0;
-    int i = 0;
     return StreamBuilder(
         stream: Firestore.instance
             .collection("/society/$socID/visitors")
@@ -202,7 +188,6 @@ class _VisitorLogState extends State<VisitorLog> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data
                         .documents[snapshot.data.documents.length - 1 - index];
-                    //String imageUrl = image(ds['otp']);
                     String phone = ds["mobile"];
                     var timeExit;
                     if (ds['exitTime'] != null)
@@ -215,13 +200,6 @@ class _VisitorLogState extends State<VisitorLog> {
                       phone = 'NA';
                     String vName = ds["name"];
                     String purpose = ds['purpose'];
-                    // while (vName[i] != "i") {
-                    //   i++;
-                    //   c++;
-                    // }
-                    // print(
-                    //     'ye hai aapka url, kara lo print - $imageUrl');
-
                     List<String> name = vName.split(' ');
                     var date, newTime;
                     var time = ds["visitTime"].toString();
@@ -248,14 +226,17 @@ class _VisitorLogState extends State<VisitorLog> {
                                     child: Row(
                                       children: <Widget>[
                                         Container(
-                                          color: Colors.blue,
-                                          width: 90,
-                                          height: 100,
-                                          // child: Image.network(
-                                          //   imageUrl,
-                                          //   fit: BoxFit.cover,
-                                          // )
-                                        ),
+                                            color: Colors.blue,
+                                            width: 90,
+                                            height: 100,
+                                            child: FutureBuilder(
+                                                future: image(ds['otp']),
+                                                builder: (context, snapshot) {
+                                                  return Image.network(
+                                                    snapshot.data.toString(),
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                })),
                                         SizedBox(
                                           width: 20.0,
                                         ),
@@ -273,7 +254,7 @@ class _VisitorLogState extends State<VisitorLog> {
                                               ),
                                             ),
                                             TextSpan(
-                                              text: '${name[0]}',
+                                              text: '${ds['otp']}',
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   //letterSpacing: 1.5,
