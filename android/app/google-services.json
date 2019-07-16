@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:94119762808:android:56a1a5a6650dcb5e",
         "android_client_info": {
-          "package_name": "com.example.freelance"
+          "package_name": "com.application.homantra"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "94119762808-egmucao1rkhf2ou5o5d0dd6ggss8v9sp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.freelance",
+            "package_name": "com.application.homantra",
             "certificate_hash": "1cce1e7f9c7c615966d630de1cb0b25fabfe3ced"
           }
         },
@@ -43,7 +43,7 @@
               "client_id": "94119762808-924tgs35ta0b24fm9cndkr5bdjfrksk2.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.freelance"
+                "bundle_id": "com.application.homantra"
               }
             }
           ]
