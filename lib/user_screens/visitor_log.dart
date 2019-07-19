@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:ui' as prefix0;
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -208,11 +209,8 @@ class _VisitorLogState extends State<VisitorLog> {
                       date = time.substring(0, 10);
                     }
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
-                      child: GestureDetector(
-                        onTap: () => detailDialog(
-                            name, newTime, purpose, phone, date, timeExit),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
                         child: (vName != null && time != null)
                             ? Card(
                                 color: Colors.white,
@@ -226,7 +224,7 @@ class _VisitorLogState extends State<VisitorLog> {
                                     child: Row(
                                       children: <Widget>[
                                         Container(
-                                            color: Colors.blue,
+                                            //color: Colors.blue,
                                             width: 90,
                                             height: 100,
                                             child: FutureBuilder(
@@ -240,44 +238,97 @@ class _VisitorLogState extends State<VisitorLog> {
                                                           Colors.black,
                                                     );
                                                   } else {
-                                                    return Image.network(
-                                                      snapshot.data.toString(),
-                                                      fit: BoxFit.cover,
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        return showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return Scaffold(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                resizeToAvoidBottomInset:
+                                                                    false,
+                                                                body:
+                                                                    BackdropFilter(
+                                                                  filter: prefix0
+                                                                          .ImageFilter
+                                                                      .blur(
+                                                                          sigmaX:
+                                                                              3,
+                                                                          sigmaY:
+                                                                              3),
+                                                                  child: Center(
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          300,
+                                                                      width:
+                                                                          300,
+                                                                      child: Image
+                                                                          .network(
+                                                                        snapshot
+                                                                            .data
+                                                                            .toString(),
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            });
+                                                      },
+                                                      child: Image.network(
+                                                        snapshot.data
+                                                            .toString(),
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     );
                                                   }
                                                 })),
                                         SizedBox(
                                           width: 20.0,
                                         ),
-                                        RichText(
-                                          text: TextSpan(children: [
-                                            TextSpan(
-                                              text: 'Name: ',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 25.0,
-                                              ),
+                                        GestureDetector(
+                                          onTap: () => detailDialog(
+                                              name,
+                                              newTime,
+                                              purpose,
+                                              phone,
+                                              date,
+                                              timeExit),
+                                          child: Container(
+                                            child: RichText(
+                                              text: TextSpan(children: [
+                                                TextSpan(
+                                                  text: 'Name: ',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 25.0,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: '${name[0]}',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      //letterSpacing: 1.5,
+                                                      // backgroundColor:
+                                                      //     Color(0xffedff2d),
+                                                      fontSize: 25.0,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ]),
                                             ),
-                                            TextSpan(
-                                              text: '${name[0]}',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  //letterSpacing: 1.5,
-                                                  // backgroundColor:
-                                                  //     Color(0xffedff2d),
-                                                  fontSize: 25.0,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ]),
+                                          ),
                                         )
                                       ],
                                     ),
                                   ),
                                 ),
                               )
-                            : null,
-                      ),
-                    );
+                            : null);
                   }),
             );
           }

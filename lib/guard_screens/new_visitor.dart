@@ -320,7 +320,8 @@ class _NewVisitorPageState extends State<NewVisitorPage> {
                           vPhone != null &&
                           vFlat != null &&
                           vTime != null &&
-                          vPurpose != null) {
+                          vPurpose != null &&
+                          _image != null) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
