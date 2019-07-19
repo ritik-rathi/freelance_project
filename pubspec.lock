@@ -43,13 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.5"
-  cloud_functions:
-    dependency: "direct main"
-    description:
-      name: cloud_functions
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0+2"
   collection:
     dependency: transitive
     description:
@@ -78,13 +71,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
-  firebase_auth:
-    dependency: "direct main"
-    description:
-      name: firebase_auth
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.11.1"
   firebase_core:
     dependency: transitive
     description:
@@ -104,13 +90,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_local_notifications:
-    dependency: "direct main"
-    description:
-      name: flutter_local_notifications
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.7.1+1"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -130,13 +109,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  gradient_widgets:
-    dependency: "direct main"
-    description:
-      name: gradient_widgets
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.1"
   http:
     dependency: "direct main"
     description:
@@ -200,13 +172,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.1"
-  platform:
-    dependency: transitive
-    description:
-      name: platform
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0"
   quiver:
     dependency: transitive
     description:
@@ -220,7 +185,7 @@ packages:
       name: random_string
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2"
+    version: "1.1.0"
   sky_engine:
     dependency: transitive
     description: flutter
