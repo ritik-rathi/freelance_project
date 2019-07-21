@@ -10,7 +10,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Timer(Duration(seconds: 2),
-        () => Navigator.popAndPushNamed(context, '/guard'));
+        () => Navigator.pushReplacementNamed(context, '/guard'));
     super.initState();
   }
 

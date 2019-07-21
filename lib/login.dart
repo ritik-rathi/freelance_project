@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freelance/bloc/bloc.dart';
 import 'package:freelance/main.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:freelance/soc_ID.dart';
-import 'package:freelance/user_screens/profile_screen.dart' as prefix0;
+import 'package:freelance/splashscreen.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
-
-//Implement society id check
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freelance/user_screens/profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 bool email = false, password = false;
 String uid, upwd, spwd;
@@ -21,6 +23,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> with TickerProviderStateMixin {
+  LoginBloc _login = new LoginBloc();
   int l1 = 0, l2 = 0, l3 = 0, l4 = 0, l5 = 0;
   Future<int> emailID(String id, String pwd) async {
     var c = await query1.where('Email', isEqualTo: id).snapshots().first;
@@ -55,8 +58,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   TextEditingController guard = new TextEditingController();
 
   bool _obscureTextLogin = true;
-  bool _obscureTextSignup = true;
-  bool _obscureTextSignupConfirm = true;
+  // bool _obscureTextSignup = true;
+  // bool _obscureTextSignupConfirm = true;
 
   TextEditingController signupEmailController = new TextEditingController();
   TextEditingController signupNameController = new TextEditingController();
@@ -70,88 +73,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   Color left = Colors.white;
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _signkey = GlobalKey<FormState>();
+  // final GlobalKey<FormState> _signkey = GlobalKey<FormState>();
   AnimationController fadeAnimationController;
   Animation fadeAnimation;
-
-  @override
-  Widget build(BuildContext context) {
-    fadeAnimationController.forward();
-    return FadeTransition(
-      opacity: fadeAnimation,
-      child: Scaffold(
-          body: NotificationListener<OverscrollIndicatorNotification>(
-        child: SingleChildScrollView(
-          // The main container or background that contains everything
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height >= 775.0
-                ? MediaQuery.of(context).size.height
-                : 775.0,
-            decoration: new BoxDecoration(
-                gradient: new LinearGradient(
-                    begin: const FractionalOffset(0.0, 0.0),
-                    end: const FractionalOffset(1.0, 1.0),
-                    stops: [0.0, 1.0],
-                    tileMode: TileMode.clamp,
-                    colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
-            // Column is used to display the rest of the widgets vertically
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                // Our logo. can be tweaked
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 150.0, left: 20.0, right: 20.0),
-                  child: new Image(
-                    width: 150.0,
-                    height: 150.0,
-                    fit: BoxFit.cover,
-                    image: new AssetImage('assets/images/logo.jpeg'),
-                  ),
-                ),
-                //fucntion used for building the menu bar
-                new Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: _buildMenuBar(context)),
-                new Expanded(
-                  flex: 2,
-                  // below is a check that finds out which tab is active and sets the color accordingly
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (i) {
-                      if (i == 0) {
-                        setState(() {
-                          right = Colors.black;
-                          left = Colors.white;
-                        });
-                      } else if (i == 1) {
-                        setState(() {
-                          right = Colors.white;
-                          left = Colors.black;
-                        });
-                      }
-                    },
-                    children: <Widget>[
-                      //the sign in widgets
-                      new ConstrainedBox(
-                        constraints: const BoxConstraints.expand(),
-                        child: _buildParentSignIn(context),
-                      ),
-                      new ConstrainedBox(
-                        constraints: const BoxConstraints.expand(),
-                        child: _buildTeacherSignIn(context),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      )),
-    );
-  }
 
   @override
   void dispose() {
@@ -166,6 +90,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   void initState() {
     tid = 0;
     tpwd = 0;
+    _login = BlocProvider.of<LoginBloc>(context);
     fadeAnimationController =
         new AnimationController(vsync: this, duration: Duration(seconds: 5));
     fadeAnimation = new CurvedAnimation(
@@ -178,6 +103,111 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     ]);
 
     _pageController = new PageController(initialPage: 0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    fadeAnimationController.forward();
+    return FadeTransition(
+      opacity: fadeAnimation,
+      child: Scaffold(
+          body: BlocBuilder(
+        bloc: _login,
+        builder: (BuildContext context, States state) {
+          if (state is LoginStarts) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is LoginComplete) {
+            return ProfileScreen();
+          }
+          if (state is LoginNotFound) {
+            return NotificationListener<OverscrollIndicatorNotification>(
+              child: SingleChildScrollView(
+                // The main container or background that contains everything
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height >= 775.0
+                      ? MediaQuery.of(context).size.height
+                      : 775.0,
+                  decoration: new BoxDecoration(
+                      gradient: new LinearGradient(
+                          begin: const FractionalOffset(0.0, 0.0),
+                          end: const FractionalOffset(1.0, 1.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp,
+                          colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
+                  // Column is used to display the rest of the widgets vertically
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      // Our logo. can be tweaked
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 150.0, left: 20.0, right: 20.0),
+                        child: new Image(
+                          width: 150.0,
+                          height: 150.0,
+                          fit: BoxFit.cover,
+                          image: new AssetImage('assets/images/logo.jpeg'),
+                        ),
+                      ),
+                      //fucntion used for building the menu bar
+                      new Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: _buildMenuBar(context)),
+                      new Expanded(
+                        flex: 2,
+                        // below is a check that finds out which tab is active and sets the color accordingly
+                        child: PageView(
+                          controller: _pageController,
+                          onPageChanged: (i) {
+                            if (i == 0) {
+                              setState(() {
+                                right = Colors.black;
+                                left = Colors.white;
+                              });
+                            } else if (i == 1) {
+                              setState(() {
+                                right = Colors.white;
+                                left = Colors.black;
+                              });
+                            }
+                          },
+                          children: <Widget>[
+                            //the sign in widgets
+                            new ConstrainedBox(
+                              constraints: const BoxConstraints.expand(),
+                              child: _buildParentSignIn(context),
+                            ),
+                            new ConstrainedBox(
+                              constraints: const BoxConstraints.expand(),
+                              child: _buildTeacherSignIn(context),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          if (state is LoginError) {
+            return Center(
+              child: Text(
+                'Please restart the app',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.w600),
+              ),
+            );
+          }
+        },
+      )),
+    );
   }
 
   Widget _buildMenuBar(BuildContext context) {
@@ -341,8 +371,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             fontFamily: "WorkSansBold"),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       print('testing ');
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString('email', emailCon.text);
                       emailID(emailCon.text, idCon.text).then((l3) {
                         if (l3 == 1) {
                           print('object');
@@ -477,8 +510,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             fontFamily: "WorkSansBold"),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       print('testing ');
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString('guard_pass', guard.text);
                       guardPass(guard.text).then((l4) {
                         if (l4 == 1) {
                           print('object');
@@ -532,17 +568,17 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     });
   }
 
-  void _toggleSignup() {
-    setState(() {
-      _obscureTextSignup = !_obscureTextSignup;
-    });
-  }
+  // void _toggleSignup() {
+  //   setState(() {
+  //     _obscureTextSignup = !_obscureTextSignup;
+  //   });
+  // }
 
-  void _toggleSignupConfirm() {
-    setState(() {
-      _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
-    });
-  }
+  // void _toggleSignupConfirm() {
+  //   setState(() {
+  //     _obscureTextSignupConfirm = !_obscureTextSignupConfirm;
+  //   });
+  // }
 }
 
 class TabIndicationPainter extends CustomPainter {

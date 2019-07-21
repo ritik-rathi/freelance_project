@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freelance/bloc/bloc.dart';
+import 'login.dart'as widget;
 
 String socID;
 
@@ -29,7 +32,10 @@ class Access extends StatelessWidget {
             int length = snapshot.documents.length;
             for (int i = 0; i < length; i++) {
               if (ids[i] == socID) {
-                Navigator.pushReplacementNamed(context, '/login');
+                Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context)=> BlocProvider(
+                  builder: (context) => LoginBloc()..dispatch(Login()),
+                  child: widget.Login(),
+                )));
                 print(ids[i]);
                 break;
               } else {

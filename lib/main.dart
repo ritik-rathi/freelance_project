@@ -12,11 +12,15 @@ import 'package:freelance/guard_screens/mainScreen.dart';
 import 'package:freelance/guard_screens/new_visitor.dart';
 import 'package:freelance/splashscreen.dart';
 import 'package:freelance/user_screens/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 bool isLoggedIn = false;
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // var email = prefs.getString('email');
+  // print(email);
   runApp(MyApp());
 }
 

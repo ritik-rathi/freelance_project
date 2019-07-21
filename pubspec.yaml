@@ -32,6 +32,10 @@ dependencies:
   flutter_share_me: ^0.2.1
   random_string: ^1.1.0
   image: ^2.1.4
+  shared_preferences: ^0.5.3+4
+  flutter_bloc: ^0.19.1
+  rxdart: ^0.22.0
+  equatable: ^0.3.0
 
 dev_dependencies:
   flutter_test:
