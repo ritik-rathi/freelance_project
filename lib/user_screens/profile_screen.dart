@@ -471,9 +471,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
-                          onSubmitted: (value) {
-                            name = value;
-                          },
+                          controller: controller,
                           decoration: InputDecoration.collapsed(
                             hintText: 'Name',
                             hintStyle: TextStyle(
@@ -481,7 +479,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontWeight: FontWeight.w300,
                                 letterSpacing: 1.2),
                           ),
-                          controller: controller,
                         ),
                       ),
                       SizedBox(
@@ -497,9 +494,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
-                          onChanged: (value) {
-                            phone = value;
-                          },
+                          controller: controller2,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             hintText: 'Phone Number',
@@ -508,7 +503,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontWeight: FontWeight.w300,
                                 letterSpacing: 1.2),
                           ),
-                          controller: controller2,
                         ),
                       ),
                       SizedBox(
@@ -542,8 +536,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Firestore.instance
                                 .collection('/society/$socID/users')
                                 .document('$id')
-                                .updateData(
-                                    {"Phone - 2": phone, 'user-2': controller.text});
+                                .updateData({
+                              "Phone - 2": controller2.text,
+                              'user-2': controller.text
+                            });
 
                             Navigator.pop(context);
                           },
