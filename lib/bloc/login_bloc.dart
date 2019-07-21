@@ -1,14 +1,9 @@
-import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:bloc/bloc.dart';
 import 'bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginBloc extends Bloc<Events, States> {
-  // final bool guardLogin;
-
-  // LoginBloc({@required this.guardLogin}) : super();
-
   @override
   States get initialState => LoginStarts();
 
@@ -62,6 +57,6 @@ class LoginBloc extends Bloc<Events, States> {
     var guard = prefs.getString("guard_pass");
     print(guard);
     print(email);
-    return (email != null) || guard != null;
+    return (email != null) || (guard != null);
   }
 }

@@ -115,8 +115,24 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
         bloc: _login,
         builder: (BuildContext context, States state) {
           if (state is LoginStarts) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height >= 775.0
+                  ? MediaQuery.of(context).size.height
+                  : 775.0,
+              decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                      begin: const FractionalOffset(0.0, 0.0),
+                      end: const FractionalOffset(1.0, 1.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp,
+                      colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
+              child: Center(
+                child: CircularProgressIndicator(
+                  semanticsLabel: 'Loading',
+                  backgroundColor: Colors.black,
+                ),
+              ),
             );
           }
           if (state is LoginComplete) {
@@ -195,13 +211,21 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             );
           }
           if (state is LoginError) {
-            return Center(
-              child: Text(
-                'Please restart the app',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.w600),
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height >= 775.0
+                  ? MediaQuery.of(context).size.height
+                  : 775.0,
+              color: Colors.black,
+              child: Center(
+                child: Text(
+                  'Error Occured\nPlease restart the app',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
             );
           }
@@ -380,9 +404,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         if (l3 == 1) {
                           print('object');
                           Navigator.pushReplacementNamed(context, '/user');
-                          setState(() {
-                            isLoggedIn = true;
-                          });
                         } else {
                           showDialog(
                               context: context,

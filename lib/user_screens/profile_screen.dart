@@ -6,31 +6,13 @@ import 'package:freelance/login.dart';
 import 'package:freelance/main.dart';
 import 'package:freelance/soc_ID.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Color color = Color(0xFF50CDFF);
 var query = Firestore.instance.collection('/society/$socID/users');
 var name, email, phone, block, profile;
 String flat;
 var callGuard;
-
-// Future<void> credential() async {
-//   profile = await query.where('Email', isEqualTo: uid).snapshots().first;
-
-//   name = profile.documents[0]['user-1'];
-//   print('aaaaaaaaaa........$name');
-
-//   email = profile.documents[0]['Email'].toString();
-//   print('aaaaaaaaaa........$email');
-
-//   phone = profile.documents[0]['Phone - 1'];
-//   print('aaaaaaaaaa........$phone');
-
-//   flat = profile.documents[0]['Flat'].toString();
-//   print('aaaaaaaaaa........$flat');
-
-//   block = profile.documents[0]['Block'].toString();
-//   print('aaaaaaaaaa........$block');
-// }
 
 guardPhone() {
   var query = Firestore.instance.document('society/$socID');
@@ -48,7 +30,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     guardPhone();
     super.initState();
   }
@@ -67,201 +48,197 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return Center(child: CircularProgressIndicator());
             } else {
               flat = snapshot.data.documents[0]['Flat'].toString();
-              return ListView(
-                  //mainAxisAlignment: MainAxisAlignment.center,
-                  //crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 250,
-                      child: Stack(
-                        children: <Widget>[
-                          Container(
-                            alignment: Alignment.topCenter,
-                            height: 160.0,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [Color(0xFF50CDFF), Color(0xff1A2980)],
-                            )),
+              return ListView(children: [
+                Container(
+                  height: 250,
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.topCenter,
+                        height: 160.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Color(0xFF50CDFF), Color(0xff1A2980)],
+                        )),
+                      ),
+                      Positioned(
+                        top: 180,
+                        left: 30,
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Color(0xff1A2980))),
+                          child: IconButton(
+                            onPressed: () {
+                              editInfo();
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              size: 30,
+                            ),
+                            color: color,
                           ),
-                          Positioned(
-                            top: 180,
-                            left: 30,
-                            child: Container(
-                              height: 50,
-                              width: 50,
+                        ),
+                      ),
+                      Positioned(
+                        top: 180,
+                        right: 30,
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Color(0xff1A2980))),
+                          child: IconButton(
+                            onPressed: () {
+                              print('guard: $callGuard');
+                              launch("tel:$callGuard");
+                            },
+                            icon: Icon(Icons.local_phone, size: 30),
+                            color: color,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                          right: 20.0,
+                          top: 20.0,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.more_vert,
+                              size: 30.0,
+                              color: Colors.white,
+                            ),
+                            onPressed: () => dialog(
+                                context, snapshot.data.documents[0].documentID),
+                          )),
+                      Positioned(
+                        top: 75.0,
+                        width: width,
+                        //left: 100,
+                        // right: 90,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  border: Border.all(color: Color(0xff1A2980))),
-                              child: IconButton(
-                                onPressed: () {
-                                  editInfo();
-                                },
-                                icon: Icon(
-                                  Icons.edit,
-                                  size: 30,
-                                ),
-                                color: color,
+                                  border:
+                                      Border.all(color: Colors.grey, width: 3)),
+                              // height: 160,
+                              // width: 160,
+                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/images/logo.jpeg'),
+                                radius: 80,
                               ),
                             ),
-                          ),
-                          Positioned(
-                            top: 180,
-                            right: 30,
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: Color(0xff1A2980))),
-                              child: IconButton(
-                                onPressed: () {
-                                  print('guard: $callGuard');
-                                  launch("tel:$callGuard");
-                                },
-                                icon: Icon(Icons.local_phone, size: 30),
-                                color: color,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                              right: 20.0,
-                              top: 20.0,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.more_vert,
-                                  size: 30.0,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () => dialog(context,
-                                    snapshot.data.documents[0].documentID),
-                              )),
-                          Positioned(
-                            top: 75.0,
-                            width: width,
-                            //left: 100,
-                            // right: 90,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.grey, width: 3)),
-                                  // height: 160,
-                                  // width: 160,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 20.0),
-                                  child: CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('assets/images/logo.jpeg'),
-                                    radius: 80,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(snapshot.data.documents[0]['user-1'],
-                              style: TextStyle(fontSize: 25, color: color))
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(snapshot.data.documents[0]['Email'],
-                              style: TextStyle(fontSize: 20))
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('${snapshot.data.documents[0]['Phone - 1']}',
-                              style: TextStyle(fontSize: 20))
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Divider(color: Color(0xff1A2980)),
-                    SizedBox(height: 8),
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Owner',
-                              style: TextStyle(fontSize: 25, color: color))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                              '${snapshot.data.documents[0]['Flat']} - ${snapshot.data.documents[0]['Block']}',
-                              style: TextStyle(fontSize: 20))
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Divider(color: Color(0xff1A2980)),
-                    SizedBox(height: 8),
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Gender',
-                              style: TextStyle(fontSize: 25, color: color))
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('', style: TextStyle(fontSize: 20))
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 50),
-                    FlatButton(
-                      onPressed: () {
-                        try {
-                          FlutterShareMe().shareToWhatsApp(
-                              msg:
-                                  'hello,this is my github:https://github.com/lizhuoyuan');
-                        } catch (e) {
-                          print(e);
-                        }
-                      },
-                      child: Text('Share app'),
-                    )
-                  ]);
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(snapshot.data.documents[0]['user-1'],
+                          style: TextStyle(fontSize: 25, color: color))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(snapshot.data.documents[0]['Email'],
+                          style: TextStyle(fontSize: 20))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('${snapshot.data.documents[0]['Phone - 1']}',
+                          style: TextStyle(fontSize: 20))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Divider(color: Color(0xff1A2980)),
+                SizedBox(height: 8),
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Owner',
+                          style: TextStyle(fontSize: 25, color: color))
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                          '${snapshot.data.documents[0]['Flat']} - ${snapshot.data.documents[0]['Block']}',
+                          style: TextStyle(fontSize: 20))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Divider(color: Color(0xff1A2980)),
+                SizedBox(height: 8),
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Gender',
+                          style: TextStyle(fontSize: 25, color: color))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  margin: EdgeInsets.only(left: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('', style: TextStyle(fontSize: 20))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 50),
+                FlatButton(
+                  onPressed: () {
+                    try {
+                      FlutterShareMe().shareToWhatsApp(
+                          msg:
+                              'hello,this is my github:https://github.com/lizhuoyuan');
+                    } catch (e) {
+                      print(e);
+                    }
+                  },
+                  child: Text('Share app'),
+                )
+              ]);
             }
           },
         ));
@@ -577,12 +554,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   elevation: 2,
                   child: Column(children: [
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.remove("email");
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => Login()));
-                        setState(() {
-                          isLoggedIn = false;
-                        });
                       },
                       child: Text('Logout',
                           style: TextStyle(
@@ -594,9 +571,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     GestureDetector(
                       onTap: () {
                         addUser(id);
-                        setState(() {
-                          isLoggedIn = false;
-                        });
                       },
                       child: Text('Add user',
                           style: TextStyle(
