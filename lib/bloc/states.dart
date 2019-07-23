@@ -11,9 +11,10 @@ class LoginStarts extends States {
 
 class LoginComplete extends States {
   final bool guard;
+  final String id;
 
-  LoginComplete({this.guard});
-  
+  LoginComplete({this.guard , this.id});
+
   @override
   String toString() => 'Login info exists';
 }

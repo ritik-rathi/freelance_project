@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freelance/bloc/bloc.dart' as bloc;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../login.dart';
 
@@ -140,9 +143,17 @@ class MainScreen extends StatelessWidget {
                   elevation: 2,
                   child: Center(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => Login()));
+                      onTap: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.remove("guard_pass");
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                    child: Login(),
+                                    builder: (context) => bloc.LoginBloc()
+                                      ..dispatch(bloc.Login()))));
                       },
                       child: Text('Logout',
                           style: TextStyle(

@@ -34,7 +34,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     guardPhone();
+    print("before");
     print(widget.email);
+    print("after");
     super.initState();
   }
 
@@ -47,7 +49,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: StreamBuilder(
           stream: query.where('Email', isEqualTo: widget.email).snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
+            var ds = snapshot.data.documents;
+            print(ds.length.toString());
+            if (snapshot.hasError || snapshot == null) {
               return Center(
                 child: Text(
                   'Error',

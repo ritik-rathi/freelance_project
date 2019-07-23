@@ -9,6 +9,10 @@ import 'package:freelance/user_screens/visitor_log.dart';
 var vTime = TimeOfDay.now();
 
 class Profile extends StatefulWidget {
+  final String email;
+
+  Profile({this.email});
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -36,7 +40,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   List<Widget> pages = [
     ProfileScreen(
-      email: login.email,
+      email: login.uid,
     ),
     VisitorLog(),
     MaidScreen()

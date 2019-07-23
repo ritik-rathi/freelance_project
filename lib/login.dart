@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:freelance/soc_ID.dart';
 import 'package:freelance/splashscreen.dart';
+import 'package:freelance/user_screens/profile.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
@@ -141,8 +142,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             if (state.guard) {
               return MainScreen();
             } else {
-              return ProfileScreen(
-                email: emailCon.text,
+              return Profile(
+                email: state.id,
               );
             }
           }
@@ -407,7 +408,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       print('testing ');
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
-                      prefs.setString('email', emailCon.text);
+                      prefs.setString('email', uid);
                       emailID(emailCon.text, idCon.text).then((l3) {
                         if (l3 == 1) {
                           print('object');
@@ -415,8 +416,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           Navigator.pushReplacement(
                               context,
                               new MaterialPageRoute(
-                                  builder: (context) => prefix0.ProfileScreen(
-                                        email: emailCon.text,
+                                  builder: (context) => Profile(
+                                        email: uid,
                                       )));
                         } else {
                           showDialog(

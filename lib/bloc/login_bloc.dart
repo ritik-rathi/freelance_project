@@ -32,9 +32,9 @@ class LoginBloc extends Bloc<Events, States> {
             var guard = await _checkIfGuardExists();
             print('Got something');
             if (user != null) {
-              yield LoginComplete(guard: false);
+              yield LoginComplete(guard: false, id: user);
             } else if (guard != null) {
-              yield LoginComplete(guard: true);
+              yield LoginComplete(guard: true, id: guard);
             } else {
               yield LoginNotFound();
             }
