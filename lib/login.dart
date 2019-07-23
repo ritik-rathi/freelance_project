@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freelance/bloc/bloc.dart';
+import 'package:freelance/guard_screens/mainScreen.dart';
 import 'package:freelance/main.dart';
 import 'dart:async';
 import 'dart:math' as math;
@@ -10,9 +11,10 @@ import 'package:freelance/splashscreen.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
+import 'package:freelance/user_screens/profile_screen.dart' as prefix0;
 import 'package:shared_preferences/shared_preferences.dart';
 
-bool email = false, password = false;
+var email;
 String uid, upwd, spwd;
 var tid, tpwd;
 var query1 = Firestore.instance.collection('/society/$socID/users');
@@ -136,7 +138,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             );
           }
           if (state is LoginComplete) {
-            return ProfileScreen();
+            if (state.guard) {
+              return MainScreen();
+            } else {
+              return ProfileScreen(
+                email: emailCon.text,
+              );
+            }
           }
           if (state is LoginNotFound) {
             return NotificationListener<OverscrollIndicatorNotification>(
@@ -403,7 +411,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       emailID(emailCon.text, idCon.text).then((l3) {
                         if (l3 == 1) {
                           print('object');
-                          Navigator.pushReplacementNamed(context, '/user');
+                          email = emailCon.text;
+                          Navigator.pushReplacement(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => prefix0.ProfileScreen(
+                                        email: emailCon.text,
+                                      )));
                         } else {
                           showDialog(
                               context: context,

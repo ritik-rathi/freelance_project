@@ -28,10 +28,16 @@ class LoginBloc extends Bloc<Events, States> {
           print('Inside login starts function');
           try {
             print('Getting details....');
-            var exists = await _checkIfUserExists();
+            var user = await _checkIfUserExists();
+            var guard = await _checkIfGuardExists();
             print('Got something');
-            print(exists.toString());
-            yield exists ? LoginComplete() : LoginNotFound();
+            if (user != null) {
+              yield LoginComplete(guard: false);
+            } else if (guard != null) {
+              yield LoginComplete(guard: true);
+            } else {
+              yield LoginNotFound();
+            }
           } catch (e) {
             print(e.toString());
             print("Minor error");
@@ -51,12 +57,17 @@ class LoginBloc extends Bloc<Events, States> {
     }
   }
 
-  Future<bool> _checkIfUserExists() async {
+  Future<String> _checkIfGuardExists() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var email = prefs.getString("email");
     var guard = prefs.getString("guard_pass");
     print(guard);
+    return guard;
+  }
+
+  Future<String> _checkIfUserExists() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var email = prefs.getString("email");
     print(email);
-    return (email != null) || (guard != null);
+    return email;
   }
 }

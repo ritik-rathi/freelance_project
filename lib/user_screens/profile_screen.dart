@@ -23,6 +23,9 @@ guardPhone() {
 }
 
 class ProfileScreen extends StatefulWidget {
+  final String email;
+
+  ProfileScreen({@required this.email}) : super();
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -31,10 +34,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     guardPhone();
+    print(widget.email);
     super.initState();
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -42,8 +45,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
         body: StreamBuilder(
-          stream: query.where('Email', isEqualTo: uid).snapshots(),
+          stream: query.where('Email', isEqualTo: widget.email).snapshots(),
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  'Error',
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w400),
+                ),
+              );
+            }
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             } else {
@@ -204,34 +218,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(height: 8),
                 Divider(color: Color(0xff1A2980)),
-                SizedBox(height: 8),
-                Container(
-                  margin: EdgeInsets.only(left: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Gender',
-                          style: TextStyle(fontSize: 25, color: color))
-                    ],
-                  ),
-                ),
-                SizedBox(height: 8),
-                Container(
-                  margin: EdgeInsets.only(left: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('', style: TextStyle(fontSize: 20))
-                    ],
-                  ),
-                ),
                 SizedBox(height: 50),
                 FlatButton(
                   onPressed: () {
                     try {
                       FlutterShareMe().shareToWhatsApp(
                           msg:
-                              'hello,this is my github:https://github.com/lizhuoyuan');
+                              'Download Homantra app - https://play.google.com/store/apps/details?id=com.application.homantra');
                     } catch (e) {
                       print(e);
                     }

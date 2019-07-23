@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart' as prefix0;
 import 'package:flutter/material.dart';
+import 'package:freelance/login.dart' as login;
 import 'package:freelance/navbar.dart';
 import 'package:freelance/user_screens/maid_screen.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
+import 'package:freelance/user_screens/profile_screen.dart' as prefix2;
 import 'package:freelance/user_screens/visitor_log.dart';
 
 var vTime = TimeOfDay.now();
@@ -33,7 +34,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  List<Widget> pages = [ProfileScreen(), VisitorLog(), MaidScreen()];
+  List<Widget> pages = [
+    ProfileScreen(
+      email: login.email,
+    ),
+    VisitorLog(),
+    MaidScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {

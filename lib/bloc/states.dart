@@ -10,6 +10,10 @@ class LoginStarts extends States {
 }
 
 class LoginComplete extends States {
+  final bool guard;
+
+  LoginComplete({this.guard});
+  
   @override
   String toString() => 'Login info exists';
 }
