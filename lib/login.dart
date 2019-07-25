@@ -140,11 +140,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           }
           if (state is LoginComplete) {
             if (state.guard) {
-              return MainScreen();
+              return state.widget;
             } else {
-              return Profile(
-                email: state.id,
-              );
+              return state.widget;
             }
           }
           if (state is LoginNotFound) {

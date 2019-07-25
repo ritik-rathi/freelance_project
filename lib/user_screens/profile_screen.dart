@@ -49,9 +49,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: StreamBuilder(
           stream: query.where('Email', isEqualTo: widget.email).snapshots(),
           builder: (context, snapshot) {
-            var ds = snapshot.data.documents;
-            print(ds.length.toString());
-            if (snapshot.hasError || snapshot == null) {
+            // var ds = snapshot.data.documents;
+            // print(ds.length.toString());
+            if (snapshot.hasError) {
               return Center(
                 child: Text(
                   'Error',
@@ -64,7 +64,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
-            } else {
+            }
+            if (snapshot.hasData) {
               flat = snapshot.data.documents[0]['Flat'].toString();
               return ListView(children: [
                 Container(

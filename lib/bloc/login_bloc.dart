@@ -1,8 +1,11 @@
+import 'package:freelance/guard_screens/guard_screens.dart';
+import 'package:freelance/user_screens/user_screens.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:bloc/bloc.dart';
 import 'bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+var user;
 class LoginBloc extends Bloc<Events, States> {
   @override
   States get initialState => LoginStarts();
@@ -28,13 +31,19 @@ class LoginBloc extends Bloc<Events, States> {
           print('Inside login starts function');
           try {
             print('Getting details....');
-            var user = await _checkIfUserExists();
+            user = await _checkIfUserExists();
             var guard = await _checkIfGuardExists();
             print('Got something');
+            print(user);
             if (user != null) {
-              yield LoginComplete(guard: false, id: user);
+              yield LoginComplete(
+                  guard: false,
+                  id: user,
+                  widget: Profile(
+                    email: user,
+                  ));
             } else if (guard != null) {
-              yield LoginComplete(guard: true, id: guard);
+              yield LoginComplete(guard: true, id: guard, widget: MainScreen());
             } else {
               yield LoginNotFound();
             }
