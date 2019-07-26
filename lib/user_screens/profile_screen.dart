@@ -18,6 +18,8 @@ var name, email, phone, block, profile;
 String flat;
 var callGuard;
 
+String flatDetails = "";
+
 guardPhone() {
   var query = Firestore.instance.document('society/$socID');
 
@@ -64,6 +66,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: StreamBuilder(
           stream: query.where('Email', isEqualTo: uid).snapshots(),
           builder: (context, snapshot) {
+            flatDetails =
+                "${snapshot.data.documents[0]['Block']}-${snapshot.data.documents[0]['Flat']}";
             if (snapshot.hasError) {
               return Center(
                 child: Text(
@@ -228,9 +232,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                          '${snapshot.data.documents[0]['Flat']} - ${snapshot.data.documents[0]['Block']}',
-                          style: TextStyle(fontSize: 20))
+                      Text(flatDetails, style: TextStyle(fontSize: 20))
                     ],
                   ),
                 ),
@@ -409,7 +411,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future addUser(BuildContext context, String id) {
-    String name , phone , gender;
+    String name, phone, gender;
     return showDialog(
         context: context,
         builder: (context) {
@@ -457,7 +459,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
                           controller: controller,
-                          onChanged: (value){
+                          onChanged: (value) {
                             name = value;
                           },
                           decoration: InputDecoration.collapsed(
@@ -507,7 +509,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
-                          onChanged: (value){
+                          onChanged: (value) {
                             gender = value;
                           },
                           decoration: InputDecoration.collapsed(
@@ -530,10 +532,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Firestore.instance
                                 .collection('/society/$socID/users')
                                 .document('$id')
-                                .updateData({
-                              "Phone - 2": phone,
-                              'user-2': name
-                            });
+                                .updateData(
+                                    {"Phone - 2": phone, 'user-2': name});
                             Navigator.pop(context);
                           },
                           shape: RoundedRectangleBorder(
