@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
+import 'package:freelance/bloc/bloc.dart';
 import 'package:freelance/login.dart';
 import 'package:freelance/main.dart';
 import 'package:freelance/soc_ID.dart';
@@ -23,9 +27,12 @@ guardPhone() {
 }
 
 class ProfileScreen extends StatefulWidget {
+  final SharedPrefs prefs;
   final String email;
+  final AuthenticationBloc authenticationBloc;
 
-  ProfileScreen({@required this.email}) : super();
+  ProfileScreen({this.prefs, this.email, this.authenticationBloc}) : super();
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -33,6 +40,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
+    print(widget.authenticationBloc != null);
+    print("$socID");
     guardPhone();
     print("before");
     print(widget.email);
@@ -42,15 +51,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final _authBloc = BlocProvider.of<AuthenticationBloc>(context);
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
         body: StreamBuilder(
-          stream: query.where('Email', isEqualTo: widget.email).snapshots(),
+          stream: query.where('Email', isEqualTo: uid).snapshots(),
           builder: (context, snapshot) {
-            // var ds = snapshot.data.documents;
-            // print(ds.length.toString());
             if (snapshot.hasError) {
               return Center(
                 child: Text(
@@ -553,11 +561,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(children: [
                     GestureDetector(
                       onTap: () async {
-                        SharedPreferences prefs =
+                        SharedPrefs prefs = new SharedPrefs();
+                        SharedPreferences sPrefs =
                             await SharedPreferences.getInstance();
-                        prefs.remove("email");
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => Login()));
+                        sPrefs.remove("email");
+                        exit(0);
+                        // widget.authenticationBloc..dispatch(LoggedOut());
+
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     new MaterialPageRoute(
+                        //         builder: (context) => BlocProvider(
+                        //               builder: (context) =>
+                        //                   widget.authenticationBloc
+                        //                     ..dispatch(LoggedOut()),
+                        //               child: Login(
+                        //                 prefs: prefs,
+                        //               ),
+                        //             )));
+
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => BlocProvider<AuthenticationBloc>(
+                        //           child: Login(
+                        //             prefs: prefs,
+                        //           ),
+                        //           builder: (context) =>
+                        //               _authBloc..dispatch(LoggedOut())),
+                        //     ));
                       },
                       child: Text('Logout',
                           style: TextStyle(

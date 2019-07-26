@@ -1,82 +1,43 @@
-import 'package:freelance/guard_screens/guard_screens.dart';
-import 'package:freelance/user_screens/user_screens.dart';
-import 'package:rxdart/rxdart.dart';
+import 'dart:async';
+
+import 'package:freelance/bloc/bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
-import 'bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-var user;
-class LoginBloc extends Bloc<Events, States> {
-  @override
-  States get initialState => LoginStarts();
+class LoginBloc extends Bloc<LoginEvent, LoginState> {
+  final SharedPrefs sharedPrefs;
+  final AuthenticationBloc authenticationBloc;
 
-  @override
-  Stream<States> transform(
-    Stream<Events> events,
-    Stream<States> Function(Events event) next,
-  ) {
-    return super.transform(
-      (events as Observable<Events>).debounceTime(
-        Duration(milliseconds: 500),
-      ),
-      next,
-    );
-  }
+  LoginBloc({
+    @required this.sharedPrefs,
+    @required this.authenticationBloc,
+  })  : assert(sharedPrefs != null),
+        assert(authenticationBloc != null);
 
   @override
-  Stream<States> mapEventToState(Events event) async* {
-    if (event is Login) {
+  LoginState get initialState => LoginInitial();
+
+  @override
+  Stream<LoginState> mapEventToState(LoginEvent event) async* {
+    // if (event is SocIdEntered) {
+    //   yield LoginLoading();
+
+    //   try {
+    //     final id = await sharedPrefs.authenticate(
+    //         email: event.emailId);
+    //   } catch (e) {}
+    // }
+    if (event is LoginButtonPressed) {
+      await sharedPrefs.writeToken(event.email);
+      print("Wrote ${event.email}");
+      yield LoginLoading();
       try {
-        if (currentState is LoginStarts) {
-          print('Inside login starts function');
-          try {
-            print('Getting details....');
-            user = await _checkIfUserExists();
-            var guard = await _checkIfGuardExists();
-            print('Got something');
-            print(user);
-            if (user != null) {
-              yield LoginComplete(
-                  guard: false,
-                  id: user,
-                  widget: Profile(
-                    email: user,
-                  ));
-            } else if (guard != null) {
-              yield LoginComplete(guard: true, id: guard, widget: MainScreen());
-            } else {
-              yield LoginNotFound();
-            }
-          } catch (e) {
-            print(e.toString());
-            print("Minor error");
-          }
-        }
-        if (currentState is LoginComplete) {
-          print('Completed login');
-        }
-        if (currentState is LoginNotFound) {
-          print('Please login to save something');
-        }
-      } catch (e) {
-        print("Total Error");
-        print(e.toString());
-        yield LoginError();
+        final token = await sharedPrefs.authenticate(email: event.email);
+        authenticationBloc.dispatch(LoggedIn(token: token));
+        yield LoginInitial();
+      } catch (error) {
+        yield LoginFailure(error: error.toString());
       }
     }
-  }
-
-  Future<String> _checkIfGuardExists() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var guard = prefs.getString("guard_pass");
-    print(guard);
-    return guard;
-  }
-
-  Future<String> _checkIfUserExists() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var email = prefs.getString("email");
-    print(email);
-    return email;
   }
 }

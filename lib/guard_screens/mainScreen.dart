@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/bloc/bloc.dart' as bloc;
+import 'package:freelance/bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../login.dart';
@@ -12,6 +12,8 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationBloc _authBloc = BlocProvider.of(context);
+    SharedPrefs prefs;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -24,7 +26,7 @@ class MainScreen extends StatelessWidget {
               size: 30.0,
               color: Colors.black,
             ),
-            onPressed: () => dialog(context),
+            onPressed: () => dialog(context, _authBloc, prefs),
           )
         ],
       ),
@@ -32,73 +34,53 @@ class MainScreen extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: GridView.count(
-            // crossAxisSpacing: 5,
-            // mainAxisSpacing: 5,
-            childAspectRatio: 0.5,
-            crossAxisCount: 2,
-            children: [
-              GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/newvisitor');
-                  },
-                  child: _optionCard(
-                      'New Visitor',
-                      Color(0xFF50CDFF),
-                      Icon(
-                        Icons.supervisor_account,
-                        size: 50,
-                      ))),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/frequent');
-                },
-                child: _optionCard(
-                    'Frequent visitor',
-                    Color(0xffd8fbff),
-                    Icon(
-                      Icons.card_membership,
-                      size: 50,
-                    )),
-              ),
-              GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, '/guardVisitor'),
-                  child: _optionCard(
-                      'Visitor log',
-                      Color(0xffd8fbff),
-                      Icon(
-                        Icons.people,
-                        size: 50,
-                      ))),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/today');
-                },
-                child: _optionCard(
-                    'Today\'s visitors',
-                    Color(0xFF50CDFF),
-                    Icon(
-                      Icons.supervisor_account,
-                      size: 50,
-                    )),
-              )
-            ]),
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   children: <Widget>[
-        //     GestureDetector(
-        //         onTap: () {
-        //           Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => NewVisitorPage()));
-        //         },
-        //         child: _optionCard('New Visitor')),
-        //     _optionCard('Regular'),
-        //     _optionCard('Delivery')
-        //   ],
-        // ),
+        child:
+            GridView.count(childAspectRatio: 0.5, crossAxisCount: 2, children: [
+          GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/newvisitor');
+              },
+              child: _optionCard(
+                  'New Visitor',
+                  Color(0xFF50CDFF),
+                  Icon(
+                    Icons.supervisor_account,
+                    size: 50,
+                  ))),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/frequent');
+            },
+            child: _optionCard(
+                'Frequent visitor',
+                Color(0xffd8fbff),
+                Icon(
+                  Icons.card_membership,
+                  size: 50,
+                )),
+          ),
+          GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/guardVisitor'),
+              child: _optionCard(
+                  'Visitor log',
+                  Color(0xffd8fbff),
+                  Icon(
+                    Icons.people,
+                    size: 50,
+                  ))),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/today');
+            },
+            child: _optionCard(
+                'Today\'s visitors',
+                Color(0xFF50CDFF),
+                Icon(
+                  Icons.supervisor_account,
+                  size: 50,
+                )),
+          )
+        ]),
         decoration: BoxDecoration(
             gradient: RadialGradient(
                 center: Alignment.topLeft,
@@ -130,7 +112,8 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> dialog(BuildContext context) {
+  Future<bool> dialog(BuildContext context, AuthenticationBloc authBloc,
+      SharedPrefs sharedPrefs) {
     return showDialog(
         context: context,
         builder: (context) => Align(
@@ -151,9 +134,12 @@ class MainScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => BlocProvider(
-                                    child: Login(),
-                                    builder: (context) => bloc.LoginBloc()
-                                      ..dispatch(bloc.Login()))));
+                                    child: Login(
+                                      prefs: sharedPrefs,
+                                    ),
+                                    builder: (context) => LoginBloc(
+                                        authenticationBloc: authBloc,
+                                        sharedPrefs: sharedPrefs))));
                       },
                       child: Text('Logout',
                           style: TextStyle(

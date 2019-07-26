@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance/user_screens/maid_sched.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../soc_ID.dart';
 

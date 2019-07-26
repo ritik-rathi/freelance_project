@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/bloc/bloc.dart';
-import 'package:freelance/login.dart' as login;
 import 'package:freelance/navbar.dart';
 import 'package:freelance/user_screens/maid_screen.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
-import 'package:freelance/user_screens/profile_screen.dart' as prefix2;
 import 'package:freelance/user_screens/visitor_log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var vTime = TimeOfDay.now();
+var parse = "";
+AuthenticationBloc _bloc;
 
 class Profile extends StatefulWidget {
-  final String email;
-
-  Profile({this.email});
+  final AuthenticationBloc bloc;
+  Profile({this.bloc});
+  // final SharedPrefs prefs;
+  // final String email;
+  // Profile({@required this.prefs, this.email}) : super();
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -23,17 +25,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   // var controller = PageController(initialPage: 0);
   int selectedIndex = 0;
   AnimationController controller;
-  static String emailId;
-
-  // _getEmailID() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String email = prefs.getString("email");
-  //   return email ?? "";
-  // }
+  // String get _emailId => widget.email;
+  // SharedPrefs get _prefs => widget.prefs;
 
   @override
   void initState() {
-    emailId = widget.email;
+    _bloc = widget.bloc;
+    // _method;
+    // parse = _emailId;
+    // print("This is the email that is parsed $parse");
     controller = new AnimationController(
         vsync: this, duration: Duration(milliseconds: 500));
     super.initState();
@@ -50,7 +50,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   List<Widget> pages = [
     ProfileScreen(
-      email: user,
+      authenticationBloc: _bloc,
     ),
     VisitorLog(),
     MaidScreen()

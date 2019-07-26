@@ -1,39 +1,25 @@
+import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
-abstract class States extends Equatable {
-  States([List props = const []]) : super();
+abstract class LoginState extends Equatable {
+  LoginState([List props = const []]) : super(props);
 }
 
-class LoginStarts extends States {
+class LoginInitial extends LoginState {
   @override
-  String toString() => 'Starting Login';
+  String toString() => 'LoginInitial';
 }
 
-class LoginComplete extends States {
-  final bool guard;
-  final String id;
-  final Widget widget;
-
-  LoginComplete({this.guard, this.id, this.widget});
-
-  LoginComplete copyWith(bool guard, String id, Widget widget) {
-    return LoginComplete(
-        guard: guard ?? this.guard,
-        id: id ?? this.id,
-        widget: widget ?? this.widget);
-  }
-
+class LoginLoading extends LoginState {
   @override
-  String toString() => 'Login info exists';
+  String toString() => 'LoginLoading';
 }
 
-class LoginNotFound extends States {
-  @override
-  String toString() => 'Info doesnt exist';
-}
+class LoginFailure extends LoginState {
+  final String error;
 
-class LoginError extends States {
+  LoginFailure({@required this.error}) : super([error]);
+
   @override
-  String toString() => 'Error occured';
+  String toString() => 'LoginFailure { error: $error }';
 }

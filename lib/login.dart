@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freelance/bloc/bloc.dart';
-import 'package:freelance/guard_screens/mainScreen.dart';
-import 'package:freelance/main.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:freelance/soc_ID.dart';
-import 'package:freelance/splashscreen.dart';
 import 'package:freelance/user_screens/profile.dart';
 import 'package:freelance/user_screens/profile_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/user_screens/profile_screen.dart';
-import 'package:freelance/user_screens/profile_screen.dart' as prefix0;
 import 'package:shared_preferences/shared_preferences.dart';
 
 var email;
@@ -20,13 +15,19 @@ String uid, upwd, spwd;
 var tid, tpwd;
 var query1 = Firestore.instance.collection('/society/$socID/users');
 var query2 = Firestore.instance.collection('/society');
+LoginBloc _loginBloc;
+AuthenticationBloc _authenticationBloc;
 
 class Login extends StatefulWidget {
+  final SharedPrefs prefs;
+
+  Login({@required this.prefs}) : super();
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> with TickerProviderStateMixin {
-  LoginBloc _login = new LoginBloc();
+  SharedPrefs get _sharedPrefs => widget.prefs;
+
   int l1 = 0, l2 = 0, l3 = 0, l4 = 0, l5 = 0;
   Future<int> emailID(String id, String pwd) async {
     var c = await query1.where('Email', isEqualTo: id).snapshots().first;
@@ -61,8 +62,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   TextEditingController guard = new TextEditingController();
 
   bool _obscureTextLogin = true;
-  // bool _obscureTextSignup = true;
-  // bool _obscureTextSignupConfirm = true;
 
   TextEditingController signupEmailController = new TextEditingController();
   TextEditingController signupNameController = new TextEditingController();
@@ -86,14 +85,21 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     myFocusNodeEmail.dispose();
     myFocusNodeName.dispose();
     _pageController.dispose();
+    _loginBloc.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
+    emailCon.clear();
+    uid = "";
     tid = 0;
     tpwd = 0;
-    _login = BlocProvider.of<LoginBloc>(context);
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    _loginBloc = LoginBloc(
+      sharedPrefs: _sharedPrefs,
+      authenticationBloc: _authenticationBloc,
+    );
     fadeAnimationController =
         new AnimationController(vsync: this, duration: Duration(seconds: 5));
     fadeAnimation = new CurvedAnimation(
@@ -115,129 +121,130 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       opacity: fadeAnimation,
       child: Scaffold(
           body: BlocBuilder(
-        bloc: _login,
-        builder: (BuildContext context, States state) {
-          if (state is LoginStarts) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height >= 775.0
-                  ? MediaQuery.of(context).size.height
-                  : 775.0,
-              decoration: new BoxDecoration(
-                  gradient: new LinearGradient(
-                      begin: const FractionalOffset(0.0, 0.0),
-                      end: const FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp,
-                      colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
-              child: Center(
-                child: CircularProgressIndicator(
-                  semanticsLabel: 'Loading',
-                  backgroundColor: Colors.black,
-                ),
-              ),
-            );
-          }
-          if (state is LoginComplete) {
-            if (state.guard) {
-              return state.widget;
-            } else {
-              return state.widget;
-            }
-          }
-          if (state is LoginNotFound) {
-            return NotificationListener<OverscrollIndicatorNotification>(
-              child: SingleChildScrollView(
-                // The main container or background that contains everything
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height >= 775.0
-                      ? MediaQuery.of(context).size.height
-                      : 775.0,
-                  decoration: new BoxDecoration(
-                      gradient: new LinearGradient(
-                          begin: const FractionalOffset(0.0, 0.0),
-                          end: const FractionalOffset(1.0, 1.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp,
-                          colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
-                  // Column is used to display the rest of the widgets vertically
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      // Our logo. can be tweaked
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 150.0, left: 20.0, right: 20.0),
-                        child: new Image(
-                          width: 150.0,
-                          height: 150.0,
-                          fit: BoxFit.cover,
-                          image: new AssetImage('assets/images/logo.jpeg'),
-                        ),
+              bloc: _authenticationBloc,
+              builder: (BuildContext context, state) {
+                if (state is AuthenticationUninitialized) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height >= 775.0
+                        ? MediaQuery.of(context).size.height
+                        : 775.0,
+                    decoration: new BoxDecoration(
+                        gradient: new LinearGradient(
+                            begin: const FractionalOffset(0.0, 0.0),
+                            end: const FractionalOffset(1.0, 1.0),
+                            stops: [0.0, 1.0],
+                            tileMode: TileMode.clamp,
+                            colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        semanticsLabel: 'Loading',
+                        backgroundColor: Colors.black,
                       ),
-                      //fucntion used for building the menu bar
-                      new Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: _buildMenuBar(context)),
-                      new Expanded(
-                        flex: 2,
-                        // below is a check that finds out which tab is active and sets the color accordingly
-                        child: PageView(
-                          controller: _pageController,
-                          onPageChanged: (i) {
-                            if (i == 0) {
-                              setState(() {
-                                right = Colors.black;
-                                left = Colors.white;
-                              });
-                            } else if (i == 1) {
-                              setState(() {
-                                right = Colors.white;
-                                left = Colors.black;
-                              });
-                            }
-                          },
+                    ),
+                  );
+                }
+                if (state is AuthenticationUnauthenticated) {
+                  return NotificationListener<OverscrollIndicatorNotification>(
+                    child: SingleChildScrollView(
+                      // The main container or background that contains everything
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height >= 775.0
+                            ? MediaQuery.of(context).size.height
+                            : 775.0,
+                        decoration: new BoxDecoration(
+                            gradient: new LinearGradient(
+                                begin: const FractionalOffset(0.0, 0.0),
+                                end: const FractionalOffset(1.0, 1.0),
+                                stops: [0.0, 1.0],
+                                tileMode: TileMode.clamp,
+                                colors: [
+                                  Color(0xFF50CDFF),
+                                  Color(0xff1A2980)
+                                ])),
+                        // Column is used to display the rest of the widgets vertically
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
-                            //the sign in widgets
-                            new ConstrainedBox(
-                              constraints: const BoxConstraints.expand(),
-                              child: _buildParentSignIn(context),
+                            // Our logo. can be tweaked
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 150.0, left: 20.0, right: 20.0),
+                              child: new Image(
+                                width: 150.0,
+                                height: 150.0,
+                                fit: BoxFit.cover,
+                                image:
+                                    new AssetImage('assets/images/logo.jpeg'),
+                              ),
                             ),
-                            new ConstrainedBox(
-                              constraints: const BoxConstraints.expand(),
-                              child: _buildTeacherSignIn(context),
-                            ),
+                            //fucntion used for building the menu bar
+                            new Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: _buildMenuBar(context)),
+                            new Expanded(
+                              flex: 2,
+                              // below is a check that finds out which tab is active and sets the color accordingly
+                              child: PageView(
+                                controller: _pageController,
+                                onPageChanged: (i) {
+                                  if (i == 0) {
+                                    setState(() {
+                                      right = Colors.black;
+                                      left = Colors.white;
+                                    });
+                                  } else if (i == 1) {
+                                    setState(() {
+                                      right = Colors.white;
+                                      left = Colors.black;
+                                    });
+                                  }
+                                },
+                                children: <Widget>[
+                                  //the sign in widgets
+                                  new ConstrainedBox(
+                                    constraints: const BoxConstraints.expand(),
+                                    child: _buildParentSignIn(context),
+                                  ),
+                                  new ConstrainedBox(
+                                    constraints: const BoxConstraints.expand(),
+                                    child: _buildTeacherSignIn(context),
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }
-          if (state is LoginError) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height >= 775.0
-                  ? MediaQuery.of(context).size.height
-                  : 775.0,
-              color: Colors.black,
-              child: Center(
-                child: Text(
-                  'Error Occured\nPlease restart the app',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-            );
-          }
-        },
-      )),
+                      ),
+                    ),
+                  );
+                }
+                if (state is AuthenticationAuthenticated) {
+                  uid = state.userEmail;
+                  return Profile(bloc: _authenticationBloc,);
+                }
+
+                if (state is LoginFailure) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height >= 775.0
+                        ? MediaQuery.of(context).size.height
+                        : 775.0,
+                    color: Colors.black,
+                    child: Center(
+                      child: Text(
+                        'Error Occured\nPlease restart the app',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  );
+                }
+              })),
     );
   }
 
@@ -390,7 +397,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 child: MaterialButton(
                     highlightColor: Colors.transparent,
                     splashColor: Color(0xFF50CDFF),
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 42.0),
@@ -404,19 +410,16 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     ),
                     onPressed: () async {
                       print('testing ');
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString('email', uid);
+                      _onLoginButtonPressed();
+                      email = uid;
                       emailID(emailCon.text, idCon.text).then((l3) {
                         if (l3 == 1) {
                           print('object');
-                          email = emailCon.text;
+                          print(email);
                           Navigator.pushReplacement(
                               context,
                               new MaterialPageRoute(
-                                  builder: (context) => Profile(
-                                        email: uid,
-                                      )));
+                                  builder: (context) => Profile(bloc: _authenticationBloc,)));
                         } else {
                           showDialog(
                               context: context,
@@ -594,6 +597,12 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   void _onSignUpButtonPress() {
     _pageController.animateToPage(1,
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+  }
+
+  _onLoginButtonPressed() {
+    _loginBloc.dispatch(LoginButtonPressed(
+      email: emailCon.text,
+    ));
   }
 
   void _toggleLogin() {
