@@ -1,9 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../login.dart';
 
 class MainScreen extends StatelessWidget {
   final String user;
@@ -12,8 +12,6 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc _authBloc = BlocProvider.of(context);
-    SharedPrefs prefs;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -26,7 +24,7 @@ class MainScreen extends StatelessWidget {
               size: 30.0,
               color: Colors.black,
             ),
-            onPressed: () => dialog(context, _authBloc, prefs),
+            onPressed: () => dialog(context),
           )
         ],
       ),
@@ -112,8 +110,7 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> dialog(BuildContext context, AuthenticationBloc authBloc,
-      SharedPrefs sharedPrefs) {
+  Future<bool> dialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (context) => Align(
@@ -129,17 +126,8 @@ class MainScreen extends StatelessWidget {
                       onTap: () async {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-                        prefs.remove("guard_pass");
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                    child: Login(
-                                      prefs: sharedPrefs,
-                                    ),
-                                    builder: (context) => LoginBloc(
-                                        authenticationBloc: authBloc,
-                                        sharedPrefs: sharedPrefs))));
+                        prefs.remove("guard");
+                        exit(0);
                       },
                       child: Text('Logout',
                           style: TextStyle(

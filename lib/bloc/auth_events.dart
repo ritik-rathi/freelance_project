@@ -17,8 +17,9 @@ class AppStarted extends AuthenticationEvent {
 
 class LoggedIn extends AuthenticationEvent {
   final String token;
+  final String password;
 
-  LoggedIn({@required this.token}) : super([token]);
+  LoggedIn({@required this.token , this.password}) : super([token , password]);
 
   @override
   String toString() => 'LoggedIn { token: $token }';

@@ -19,10 +19,17 @@ class AuthenticationBloc
   ) async* {
     if (event is AppStarted) {
       final bool hasToken = await prefs.hasToken() != null;
+      final bool hasPwd = await prefs.hasPassword() != null;
+      if (hasPwd) {
+        var guard = await prefs.hasPassword();
+        yield AuthenticationAuthenticated(guardPass: guard, userEmail: null);
+        return;
+      } else {
+        yield AuthenticationUnauthenticated();
+      }
       if (hasToken) {
         var token = await prefs.hasToken();
-        // var id = await prefs.readSocId();
-        yield AuthenticationAuthenticated(userEmail: token);
+        yield AuthenticationAuthenticated(userEmail: token, guardPass: null);
         return;
       } else {
         yield AuthenticationUnauthenticated();
@@ -31,9 +38,11 @@ class AuthenticationBloc
 
     if (event is LoggedIn) {
       yield AuthenticationLoading();
-      print("Logged in state and token = ${event.token}");
+      print(
+          "Logged in state and token = ${event.token} & pwd = ${event.password}");
       await prefs.writeToken(event.token);
-      yield AuthenticationAuthenticated(userEmail: event.token);
+      yield AuthenticationAuthenticated(
+          userEmail: event.token, guardPass: event.password);
     }
 
     if (event is LoggedOut) {

@@ -32,4 +32,25 @@ class SharedPrefs {
     print("Email in shared preffs = $email");
     return email;
   }
+
+  Future<String> hasPassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var guard = prefs.getString("guard");
+    print("Pwd in shared preffs = $guard");
+    return guard;
+  }
+
+  Future<void> writePassword(String pwd) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("Pwd that is being set = $pwd");
+    prefs.setString("guard", pwd);
+    await Future.delayed(Duration(seconds: 1));
+  }
+
+  Future<void> deletePassword() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("Email being deleted = ${prefs.getString("guard")}");
+    prefs.remove("guard");
+    await Future.delayed(Duration(seconds: 1));
+  }
 }

@@ -26,6 +26,9 @@ guardPhone() {
   });
 }
 
+TextEditingController controller;
+TextEditingController controller2;
+
 class ProfileScreen extends StatefulWidget {
   final SharedPrefs prefs;
   final String email;
@@ -41,6 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     print(widget.authenticationBloc != null);
+    controller = new TextEditingController();
+    controller2 = new TextEditingController();
     print("$socID");
     guardPhone();
     print("before");
@@ -403,14 +408,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  Future addUser(String id) {
+  Future addUser(BuildContext context, String id) {
+    String name , phone , gender;
     return showDialog(
         context: context,
         builder: (context) {
-          TextEditingController controller = new TextEditingController();
-          TextEditingController controller2 = new TextEditingController();
-          String name;
-          String phone;
           return Scaffold(
             backgroundColor: Colors.transparent,
             resizeToAvoidBottomInset: false,
@@ -455,6 +457,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
                           controller: controller,
+                          onChanged: (value){
+                            name = value;
+                          },
                           decoration: InputDecoration.collapsed(
                             hintText: 'Name',
                             hintStyle: TextStyle(
@@ -478,6 +483,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
                           controller: controller2,
+                          onChanged: (value) => phone = value,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             hintText: 'Phone Number',
@@ -501,6 +507,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
+                          onChanged: (value){
+                            gender = value;
+                          },
                           decoration: InputDecoration.collapsed(
                             hintText: 'Gender',
                             hintStyle: TextStyle(
@@ -516,14 +525,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Center(
                         child: MaterialButton(
                           onPressed: () {
+                            print(controller.text);
+                            print(controller2.text);
                             Firestore.instance
                                 .collection('/society/$socID/users')
                                 .document('$id')
                                 .updateData({
-                              "Phone - 2": controller2.text,
-                              'user-2': controller.text
+                              "Phone - 2": phone,
+                              'user-2': name
                             });
-
                             Navigator.pop(context);
                           },
                           shape: RoundedRectangleBorder(
@@ -561,35 +571,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(children: [
                     GestureDetector(
                       onTap: () async {
-                        SharedPrefs prefs = new SharedPrefs();
                         SharedPreferences sPrefs =
                             await SharedPreferences.getInstance();
                         sPrefs.remove("email");
                         exit(0);
-                        // widget.authenticationBloc..dispatch(LoggedOut());
-
-                        // Navigator.pushReplacement(
-                        //     context,
-                        //     new MaterialPageRoute(
-                        //         builder: (context) => BlocProvider(
-                        //               builder: (context) =>
-                        //                   widget.authenticationBloc
-                        //                     ..dispatch(LoggedOut()),
-                        //               child: Login(
-                        //                 prefs: prefs,
-                        //               ),
-                        //             )));
-
-                        // Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => BlocProvider<AuthenticationBloc>(
-                        //           child: Login(
-                        //             prefs: prefs,
-                        //           ),
-                        //           builder: (context) =>
-                        //               _authBloc..dispatch(LoggedOut())),
-                        //     ));
                       },
                       child: Text('Logout',
                           style: TextStyle(
@@ -600,7 +585,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Divider(),
                     GestureDetector(
                       onTap: () {
-                        addUser(id);
+                        addUser(context, id);
                       },
                       child: Text('Add user',
                           style: TextStyle(

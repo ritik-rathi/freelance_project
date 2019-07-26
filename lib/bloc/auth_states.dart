@@ -9,9 +9,9 @@ class AuthenticationUninitialized extends AuthenticationState {
 
 class AuthenticationAuthenticated extends AuthenticationState {
   final String userEmail;
-  // final String socID;
+  final String guardPass;
 
-  AuthenticationAuthenticated({this.userEmail}) : super();
+  AuthenticationAuthenticated({this.userEmail , this.guardPass}) : super();
 
   @override
   String toString() => 'AuthenticationAuthenticated';

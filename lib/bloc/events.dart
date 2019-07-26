@@ -7,21 +7,9 @@ abstract class LoginEvent extends Equatable {
 
 class LoginButtonPressed extends LoginEvent {
   final String email;
-
-  LoginButtonPressed({
-    @required this.email,
-  }) : super([email]);
+  final String pwd;
+  LoginButtonPressed({@required this.email, this.pwd}) : super([email, pwd]);
 
   @override
-  String toString() => 'LoginButtonPressed { username: $email}';
+  String toString() => 'LoginButtonPressed { username: $email} , { pwd : $pwd}';
 }
-
-// class SocIdEntered extends LoginEvent {
-//   final String id;
-//   final String emailId;
-
-//   SocIdEntered({@required this.id , this.emailId}) : super([id]);
-
-//   @override
-//   String toString() => 'SocId Pressed $id';
-// }

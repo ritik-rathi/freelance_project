@@ -29,7 +29,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // }
     if (event is LoginButtonPressed) {
       await sharedPrefs.writeToken(event.email);
-      print("Wrote ${event.email}");
+      await sharedPrefs.writePassword(event.pwd);
+      print("Wrote ${event.email} & ${event.pwd}");
       yield LoginLoading();
       try {
         final token = await sharedPrefs.authenticate(email: event.email);

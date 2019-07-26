@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freelance/bloc/bloc.dart';
+import 'package:freelance/guard_screens/guard_screens.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:freelance/soc_ID.dart';
@@ -222,7 +223,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 }
                 if (state is AuthenticationAuthenticated) {
                   uid = state.userEmail;
-                  return Profile(bloc: _authenticationBloc,);
+                  if (state.userEmail != null) {
+                    return Profile(
+                      bloc: _authenticationBloc,
+                    );
+                  } else {
+                    return MainScreen();
+                  }
                 }
 
                 if (state is LoginFailure) {
@@ -419,7 +426,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           Navigator.pushReplacement(
                               context,
                               new MaterialPageRoute(
-                                  builder: (context) => Profile(bloc: _authenticationBloc,)));
+                                  builder: (context) => Profile(
+                                        bloc: _authenticationBloc,
+                                      )));
                         } else {
                           showDialog(
                               context: context,
@@ -552,6 +561,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.setString('guard_pass', guard.text);
+                      _onLoginButtonPressed();
                       guardPass(guard.text).then((l4) {
                         if (l4 == 1) {
                           print('object');
@@ -602,6 +612,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   _onLoginButtonPressed() {
     _loginBloc.dispatch(LoginButtonPressed(
       email: emailCon.text,
+      pwd: guard.text
     ));
   }
 

@@ -12,28 +12,20 @@ AuthenticationBloc _bloc;
 
 class Profile extends StatefulWidget {
   final AuthenticationBloc bloc;
+
   Profile({this.bloc});
-  // final SharedPrefs prefs;
-  // final String email;
-  // Profile({@required this.prefs, this.email}) : super();
 
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
-  // var controller = PageController(initialPage: 0);
   int selectedIndex = 0;
   AnimationController controller;
-  // String get _emailId => widget.email;
-  // SharedPrefs get _prefs => widget.prefs;
 
   @override
   void initState() {
     _bloc = widget.bloc;
-    // _method;
-    // parse = _emailId;
-    // print("This is the email that is parsed $parse");
     controller = new AnimationController(
         vsync: this, duration: Duration(milliseconds: 500));
     super.initState();
