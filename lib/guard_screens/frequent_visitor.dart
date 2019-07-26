@@ -8,6 +8,7 @@ import '../soc_ID.dart';
 
 String dName, dPhone, dOrg, rFlat, rName;
 DateTime dTime = DateTime.now();
+var query = Firestore.instance.collection('/society/$socID/maids');
 
 class Frequent extends StatefulWidget {
   @override
@@ -17,10 +18,16 @@ class Frequent extends StatefulWidget {
 class _FrequentState extends State<Frequent>
     with SingleTickerProviderStateMixin {
   TabController _controller;
-
+  int l;
   initState() {
     _controller = TabController(initialIndex: 0, vsync: this, length: 4);
     super.initState();
+  }
+
+  Future<int> check(String id) async {
+    var c = await query.where('uid', isEqualTo: id).snapshots().first;
+    l = c.documents.length;
+    return l;
   }
 
   @override
@@ -128,20 +135,11 @@ class _FrequentState extends State<Frequent>
                       ),
                       color: Colors.blue,
                       onPressed: () {
-                        if (dName != null) {
-                          DocumentReference databaseRef = Firestore.instance
-                              .collection("/society/$socID/frequentVisitor")
-                              .document();
-
-                          Map<String, dynamic> tasks = {
-                            'uid': dName,
-                            'time': time
-                          };
-                          databaseRef.setData(tasks).whenComplete(() {
-                            print('Maid created!');
-                          });
-                        } else {}
-                        Navigator.pop(context);
+                        check(dName).then((l) {
+                          if (l == 1) {
+                            match();
+                          }
+                        });
                       },
                     ),
                   )
@@ -155,5 +153,27 @@ class _FrequentState extends State<Frequent>
         ],
       ),
     );
+  }
+
+  Future match() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Column(
+            children: <Widget>[
+              Text('ID matched!'),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Ok'),
+                ),
+              )
+            ],
+          ));
+        });
   }
 }
