@@ -1,16 +1,30 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:freelance/bloc/bloc.dart';
+import 'package:freelance/user_screens/user_screens.dart';
 
 class SplashScreen extends StatefulWidget {
+  final AuthenticationBloc authenticationBloc;
+
+  SplashScreen({this.authenticationBloc});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  AuthenticationBloc get _auth => widget.authenticationBloc;
+  
   @override
   void initState() {
-    Timer(Duration(seconds: 2),
-        () => Navigator.pushReplacementNamed(context, '/guard'));
+    Timer(
+        Duration(seconds: 2),
+        () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Profile(
+                      bloc: _auth,
+                    ))));
     super.initState();
   }
 

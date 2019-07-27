@@ -21,8 +21,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginButtonPressed) {
       await sharedPrefs.writeToken(event.email);
-      await sharedPrefs.writePassword(event.pwd);
-      print("Wrote ${event.email} & ${event.pwd}");
+      print("Wrote ${event.email}");
       yield LoginLoading();
       try {
         final token = await sharedPrefs.authenticate(email: event.email);
