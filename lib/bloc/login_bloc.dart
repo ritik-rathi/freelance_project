@@ -19,14 +19,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    // if (event is SocIdEntered) {
-    //   yield LoginLoading();
-
-    //   try {
-    //     final id = await sharedPrefs.authenticate(
-    //         email: event.emailId);
-    //   } catch (e) {}
-    // }
     if (event is LoginButtonPressed) {
       await sharedPrefs.writeToken(event.email);
       await sharedPrefs.writePassword(event.pwd);

@@ -14,7 +14,7 @@ class AuthenticationAuthenticated extends AuthenticationState {
   AuthenticationAuthenticated({this.userEmail , this.guardPass}) : super();
 
   @override
-  String toString() => 'AuthenticationAuthenticated';
+  String toString() => 'AuthenticationAuthenticated email : $userEmail & guardPass : $guardPass';
 }
 
 class AuthenticationUnauthenticated extends AuthenticationState {

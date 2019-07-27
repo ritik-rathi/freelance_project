@@ -20,17 +20,18 @@ class AuthenticationBloc
     if (event is AppStarted) {
       final bool hasToken = await prefs.hasToken() != null;
       final bool hasPwd = await prefs.hasPassword() != null;
-      if (hasPwd) {
-        var guard = await prefs.hasPassword();
-        yield AuthenticationAuthenticated(guardPass: guard, userEmail: null);
-        return;
-      } else {
-        yield AuthenticationUnauthenticated();
-      }
       if (hasToken) {
         var token = await prefs.hasToken();
         yield AuthenticationAuthenticated(userEmail: token, guardPass: null);
-        return;
+        // return;
+      } else {
+        yield AuthenticationUnauthenticated();
+      }
+
+      if (hasPwd) {
+        var guard = await prefs.hasPassword();
+        yield AuthenticationAuthenticated(guardPass: guard, userEmail: null);
+        // return;
       } else {
         yield AuthenticationUnauthenticated();
       }

@@ -58,7 +58,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final _authBloc = BlocProvider.of<AuthenticationBloc>(context);
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Colors.transparent,
@@ -66,8 +65,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: StreamBuilder(
           stream: query.where('Email', isEqualTo: uid).snapshots(),
           builder: (context, snapshot) {
-            flatDetails =
-                "${snapshot.data.documents[0]['Block']}-${snapshot.data.documents[0]['Flat']}";
             if (snapshot.hasError) {
               return Center(
                 child: Text(
@@ -83,6 +80,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return Center(child: CircularProgressIndicator());
             }
             if (snapshot.hasData) {
+              flatDetails =
+                  "${snapshot.data.documents[0]['Block']}-${snapshot.data.documents[0]['Flat']}";
               flat = snapshot.data.documents[0]['Flat'].toString();
               return ListView(children: [
                 Container(

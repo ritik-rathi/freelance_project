@@ -93,7 +93,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   @override
   void initState() {
     emailCon.clear();
-    uid = "";
+    // uid = "";
     tid = 0;
     tpwd = 0;
     _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
@@ -418,7 +418,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     onPressed: () async {
                       print('testing ');
                       _onLoginButtonPressed();
-                      email = uid;
                       emailID(emailCon.text, idCon.text).then((l3) {
                         if (l3 == 1) {
                           print('object');
@@ -452,8 +451,10 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               });
                         }
                       });
-                      emailCon.clear();
-                      idCon.clear();
+                      setState(() {
+                        emailCon.clear();
+                        idCon.clear();
+                      });
                     }),
               ),
             ],
@@ -610,10 +611,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   _onLoginButtonPressed() {
-    _loginBloc.dispatch(LoginButtonPressed(
-      email: emailCon.text,
-      pwd: guard.text
-    ));
+    _loginBloc
+        .dispatch(LoginButtonPressed(email: emailCon.text, pwd: guard.text));
   }
 
   void _toggleLogin() {
