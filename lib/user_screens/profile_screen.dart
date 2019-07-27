@@ -81,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }
             if (snapshot.hasData) {
               flatDetails =
-                  "${snapshot.data.documents[0]['Block']}-${snapshot.data.documents[0]['Flat']}";
+                  "${snapshot.data.documents[0]['Block']} ${snapshot.data.documents[0]['Flat']}";
               flat = snapshot.data.documents[0]['Flat'].toString();
               return ListView(children: [
                 Container(

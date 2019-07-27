@@ -39,13 +39,17 @@ class MaidScreen extends StatelessWidget {
         var list = data.documents.map((rawPost) {
           var flatTime = rawPost["flatTime"];
           MaidViewModel mvm = new MaidViewModel();
+          print("Length is ${flatTime.length}");
+          print("Flat : ${prefix0.flatDetails}");
           for (int i = 0; i < flatTime.length; i++) {
             if (flatTime[i]["flat"] == prefix0.flatDetails) {
+              print("${flatTime[i]["time"]}");
               mvm.time = flatTime[i]["time"];
               mvm.name = rawPost["name"];
               mvm.mobile = rawPost["mobile"];
             }
           }
+          print("Assigned data : ${mvm.name}");
           return mvm;
         }).toList();
         return list;
@@ -94,13 +98,12 @@ class MaidScreen extends StatelessWidget {
                 } else {
                   return Expanded(
                       child: ListView.builder(
-                          itemCount: data.data.length - 1,
+                          itemCount: data.data.length-1,
                           itemBuilder: (context, index) {
-                            var ds = data.data[index + 1];
+                            var ds = data.data[index+1];
                             String name = ds.name;
                             String mobile = ds.mobile;
                             String time = ds.time;
-                            String uid = ds.uid;
                             return Card(
                               color: Colors.white,
                               elevation: 5.0,
@@ -111,37 +114,10 @@ class MaidScreen extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       vertical: 10.0, horizontal: 10.0),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                          color: Colors.blue,
-                                          width: 90,
-                                          height: 100,
-                                          child: FutureBuilder(
-                                              future: image(uid),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.hasError ||
-                                                    !snapshot.hasData) {
-                                                  return Container(
-                                                    width: 80,
-                                                    height: 90,
-                                                    child: Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        backgroundColor:
-                                                            Colors.black,
-                                                        strokeWidth: 1.0,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                return Image.network(
-                                                  snapshot.data,
-                                                  fit: BoxFit.cover,
-                                                );
-                                              })),
-                                      SizedBox(
-                                        width: 20.0,
-                                      ),
                                       RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
@@ -152,7 +128,7 @@ class MaidScreen extends StatelessWidget {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: '${name ?? "NA"}',
+                                            text: '$name',
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 25.0,
@@ -166,7 +142,7 @@ class MaidScreen extends StatelessWidget {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: '${mobile ?? "NA"}',
+                                            text: '$mobile',
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 25.0,
@@ -180,7 +156,7 @@ class MaidScreen extends StatelessWidget {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: '${time ?? "NA"}',
+                                            text: '$time',
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 25.0,
