@@ -24,10 +24,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print("Wrote ${event.email}");
       yield LoginLoading();
       try {
-        final token = await sharedPrefs.authenticate(email: event.email);
-        authenticationBloc.dispatch(LoggedIn(token: token));
+        final token =
+            await sharedPrefs.authenticate(email: event.email, pwd: event.pwd);
+        token
+            ? authenticationBloc.dispatch(LoggedIn(token: token.toString()))
+            : authenticationBloc.dispatch(LoggedOut());
         yield LoginInitial();
       } catch (error) {
+        await sharedPrefs.deleteToken();
         yield LoginFailure(error: error.toString());
       }
     }
