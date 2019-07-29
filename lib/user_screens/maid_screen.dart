@@ -17,6 +17,7 @@ class MaidViewModel {
   String time;
   String mobile;
   String uid;
+  String service;
 
   MaidViewModel({this.mobile, this.name, this.time, this.uid}) : super();
 }
@@ -51,6 +52,7 @@ class MaidScreen extends StatelessWidget {
               mvm.time = flatTime[i]["time"];
               mvm.name = rawPost["name"];
               mvm.mobile = rawPost["mobile"];
+              mvm.service = rawPost["service"];
             } else {
               continue;
             }
@@ -121,8 +123,12 @@ class MaidScreen extends StatelessWidget {
                             String name = ds.name ?? "NA";
                             String mobile = ds.mobile ?? "NA";
                             String time = ds.time ?? "NA";
-                            if(ds.name == null){
-                              return Container(height: 0.0 , width: 0.0,);
+                            String service = ds.service ?? "NA";
+                            if (ds.name == null) {
+                              return Container(
+                                height: 0.0,
+                                width: 0.0,
+                              );
                             }
                             return Card(
                               color: Colors.white,
@@ -177,6 +183,20 @@ class MaidScreen extends StatelessWidget {
                                           ),
                                           TextSpan(
                                             text: '$time',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 25.0,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          TextSpan(
+                                            text: '\nService: ',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 25.0,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '$service',
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 25.0,
