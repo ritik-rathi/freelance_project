@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -191,22 +193,23 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     authenticationBloc: _authenticationBloc,
                   );
                 }
-
-                if (state is LoginFailure) {
+                if (state is AuthenticationLoading) {
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height >= 775.0
                         ? MediaQuery.of(context).size.height
                         : 775.0,
-                    color: Colors.black,
+                    decoration: new BoxDecoration(
+                        gradient: new LinearGradient(
+                            begin: const FractionalOffset(0.0, 0.0),
+                            end: const FractionalOffset(1.0, 1.0),
+                            stops: [0.0, 1.0],
+                            tileMode: TileMode.clamp,
+                            colors: [Color(0xFF50CDFF), Color(0xff1A2980)])),
                     child: Center(
-                      child: Text(
-                        'Error Occured\nPlease restart the app',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.w600),
+                      child: CircularProgressIndicator(
+                        semanticsLabel: 'Loading',
+                        backgroundColor: Colors.black,
                       ),
                     ),
                   );
@@ -377,7 +380,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   _onLoginButtonPressed() {
-    _loginBloc.dispatch(LoginButtonPressed(email: emailCon.text));
+    _loginBloc
+        .dispatch(LoginButtonPressed(email: emailCon.text, pwd: idCon.text));
   }
 
   void _toggleLogin() {

@@ -45,14 +45,9 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-    print(widget.authenticationBloc != null);
     controller = new TextEditingController();
     controller2 = new TextEditingController();
-    print("$socID");
     guardPhone();
-    print("before");
-    print(widget.email);
-    print("after");
     super.initState();
   }
 
