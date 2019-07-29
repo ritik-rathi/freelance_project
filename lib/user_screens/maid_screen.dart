@@ -54,6 +54,7 @@ class MaidScreen extends StatelessWidget {
             } else {
               continue;
             }
+            else continue;
           }
           print("Assigned data : ${mvm.name}");
           return mvm ?? null;
