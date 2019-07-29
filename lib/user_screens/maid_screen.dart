@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance/user_screens/user_screens.dart' as prefix0;
 
@@ -29,36 +31,51 @@ class MaidScreen extends StatelessWidget {
     return url;
   }
 
-  Future _getFuture() async {
-    var stream;
+  Stream<dynamic> _getFuture() {
+    Stream<dynamic> stream;
     try {
       stream = Firestore.instance
           .collection("/society/$socID/maids")
           .snapshots()
           .map((data) {
+        print("${data.documents.length}");
         var list = data.documents.map((rawPost) {
           var flatTime = rawPost["flatTime"];
           MaidViewModel mvm = new MaidViewModel();
           print("Length is ${flatTime.length}");
-          print("Flat : ${prefix0.flatDetails}");
+
           for (int i = 0; i < flatTime.length; i++) {
             if (flatTime[i]["flat"] == prefix0.flatDetails) {
+              print("Inside if coz ${flatTime[i]["flat"]}");
               print("${flatTime[i]["time"]}");
               mvm.time = flatTime[i]["time"];
               mvm.name = rawPost["name"];
               mvm.mobile = rawPost["mobile"];
+            } else {
+              continue;
             }
           }
           print("Assigned data : ${mvm.name}");
-          return mvm;
+          return mvm ?? null;
         }).toList();
+        print(list.length.toString());
+        for (int i = 0; i < list.length; i++) {
+          if (list[i].name == null) {
+            print("Removing nulls");
+            list.removeAt(i);
+          }
+        }
         return list;
-      }).first;
+      }).where((thisList) {
+        // bool check = false;
+        MaidViewModel mvm = new MaidViewModel();
+        return !thisList.contains(mvm.name == null);
+      });
     } catch (e) {
       print("Error occured ${e.toString()}");
     }
     return stream;
-    //returns Future<List<MaidViewModel>
+    //returns Stream<List<MaidViewModel>
   }
 
   @override
@@ -88,8 +105,8 @@ class MaidScreen extends StatelessWidget {
               ),
             ]),
           ),
-          FutureBuilder(
-              future: _getFuture(),
+          StreamBuilder(
+              stream: _getFuture(),
               builder: (context, data) {
                 if (!data.hasData || data.hasError) {
                   return Center(
@@ -98,12 +115,15 @@ class MaidScreen extends StatelessWidget {
                 } else {
                   return Expanded(
                       child: ListView.builder(
-                          itemCount: data.data.length-1,
+                          itemCount: data.data.length,
                           itemBuilder: (context, index) {
-                            var ds = data.data[index+1];
-                            String name = ds.name;
-                            String mobile = ds.mobile;
-                            String time = ds.time;
+                            var ds = data.data[index];
+                            String name = ds.name ?? "NA";
+                            String mobile = ds.mobile ?? "NA";
+                            String time = ds.time ?? "NA";
+                            if(ds.name == null){
+                              return Container(height: 0.0 , width: 0.0,);
+                            }
                             return Card(
                               color: Colors.white,
                               elevation: 5.0,
