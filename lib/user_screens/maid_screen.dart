@@ -48,6 +48,7 @@ class MaidScreen extends StatelessWidget {
               mvm.name = rawPost["name"];
               mvm.mobile = rawPost["mobile"];
             }
+            else continue;
           }
           print("Assigned data : ${mvm.name}");
           return mvm;

@@ -6,19 +6,26 @@ import 'login.dart' as widget;
 
 String socID;
 
-var c = Firestore.instance.collection('society').snapshots();
+var c = Firestore.instance.collection('society');
 
 List<String> ids = [];
 
 class Access extends StatelessWidget {
-  void idCheck() {
-    c.listen((snapshot) {
-      snapshot.documents.forEach((doc) {
-        ids.add(doc.documentID);
-      });
-    });
-    print(ids);
+  int l;
+
+  Future idCheck(String id) async {
+    var check = await c.where('id', isEqualTo: id).snapshots().first;
+    l = check.documents.length;
+    return l;
   }
+  // void idCheck() {
+  //   c.listen((snapshot) {
+  //     snapshot.documents.forEach((doc) {
+  //       ids.add(doc.documentID);
+  //     });
+  //   });
+  //   print(ids);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -28,35 +35,32 @@ class Access extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_forward, color: Colors.white),
         onPressed: () {
-          idCheck();
-          c.listen((snapshot) {
-            int length = snapshot.documents.length;
-            for (int i = 0; i < length; i++) {
-              if (ids[i] == socID) {
-                Navigator.pushReplacement(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => BlocProvider<AuthenticationBloc>(
-                              builder: (context) =>
-                                  AuthenticationBloc(prefs: prefs)..dispatch(AppStarted()),
-                              child: widget.Login(prefs: prefs,),
-                            )));
-                print(ids[i]);
-                break;
-              } else {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Enter valid society ID'),
-                        actions: <Widget>[
-                          GestureDetector(
-                              onTap: () => Navigator.pop(context),
-                              child: Icon(Icons.check))
-                        ],
-                      );
-                    });
-              }
+          idCheck(socID).then((l) {
+            if (l == 1) {
+              Navigator.pushReplacement(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => BlocProvider<AuthenticationBloc>(
+                            builder: (context) =>
+                                AuthenticationBloc(prefs: prefs)
+                                  ..dispatch(AppStarted()),
+                            child: widget.Login(
+                              prefs: prefs,
+                            ),
+                          )));
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Enter valid society ID'),
+                      actions: <Widget>[
+                        GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: Icon(Icons.check))
+                      ],
+                    );
+                  });
             }
           });
         },
