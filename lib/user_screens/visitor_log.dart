@@ -181,157 +181,154 @@ class _VisitorLogState extends State<VisitorLog> {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            return Expanded(
-              child: ListView.builder(
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data
-                        .documents[snapshot.data.documents.length - 1 - index];
-                    String phone = ds["mobile"];
-                    var timeExit;
-                    if (ds['exitTime'] != null)
-                      timeExit = ds['exitTime'].toString().substring(11, 16);
-                    else
-                      timeExit = '--';
-                    if (phone != null)
-                      phone = phone;
-                    else
-                      phone = 'NA';
-                    String vName = ds["name"];
-                    String purpose = ds['purpose'];
-                    List<String> name = vName.split(' ');
-                    var date, newTime;
-                    var time = ds["visitTime"].toString();
-                    if (time != null) {
-                      newTime = time.substring(11, 16);
-                      date = time.substring(0, 10);
-                    }
-                    return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        child: (vName != null && time != null)
-                            ? Card(
-                                color: Colors.white,
-                                elevation: 5.0,
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 160.0,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 10.0),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Container(
-                                            //color: Colors.blue,
-                                            width: 90,
-                                            height: 100,
-                                            child: FutureBuilder(
-                                                future: image(ds['otp']),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.hasError ||
-                                                      !snapshot.hasData) {
-                                                    return CircularProgressIndicator(
+            return Center(child: Text('No visitors'));
+          }
+
+          return Expanded(
+            child: ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot ds = snapshot.data
+                      .documents[snapshot.data.documents.length - 1 - index];
+                  String phone = ds["mobile"];
+                  var timeExit;
+                  if (ds['exitTime'] != null)
+                    timeExit = ds['exitTime'].toString().substring(11, 16);
+                  else
+                    timeExit = '--';
+                  if (phone != null)
+                    phone = phone;
+                  else
+                    phone = 'NA';
+                  String vName = ds["name"];
+                  String purpose = ds['purpose'];
+                  List<String> name = vName.split(' ');
+                  var date, newTime;
+                  var time = ds["visitTime"].toString();
+                  if (time != null) {
+                    newTime = time.substring(11, 16);
+                    date = time.substring(0, 10);
+                  }
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20.0),
+                      child: (vName != null && time != null)
+                          ? Card(
+                              color: Colors.white,
+                              elevation: 5.0,
+                              child: Container(
+                                width: double.infinity,
+                                height: 160.0,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 10.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                          //color: Colors.blue,
+                                          width: 90,
+                                          height: 100,
+                                          child: FutureBuilder(
+                                              future: image(ds['otp']),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasError ||
+                                                    !snapshot.hasData) {
+                                                  return Container(
+                                                    width: 33.0,
+                                                    height: 33.0,
+                                                    child: CircularProgressIndicator(
+                                                      strokeWidth: 2.0,
                                                       value: 50,
                                                       backgroundColor:
-                                                          Colors.black,
-                                                    );
-                                                  } else {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        return showDialog(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return Scaffold(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .transparent,
-                                                                resizeToAvoidBottomInset:
-                                                                    false,
-                                                                body:
-                                                                    BackdropFilter(
-                                                                  filter: prefix0
-                                                                          .ImageFilter
-                                                                      .blur(
-                                                                          sigmaX:
-                                                                              3,
-                                                                          sigmaY:
-                                                                              3),
-                                                                  child: Center(
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          300,
-                                                                      width:
-                                                                          300,
-                                                                      child: Image
-                                                                          .network(
-                                                                        snapshot
-                                                                            .data
-                                                                            .toString(),
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                      ),
+                                                          Colors.redAccent,
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      return showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Scaffold(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              resizeToAvoidBottomInset:
+                                                                  false,
+                                                              body:
+                                                                  BackdropFilter(
+                                                                filter: prefix0
+                                                                        .ImageFilter
+                                                                    .blur(
+                                                                        sigmaX:
+                                                                            3,
+                                                                        sigmaY:
+                                                                            3),
+                                                                child: Center(
+                                                                  child:
+                                                                      Container(
+                                                                    height: 300,
+                                                                    width: 300,
+                                                                    child: Image
+                                                                        .network(
+                                                                      snapshot
+                                                                          .data
+                                                                          .toString(),
+                                                                      fit: BoxFit
+                                                                          .cover,
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              );
-                                                            });
-                                                      },
-                                                      child: Image.network(
-                                                        snapshot.data
-                                                            .toString(),
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    );
-                                                  }
-                                                })),
-                                        SizedBox(
-                                          width: 20.0,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () => detailDialog(
-                                              name,
-                                              newTime,
-                                              purpose,
-                                              phone,
-                                              date,
-                                              timeExit),
-                                          child: Container(
-                                            child: RichText(
-                                              text: TextSpan(children: [
-                                                TextSpan(
-                                                  text: 'Name: ',
-                                                  style: TextStyle(
+                                                              ),
+                                                            );
+                                                          });
+                                                    },
+                                                    child: Image.network(
+                                                      snapshot.data.toString(),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  );
+                                                }
+                                              })),
+                                      SizedBox(
+                                        width: 20.0,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => detailDialog(name, newTime,
+                                            purpose, phone, date, timeExit),
+                                        child: Container(
+                                          child: RichText(
+                                            text: TextSpan(children: [
+                                              TextSpan(
+                                                text: 'Name: ',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 25.0,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: '${name[0]}',
+                                                style: TextStyle(
                                                     color: Colors.black,
+                                                    //letterSpacing: 1.5,
+                                                    // backgroundColor:
+                                                    //     Color(0xffedff2d),
                                                     fontSize: 25.0,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: '${name[0]}',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      //letterSpacing: 1.5,
-                                                      // backgroundColor:
-                                                      //     Color(0xffedff2d),
-                                                      fontSize: 25.0,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ]),
-                                            ),
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ]),
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
-                              )
-                            : null);
-                  }),
-            );
-          }
+                              ),
+                            )
+                          : null);
+                }),
+          );
         });
   }
 }
