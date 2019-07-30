@@ -400,6 +400,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Center(
                         child: MaterialButton(
                           onPressed: () async {
+                            Navigator.pop(context);
                             if (phoneController.text != '') {
                               Firestore.instance
                                   .collection('/society/$socID/users')
@@ -407,7 +408,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .updateData({
                                 "Phone - 1": phoneController.text,
                               });
-                              Navigator.pop(context);
+                              phoneController.clear();
                             }
                             if (nameController.text != '') {
                               Firestore.instance
@@ -416,7 +417,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .updateData({
                                 "user-1": nameController.text,
                               });
-                              Navigator.pop(context);
+                              nameController.clear();
                             }
                             if (emailController.text != '') {
                               Firestore.instance
@@ -425,6 +426,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .updateData({
                                 "Email": emailController.text,
                               });
+                              emailController.clear();
 
                               SharedPreferences sPrefs =
                                   await SharedPreferences.getInstance();
