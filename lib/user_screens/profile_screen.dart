@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui' as prefix0;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,11 @@ guardPhone() {
 TextEditingController controller;
 TextEditingController controller2;
 
+TextEditingController emailController;
+TextEditingController nameController;
+TextEditingController phoneController;
+TextEditingController addressController;
+
 class ProfileScreen extends StatefulWidget {
   final SharedPrefs prefs;
   final String email;
@@ -45,6 +51,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
+    emailController = new TextEditingController();
+    phoneController = new TextEditingController();
+    nameController = new TextEditingController();
+    addressController = new TextEditingController();
     controller = new TextEditingController();
     controller2 = new TextEditingController();
     guardPhone();
@@ -78,6 +88,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               flatDetails =
                   "${snapshot.data.documents[0]['Block']} ${snapshot.data.documents[0]['Flat']}";
               flat = snapshot.data.documents[0]['Flat'].toString();
+              String name = snapshot.data.documents[0]['user-1'];
+              String phone = snapshot.data.documents[0]['Phone - 1'];
+              String email = snapshot.data.documents[0]['Email'];
+              String id = snapshot.data.documents[0].documentID;
               return ListView(children: [
                 Container(
                   height: 250,
@@ -105,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               border: Border.all(color: Color(0xff1A2980))),
                           child: IconButton(
                             onPressed: () {
-                              editInfo();
+                              editInfo(id, name, phone, email);
                             },
                             icon: Icon(
                               Icons.edit,
@@ -251,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
   }
 
-  Future editInfo() {
+  Future editInfo(String id, String user, String phone, String email) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -265,7 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderRadius: BorderRadius.circular(20.0),
                     border: Border.all(width: 2.0, color: Color(0xff1A2980))),
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                height: 450.0,
+                height: 480.0,
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -298,6 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
+                          controller: nameController,
                           decoration: InputDecoration.collapsed(
                             hintText: 'Name',
                             hintStyle: TextStyle(
@@ -320,6 +335,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
+                          controller: phoneController,
+                          maxLength: 10,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration.collapsed(
                             hintText: 'Phone Number',
@@ -343,6 +360,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
+                          controller: addressController,
                           decoration: InputDecoration.collapsed(
                             hintText: 'Address',
                             hintStyle: TextStyle(
@@ -365,6 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
+                          controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration.collapsed(
                             hintText: 'you@example.com',
@@ -380,8 +399,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Center(
                         child: MaterialButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/user');
+                          onPressed: () async {
+                            if (phoneController.text != '') {
+                              Firestore.instance
+                                  .collection('/society/$socID/users')
+                                  .document('$id')
+                                  .updateData({
+                                "Phone - 1": phoneController.text,
+                              });
+                              Navigator.pop(context);
+                            }
+                            if (nameController.text != '') {
+                              Firestore.instance
+                                  .collection('/society/$socID/users')
+                                  .document('$id')
+                                  .updateData({
+                                "user-1": nameController.text,
+                              });
+                              Navigator.pop(context);
+                            }
+                            if (emailController.text != '') {
+                              Firestore.instance
+                                  .collection('/society/$socID/users')
+                                  .document('$id')
+                                  .updateData({
+                                "Email": emailController.text,
+                              });
+
+                              SharedPreferences sPrefs =
+                                  await SharedPreferences.getInstance();
+                              sPrefs.remove("email");
+
+                              return showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return BackdropFilter(
+                                      filter: prefix0.ImageFilter.blur(
+                                          sigmaX: 6, sigmaY: 6),
+                                      child: Center(
+                                        child: AlertDialog(
+                                          title: Column(
+                                            children: <Widget>[
+                                              Text('You\'re being logged out.'),
+                                              SizedBox(height: 20),
+                                              MaterialButton(
+                                                color: Colors.blue,
+                                                onPressed: () {
+                                                  exit(0);
+                                                },
+                                                child: Text('Ok'),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            }
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0)),
@@ -419,7 +493,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderRadius: BorderRadius.circular(20.0),
                     border: Border.all(width: 2.0, color: Color(0xff1A2980))),
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                height: 400.0,
+                height: 420.0,
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -478,6 +552,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: TextField(
+                          maxLength: 10,
                           controller: controller2,
                           onChanged: (value) => phone = value,
                           keyboardType: TextInputType.number,
