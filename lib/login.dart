@@ -162,6 +162,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         // Column is used to display the rest of the widgets vertically
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             // Our logo. can be tweaked
                             Padding(
@@ -184,14 +185,14 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                 child: _buildParentSignIn(context),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 30),
+                            Expanded(
+                              flex: 2,
                               child: Center(
                                 child: FlatButton(
                                   onPressed: () {
-                                    forgotDialog(forEmail.text);
+                                    forgotDialog();
                                   },
-                                  child: Text('Forgot Password'),
+                                  child: Text('Forgot Password', style: TextStyle(color: Colors.white)),
                                 ),
                               ),
                             )
@@ -255,6 +256,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             .updateData({
                           "Password": newPass.text,
                         });
+                        newPass.clear();
+                        Navigator.pop(context);
                       },
                     ),
                   )
@@ -265,7 +268,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
         });
   }
 
-  Future forgotDialog(String mail) {
+  Future forgotDialog() {
     return showDialog(
         context: context,
         builder: (context) {
@@ -284,102 +287,81 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   Center(
                     child: RaisedButton(
                       onPressed: () async {
-                        var docid;
+                        //var docid;
                         print('Why isnt this workinh??');
-                        try {
-                          docid = await forgot(mail);
-                          print('this is docid - $docid');
-                        } catch (e) {
-                          print('error is - ${e.toString()}');
-                        }
 
-                        // forgot(mail).then((docID) {
+                        forgot(forEmail.text).then((docID) {
+                          forEmail.clear();
+                          print(docID);
+                          if (docID != null) {
+                            Navigator.pop(context);
+                            print('This is not correctttt');
+                            passDialog(docID, context);
+                          } else {
+                            return showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Center(
+                                    child: AlertDialog(
+                                      title: Text('email not matched'),
+                                    ),
+                                  );
+                                });
+                          }
+                          //   //Navigator.pop(context);
+                          //   // return showDialog(
+                          //   //     context: context,
+                          //   //     builder: (context) {
+                          //   //       String idd = forgot(mail).toString();
+                          //   //       print('this is the document id - $idd');
+                          //   //       return Text('this is the document id - $idd');
 
-                        //   print(docID);
-                        //   if (docID != null) {
-                        //     print('This is not correctttt');
-                        //     // return Center(
-                        //     //   child: AlertDialog(
-                        //     //     title: Column(
-                        //     //       children: <Widget>[
-                        //     //         TextField(
-                        //     //           decoration: InputDecoration(
-                        //     //               hintText: 'Enter new password'),
-                        //     //           controller: newPass,
-                        //     //         ),
-                        //     //         Padding(
-                        //     //           padding: EdgeInsets.only(top: 20),
-                        //     //           child: RaisedButton(
-                        //     //             child: Text('Upload'),
-                        //     //             onPressed: () {
-                        //     //               Firestore.instance
-                        //     //                   .collection(
-                        //     //                       '/society/$socID/users')
-                        //     //                   .document('$docID')
-                        //     //                   .updateData({
-                        //     //                 "Password": newPass.text,
-                        //     //               });
-                        //     //             },
-                        //     //           ),
-                        //     //         )
-                        //     //       ],
-                        //     //     ),
-                        //     //   ),
-                        //     // );
-                        //   }
-                        //   //Navigator.pop(context);
-                        //   // return showDialog(
-                        //   //     context: context,
-                        //   //     builder: (context) {
-                        //   //       String idd = forgot(mail).toString();
-                        //   //       print('this is the document id - $idd');
-                        //   //       return Text('this is the document id - $idd');
-
-                        //   // forgot(mail).then((docID) {
-                        //   //   print(docID);
-                        //   //   if (docID != null) {
-                        //   //     print('This is not correctttt');
-                        //   //     return Center(
-                        //   //       child: AlertDialog(
-                        //   //         title: Column(
-                        //   //           children: <Widget>[
-                        //   //             TextField(
-                        //   //               decoration: InputDecoration(
-                        //   //                   hintText: 'Enter new password'),
-                        //   //               controller: newPass,
-                        //   //             ),
-                        //   //             Padding(
-                        //   //               padding: EdgeInsets.only(top: 20),
-                        //   //               child: RaisedButton(
-                        //   //                 child: Text('Upload'),
-                        //   //                 onPressed: () {
-                        //   //                   Firestore.instance
-                        //   //                       .collection(
-                        //   //                           '/society/$socID/users')
-                        //   //                       .document('$docID')
-                        //   //                       .updateData({
-                        //   //                     "Password": newPass.text,
-                        //   //                   });
-                        //   //                 },
-                        //   //               ),
-                        //   //             )
-                        //   //           ],
-                        //   //         ),
-                        //   //       ),
-                        //   //     );
-                        //   //   }
-                        //   //   return showDialog(
-                        //   //       context: context,
-                        //   //       builder: (context) {
-                        //   //         return Center(
-                        //   //           child: AlertDialog(
-                        //   //             title: Text('email not matched'),
-                        //   //           ),
-                        //   //         );
-                        //   //       });
-                        //   // });
-                        //   // });
-                        // });
+                          //   // forgot(mail).then((docID) {
+                          //   //   print(docID);
+                          //   //   if (docID != null) {
+                          //   //     print('This is not correctttt');
+                          //   //     return Center(
+                          //   //       child: AlertDialog(
+                          //   //         title: Column(
+                          //   //           children: <Widget>[
+                          //   //             TextField(
+                          //   //               decoration: InputDecoration(
+                          //   //                   hintText: 'Enter new password'),
+                          //   //               controller: newPass,
+                          //   //             ),
+                          //   //             Padding(
+                          //   //               padding: EdgeInsets.only(top: 20),
+                          //   //               child: RaisedButton(
+                          //   //                 child: Text('Upload'),
+                          //   //                 onPressed: () {
+                          //   //                   Firestore.instance
+                          //   //                       .collection(
+                          //   //                           '/society/$socID/users')
+                          //   //                       .document('$docID')
+                          //   //                       .updateData({
+                          //   //                     "Password": newPass.text,
+                          //   //                   });
+                          //   //                 },
+                          //   //               ),
+                          //   //             )
+                          //   //           ],
+                          //   //         ),
+                          //   //       ),
+                          //   //     );
+                          //   //   }
+                          //   //   return showDialog(
+                          //   //       context: context,
+                          //   //       builder: (context) {
+                          //   //         return Center(
+                          //   //           child: AlertDialog(
+                          //   //             title: Text('email not matched'),
+                          //   //           ),
+                          //   //         );
+                          //   //       });
+                          //   // });
+                          //   // });
+                          // });
+                        });
                       },
                       child: Text('Next'),
                     ),
