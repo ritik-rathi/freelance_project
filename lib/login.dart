@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> with TickerProviderStateMixin {
   SharedPrefs get _sharedPrefs => widget.prefs;
 
-  int l1 = 0, l2 = 0, l3 = 0, l4 = 0, l5 = 0;
+  int l1 = 0, l2 = 0, l3 = 0, l4 = 0, l5 = 0, forLength = 0;
   Future<int> emailID(String id, String pwd) async {
     var c = await query1.where('Email', isEqualTo: id).snapshots().first;
     l1 = c.documents.length;
@@ -53,6 +54,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   TextEditingController emailCon = new TextEditingController();
   TextEditingController idCon = new TextEditingController();
   TextEditingController guard = new TextEditingController();
+  TextEditingController forEmail = new TextEditingController();
+  TextEditingController newPass = new TextEditingController();
 
   bool _obscureTextLogin = true;
 
@@ -115,7 +118,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       child: Scaffold(
           body: BlocBuilder(
               bloc: _authenticationBloc,
-              builder: (BuildContext context, state) {
+              builder: (context, state) {
                 if (state is AuthenticationUninitialized) {
                   return Container(
                     width: MediaQuery.of(context).size.width,
@@ -180,6 +183,17 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                 constraints: const BoxConstraints.expand(),
                                 child: _buildParentSignIn(context),
                               ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 30),
+                              child: Center(
+                                child: FlatButton(
+                                  onPressed: () {
+                                    forgotDialog(forEmail.text);
+                                  },
+                                  child: Text('Forgot Password'),
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -216,6 +230,178 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 }
               })),
     );
+  }
+
+  Future passDialog(String docidd, BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: AlertDialog(
+              title: Column(
+                children: <Widget>[
+                  TextField(
+                    decoration: InputDecoration(hintText: 'Enter new password'),
+                    controller: newPass,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: RaisedButton(
+                      child: Text('Upload'),
+                      onPressed: () {
+                        Firestore.instance
+                            .collection('/society/$socID/users')
+                            .document('$docidd')
+                            .updateData({
+                          "Password": newPass.text,
+                        });
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future forgotDialog(String mail) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: AlertDialog(
+              title: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: forEmail,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Enter Email',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Center(
+                    child: RaisedButton(
+                      onPressed: () async {
+                        var docid;
+                        print('Why isnt this workinh??');
+                        try {
+                          docid = await forgot(mail);
+                          print('this is docid - $docid');
+                        } catch (e) {
+                          print('error is - ${e.toString()}');
+                        }
+
+                        // forgot(mail).then((docID) {
+
+                        //   print(docID);
+                        //   if (docID != null) {
+                        //     print('This is not correctttt');
+                        //     // return Center(
+                        //     //   child: AlertDialog(
+                        //     //     title: Column(
+                        //     //       children: <Widget>[
+                        //     //         TextField(
+                        //     //           decoration: InputDecoration(
+                        //     //               hintText: 'Enter new password'),
+                        //     //           controller: newPass,
+                        //     //         ),
+                        //     //         Padding(
+                        //     //           padding: EdgeInsets.only(top: 20),
+                        //     //           child: RaisedButton(
+                        //     //             child: Text('Upload'),
+                        //     //             onPressed: () {
+                        //     //               Firestore.instance
+                        //     //                   .collection(
+                        //     //                       '/society/$socID/users')
+                        //     //                   .document('$docID')
+                        //     //                   .updateData({
+                        //     //                 "Password": newPass.text,
+                        //     //               });
+                        //     //             },
+                        //     //           ),
+                        //     //         )
+                        //     //       ],
+                        //     //     ),
+                        //     //   ),
+                        //     // );
+                        //   }
+                        //   //Navigator.pop(context);
+                        //   // return showDialog(
+                        //   //     context: context,
+                        //   //     builder: (context) {
+                        //   //       String idd = forgot(mail).toString();
+                        //   //       print('this is the document id - $idd');
+                        //   //       return Text('this is the document id - $idd');
+
+                        //   // forgot(mail).then((docID) {
+                        //   //   print(docID);
+                        //   //   if (docID != null) {
+                        //   //     print('This is not correctttt');
+                        //   //     return Center(
+                        //   //       child: AlertDialog(
+                        //   //         title: Column(
+                        //   //           children: <Widget>[
+                        //   //             TextField(
+                        //   //               decoration: InputDecoration(
+                        //   //                   hintText: 'Enter new password'),
+                        //   //               controller: newPass,
+                        //   //             ),
+                        //   //             Padding(
+                        //   //               padding: EdgeInsets.only(top: 20),
+                        //   //               child: RaisedButton(
+                        //   //                 child: Text('Upload'),
+                        //   //                 onPressed: () {
+                        //   //                   Firestore.instance
+                        //   //                       .collection(
+                        //   //                           '/society/$socID/users')
+                        //   //                       .document('$docID')
+                        //   //                       .updateData({
+                        //   //                     "Password": newPass.text,
+                        //   //                   });
+                        //   //                 },
+                        //   //               ),
+                        //   //             )
+                        //   //           ],
+                        //   //         ),
+                        //   //       ),
+                        //   //     );
+                        //   //   }
+                        //   //   return showDialog(
+                        //   //       context: context,
+                        //   //       builder: (context) {
+                        //   //         return Center(
+                        //   //           child: AlertDialog(
+                        //   //             title: Text('email not matched'),
+                        //   //           ),
+                        //   //         );
+                        //   //       });
+                        //   // });
+                        //   // });
+                        // });
+                      },
+                      child: Text('Next'),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  String docID;
+
+  Future<String> forgot(String mail) async {
+    var c = await query1.where('Email', isEqualTo: mail).snapshots().first;
+    forLength = c.documents.length;
+    docID = c.documents.first.documentID.toString();
+    return docID;
+    // if (docID != null) {
+    //   print('This is not correctttt');
+    //   passDialog(docID, context);
+    // }
   }
 
   Widget _buildParentSignIn(BuildContext context) {
