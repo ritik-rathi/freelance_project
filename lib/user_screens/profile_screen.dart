@@ -289,15 +289,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Center(
-                        child: Text(
-                          'Edit Info',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30.0,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.w700),
-                        ),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            'Edit Info',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 30.0,
+                                letterSpacing: 1.5,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          Spacer(),
+                          IconButton(
+                            color: Colors.black,
+                            iconSize: 30,
+                            icon: Icon(Icons.close),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 20.0,
@@ -495,7 +504,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderRadius: BorderRadius.circular(20.0),
                     border: Border.all(width: 2.0, color: Color(0xff1A2980))),
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                height: 420.0,
+                height: 425.0,
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -505,15 +514,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Center(
-                        child: Text(
-                          'Add user',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30.0,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.w700),
-                        ),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            'Add User',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 30.0,
+                                letterSpacing: 1.5,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          Spacer(),
+                          IconButton(
+                            color: Colors.black,
+                            iconSize: 25,
+                            icon: Icon(Icons.close),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 20.0,

@@ -192,7 +192,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                   onPressed: () {
                                     forgotDialog();
                                   },
-                                  child: Text('Forgot Password', style: TextStyle(color: Colors.white)),
+                                  child: Text('Forgot Password',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                               ),
                             )
@@ -308,59 +309,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                   );
                                 });
                           }
-                          //   //Navigator.pop(context);
-                          //   // return showDialog(
-                          //   //     context: context,
-                          //   //     builder: (context) {
-                          //   //       String idd = forgot(mail).toString();
-                          //   //       print('this is the document id - $idd');
-                          //   //       return Text('this is the document id - $idd');
-
-                          //   // forgot(mail).then((docID) {
-                          //   //   print(docID);
-                          //   //   if (docID != null) {
-                          //   //     print('This is not correctttt');
-                          //   //     return Center(
-                          //   //       child: AlertDialog(
-                          //   //         title: Column(
-                          //   //           children: <Widget>[
-                          //   //             TextField(
-                          //   //               decoration: InputDecoration(
-                          //   //                   hintText: 'Enter new password'),
-                          //   //               controller: newPass,
-                          //   //             ),
-                          //   //             Padding(
-                          //   //               padding: EdgeInsets.only(top: 20),
-                          //   //               child: RaisedButton(
-                          //   //                 child: Text('Upload'),
-                          //   //                 onPressed: () {
-                          //   //                   Firestore.instance
-                          //   //                       .collection(
-                          //   //                           '/society/$socID/users')
-                          //   //                       .document('$docID')
-                          //   //                       .updateData({
-                          //   //                     "Password": newPass.text,
-                          //   //                   });
-                          //   //                 },
-                          //   //               ),
-                          //   //             )
-                          //   //           ],
-                          //   //         ),
-                          //   //       ),
-                          //   //     );
-                          //   //   }
-                          //   //   return showDialog(
-                          //   //       context: context,
-                          //   //       builder: (context) {
-                          //   //         return Center(
-                          //   //           child: AlertDialog(
-                          //   //             title: Text('email not matched'),
-                          //   //           ),
-                          //   //         );
-                          //   //       });
-                          //   // });
-                          //   // });
-                          // });
                         });
                       },
                       child: Text('Next'),

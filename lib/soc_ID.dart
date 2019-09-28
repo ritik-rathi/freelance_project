@@ -11,7 +11,7 @@ var c = Firestore.instance.collection('society');
 List<String> ids = [];
 
 class Access extends StatelessWidget {
-  int l;
+   int l;
 
   Future idCheck(String id) async {
     var check = await c.where('id', isEqualTo: id).snapshots().first;

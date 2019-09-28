@@ -236,7 +236,8 @@ class _VisitorLogState extends State<VisitorLog> {
                                                   return Container(
                                                     width: 33.0,
                                                     height: 33.0,
-                                                    child: CircularProgressIndicator(
+                                                    child:
+                                                        CircularProgressIndicator(
                                                       strokeWidth: 2.0,
                                                       value: 50,
                                                       backgroundColor:
@@ -265,18 +266,40 @@ class _VisitorLogState extends State<VisitorLog> {
                                                                         sigmaY:
                                                                             3),
                                                                 child: Center(
-                                                                  child:
+                                                                  child: Column(
+                                                                    children: <
+                                                                        Widget>[
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        child: Align(
+                                                                          alignment:
+                                                                              Alignment.topRight,
+                                                                          child:
+                                                                              IconButton(
+                                                                                color: Colors.white,
+                                                                                iconSize: 30,
+                                                                            icon:
+                                                                                Icon(Icons.close),
+                                                                            onPressed: () =>
+                                                                                Navigator.pop(context),
+                                                                          ),
+                                                                        ),
+                                                                      ),
                                                                       Container(
-                                                                    height: 300,
-                                                                    width: 300,
-                                                                    child: Image
-                                                                        .network(
-                                                                      snapshot
-                                                                          .data
-                                                                          .toString(),
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    ),
+                                                                        height:
+                                                                            300,
+                                                                        width:
+                                                                            300,
+                                                                        child: Image
+                                                                            .network(
+                                                                          snapshot
+                                                                              .data
+                                                                              .toString(),
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
                                                               ),
